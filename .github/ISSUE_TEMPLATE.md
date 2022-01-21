@@ -1,3 +1,3 @@
 Please use one of the following templates:
 
-https://github.com/toolisticon/FIXME/issues/new/choose
+https://github.com/holunda-io/camunda-bpm-correlate/issues/new/choose
