@@ -17,8 +17,24 @@
 
   <modules>
     <module>bom/parent</module>
+    <module>bom/bom</module>
     <module>extension/core</module>
+    <module>extension/spring-cloud-stream-kafka</module>
   </modules>
+
+  <profiles>
+    <profile>
+      <activation>
+        <property>
+          <name>!skipExamples</name>
+        </property>
+      </activation>
+      <id>examples</id>
+      <modules>
+        <module>example/spring-cloud-stream-kafka</module>
+      </modules>
+    </profile>
+  </profiles>
 
   <dependencyManagement>
     <dependencies>

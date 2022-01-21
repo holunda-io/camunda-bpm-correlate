@@ -4,24 +4,21 @@
 
   <parent>
     <groupId>io.holunda</groupId>
-    <artifactId>camunda-bpm-correlate-parent</artifactId>
+    <artifactId>camunda-bpm-correlate-root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../../bom/parent/pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>camunda-bpm-correlate</artifactId>
+  <artifactId>camunda-bpm-correlate-example-spring-cloud-stream-kafka</artifactId>
   <packaging>jar</packaging>
-
-  <properties>
-    <spring-boot.version>2.6.3</spring-boot.version>
-  </properties>
+  <name>example/spring-cloud-stream-kafka</name>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring-boot.version}</version>
+        <groupId>io.holunda</groupId>
+        <artifactId>camunda-bpm-correlate-bom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -30,12 +27,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-core</artifactId>
+      <groupId>io.holunda</groupId>
+      <artifactId>camunda-bpm-correlate-spring-cloud-stream-kafka</artifactId>
     </dependency>
   </dependencies>
 
