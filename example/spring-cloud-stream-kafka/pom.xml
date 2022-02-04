@@ -28,7 +28,7 @@
   <dependencies>
     <dependency>
       <groupId>io.holunda</groupId>
-      <artifactId>camunda-bpm-correlate-spring-cloud-stream-kafka</artifactId>
+      <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
     </dependency>
   </dependencies>
 

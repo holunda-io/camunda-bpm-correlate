@@ -13,9 +13,9 @@ Imagine you integrate your Camunda Engine into a larger application landscape. I
 ## Ideas
 
 - Develop a system accepting the message designed in a store-and-forward way
-- Support different messaging source systems (Kafka, Axon, Spring Boot Streams and others)
+- Support different messaging source systems (Kafka, Axon, Spring Cloud Streams and others)
 - Provide different correlation configurations (message/signal, message ttl, skip correlation/correlation retry)
-- Support different persistencies (Camunda DB-Schema, ... )
+- Support different persistency (Camunda DB-Schema, ... )
 - Crazy but cool (allow INTERNAL correlation use the same library)
 
 ## MVP

@@ -19,7 +19,7 @@
     <module>bom/parent</module>
     <module>bom/bom</module>
     <module>extension/core</module>
-    <module>extension/spring-cloud-stream-kafka</module>
+    <module>extension/spring-cloud-stream</module>
   </modules>
 
   <profiles>
@@ -166,7 +166,7 @@
             <languageVersion>1.5</languageVersion>
             <apiVersion>1.5</apiVersion>
             <compilerPlugins>
-              <!--<plugin>spring</plugin>-->
+              <plugin>spring</plugin>
               <!--plugin>jpa</plugin-->
               <plugin>no-arg</plugin>
               <plugin>all-open</plugin>

@@ -1,6 +1,8 @@
 package io.holunda.camunda.bpm.correlate.persist
 
-import org.springframework.data.repository.NoRepositoryBean
+import org.springframework.data.repository.PagingAndSortingRepository
 
-@NoRepositoryBean
-interface MessageRepository
+/**
+ * JPA Message Repository.
+ */
+interface MessageRepository : PagingAndSortingRepository<MessageEntity, String>

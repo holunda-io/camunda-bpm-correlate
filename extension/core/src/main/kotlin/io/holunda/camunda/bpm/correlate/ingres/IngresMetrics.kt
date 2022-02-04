@@ -1,5 +1,8 @@
 package io.holunda.camunda.bpm.correlate.ingres
 
+/**
+ * Metrics for ingres.
+ */
 class IngresMetrics(
 
 ) {

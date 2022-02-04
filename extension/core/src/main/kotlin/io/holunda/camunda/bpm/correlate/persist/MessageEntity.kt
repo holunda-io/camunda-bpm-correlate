@@ -6,19 +6,28 @@ import javax.persistence.*
 @Entity
 @Table(name = "HOL_MESSAGE")
 class MessageEntity(
-  @Id
+
   @Column(name = "ID", nullable = false, length = 32)
-  val id: String,
+  @Id
+  var id: String,
   @Column(name = "INSERTED_ON", nullable = false)
-  val inserted: Instant,
+  var inserted: Instant,
+
+  @Column(name = "PAYLOAD_ENCODING_FQDN", nullable = false, length = 64)
+  var payloadEncoding: String,
+  @Column(name = "PAYLOAD_TYPE_FQDN", nullable = false, length = 64)
+  var payloadClass: String,
+  @Column(name = "PAYLOAD", nullable = true, length = 1024)
   @Lob
-  @Column(name = "INSIGHT_MESSAGE", nullable = true, length = 1024)
-  var payloadJson: String?,
+  var payload: ByteArray,
+
+  @Column(name = "TTL", nullable = true, length = 16)
+  var timeToLive: String?,
   @Column(name = "RETRIES", nullable = false)
   var retries: Int = 0,
   @Column(name = "NEXT_RETRY_ON", nullable = true)
   var nextRetry: Instant? = null,
-  @Lob
   @Column(name = "PROCESSING_ERROR", nullable = true, length = 1024)
+  @Lob
   var error: String? = null
 )
