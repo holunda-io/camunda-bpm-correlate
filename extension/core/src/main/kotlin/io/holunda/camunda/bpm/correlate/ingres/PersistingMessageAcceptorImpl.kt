@@ -5,7 +5,9 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.MessageMe
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
 import org.springframework.stereotype.Component
 
-@Component
+/**
+ * Acceptor persisting the message.
+ */
 class PersistingMessageAcceptorImpl(
   private val messagePersistenceService: MessagePersistenceService,
   private val metadataExtractorChain: MessageMetadataExtractorChain

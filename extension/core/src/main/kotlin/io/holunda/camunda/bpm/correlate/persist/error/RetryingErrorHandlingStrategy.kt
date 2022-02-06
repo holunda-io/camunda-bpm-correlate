@@ -1,6 +1,7 @@
 package io.holunda.camunda.bpm.correlate.persist.error
 
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
+import io.holunda.camunda.bpm.correlate.persist.MessageErrorHandlingResult
 import io.holunda.camunda.bpm.correlate.persist.MessageErrorHandlingStrategy
 import mu.KLogging
 import java.time.Clock
@@ -17,18 +18,20 @@ class RetryingErrorHandlingStrategy(
 
   companion object : KLogging()
 
-  override fun evaluateError(entity: MessageEntity, errorDescription: String): MessageEntity? {
+  override fun evaluateError(entity: MessageEntity, errorDescription: String): MessageErrorHandlingResult {
     return if (isLive(entity)) {
       // still live, no error
       logger.trace { "Error message is still inside TTL, not reporting any error." }
-      null
+      MessageErrorHandlingResult.NoOp
     } else {
-      entity.apply {
-        val retries = this.retries + 1 // increment retry
-        this.retries = retries
-        this.nextRetry = calculateNextRetry(now = clock.instant(), retries = retries)
-        this.error = error
-      }
+      MessageErrorHandlingResult.Update(
+        entity.apply {
+          val retries = this.retries + 1 // increment retry
+          this.retries = retries
+          this.nextRetry = calculateNextRetry(now = clock.instant(), retries = retries)
+          this.error = errorDescription
+        }
+      )
     }
   }
 

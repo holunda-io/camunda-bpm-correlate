@@ -8,6 +8,7 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
 import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
 import io.holunda.camunda.bpm.correlate.ingres.message.ByteMessage
 import io.holunda.camunda.bpm.correlate.ingres.message.StringMessage
+import io.holunda.camunda.bpm.correlate.persist.MessageErrorHandlingResult.*
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import mu.KLogging
 import org.springframework.data.domain.Pageable
@@ -101,9 +102,10 @@ class MessagePersistenceService(
   fun error(errorMessageMetaData: MessageMetaData, errorDescription: String) {
     val message = messageRepository.findByIdOrNull(errorMessageMetaData.messageId)
     requireNotNull(message) { "Something went wrong, message (message id: ${errorMessageMetaData.messageId}) causing correlation error is not found." }
-    val evaluated = errorHandlingStrategy.evaluateError(message, errorDescription)
-    if (evaluated != null) {
-      messageRepository.save(evaluated)
+    when (val result = errorHandlingStrategy.evaluateError(message, errorDescription)) {
+      is Update -> messageRepository.save(result.entity)
+      is Delete -> messageRepository.deleteById(result.entityId)
+      is NoOp -> Unit
     }
   }
 
