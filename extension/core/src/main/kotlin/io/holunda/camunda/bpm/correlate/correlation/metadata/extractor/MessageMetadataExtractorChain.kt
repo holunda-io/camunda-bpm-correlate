@@ -1,15 +1,14 @@
-package io.holunda.camunda.bpm.correlate.metadata.extractor
+package io.holunda.camunda.bpm.correlate.correlation.metadata.extractor
 
-import io.holunda.camunda.bpm.correlate.message.AbstractGenericMessage
-import io.holunda.camunda.bpm.correlate.metadata.MessageMetaData
-import io.holunda.camunda.bpm.correlate.metadata.MessageMetaDataSnippet
-import io.holunda.camunda.bpm.correlate.metadata.MessageMetaDataSnippetExtractor
+import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
+import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
+import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
+import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
 import org.springframework.stereotype.Component
 
 /**
  * Chain of extractor with the every further extractor overwriting values of previous.
  */
-@Component
 class MessageMetadataExtractorChain(
   private val extractors: List<MessageMetaDataSnippetExtractor>
 ) : MessageMetaDataSnippetExtractor {
@@ -21,13 +20,13 @@ class MessageMetadataExtractorChain(
   /**
    * Extracts meta data from the message.
    */
-  fun <P> extractChainedMetaData(message: AbstractGenericMessage<P>): MessageMetaData {
+  fun <P> extractChainedMetaData(message: AbstractChannelMessage<P>): MessageMetaData {
     val snippet = extractMetaData(message)
     requireNotNull(snippet) { "Meta data must not be null" }
     return MessageMetaData(snippet)
   }
 
-  override fun <P> extractMetaData(message: AbstractGenericMessage<P>): MessageMetaDataSnippet? {
+  override fun <P> extractMetaData(message: AbstractChannelMessage<P>): MessageMetaDataSnippet? {
     if (!supports(message.headers)) {
       return null
     }

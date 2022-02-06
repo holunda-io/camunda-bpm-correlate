@@ -1,9 +1,9 @@
 package io.holunda.camunda.bpm.example.kafka.correlation
 
+import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEvent
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactory
 import io.holunda.camunda.bpm.correlate.event.CorrelationHint
-import io.holunda.camunda.bpm.correlate.metadata.MessageMetaData
 import io.holunda.camunda.bpm.data.CamundaBpmData.builder
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessingFactoryBean.Companion.KEY
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessingFactoryBean.Elements.FLIGHT_RECEIVED
@@ -83,7 +83,7 @@ class ReservationProcessingCamundaCorrelationEventFactory : CamundaCorrelationEv
   }
 
   override fun supports(metaData: MessageMetaData): Boolean {
-    return when (metaData.payloadClass) {
+    return when (metaData.payloadTypeInfo.toFQCN()) {
       ReservationReceivedEvent::class.qualifiedName,
       HotelReservationReceivedEvent::class.qualifiedName,
       FlightReservationReceivedEvent::class.qualifiedName

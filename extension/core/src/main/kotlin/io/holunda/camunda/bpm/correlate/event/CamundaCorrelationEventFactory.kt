@@ -1,6 +1,6 @@
 package io.holunda.camunda.bpm.correlate.event
 
-import io.holunda.camunda.bpm.correlate.metadata.MessageMetaData
+import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 
 /**
  * This factory is responsible for mapping incoming messages to BPMN Signals or BPMN Messages.

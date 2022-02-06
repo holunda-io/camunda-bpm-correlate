@@ -1,11 +1,11 @@
 package io.holunda.camunda.bpm.correlate.ingres
 
-import io.holunda.camunda.bpm.correlate.message.AbstractGenericMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
 
 /**
  * Accepts messages from channels.
  */
-interface MessageAcceptor {
+interface ChannelMessageAcceptor {
 
   /**
    * Generic check if the acceptor support this message.
@@ -18,6 +18,6 @@ interface MessageAcceptor {
    * Accepts the message.
    * @param message message received via channel.
    */
-  fun <P> accept(message: AbstractGenericMessage<P>)
+  fun <P> accept(message: AbstractChannelMessage<P>)
 
 }

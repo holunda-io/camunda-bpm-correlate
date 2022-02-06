@@ -1,5 +1,7 @@
 package io.holunda.camunda.bpm.correlate.event
 
+import mu.KLogger
+
 
 /**
  * Hints for correlation.
@@ -29,4 +31,21 @@ data class CorrelationHint(
    * Flag if only process start events should be considered.
    */
   val processStart: Boolean = false
-)
+) {
+
+  /**
+   * Executes sanity check of the correlation hint.
+   * @param logger logger to report results.
+   */
+  fun sanityCheck(logger: KLogger) {
+    if (this.tenantHint != TenantHint.WITHOUT_TENANT) {
+      if (this.processDefinitionId != null) {
+        logger.warn { "The tenant correlation hint was set, so provided process definition id $processDefinitionId is ignored." }
+      }
+      if (this.processInstanceId != null) {
+        logger.warn { "The tenant correlation hint was set, so provided process instance id $processInstanceId is ignored." }
+      }
+    }
+  }
+
+}

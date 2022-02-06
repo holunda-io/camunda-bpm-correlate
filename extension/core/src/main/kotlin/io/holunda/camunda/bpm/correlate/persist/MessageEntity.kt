@@ -13,10 +13,16 @@ class MessageEntity(
   @Column(name = "INSERTED_ON", nullable = false)
   var inserted: Instant,
 
-  @Column(name = "PAYLOAD_ENCODING_FQDN", nullable = false, length = 64)
+  @Column(name = "PAYLOAD_ENCODING", nullable = false, length = 64)
   var payloadEncoding: String,
-  @Column(name = "PAYLOAD_TYPE_FQDN", nullable = false, length = 64)
-  var payloadClass: String,
+
+  @Column(name = "PAYLOAD_TYPE_NAMESPACE", nullable = false, length = 64)
+  var payloadTypeNamespace: String,
+  @Column(name = "PAYLOAD_TYPE_NAME", nullable = false, length = 64)
+  var payloadTypeName: String,
+  @Column(name = "PAYLOAD_TYPE_REVISION", nullable = true, length = 64)
+  var payloadTypeRevision: String?,
+
   @Column(name = "PAYLOAD", nullable = true, length = 1024)
   @Lob
   var payload: ByteArray,

@@ -1,6 +1,6 @@
-package io.holunda.camunda.bpm.correlate.metadata
+package io.holunda.camunda.bpm.correlate.correlation.metadata
 
-import io.holunda.camunda.bpm.correlate.message.AbstractGenericMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
 
 /**
  * Extractor for the metadata.
@@ -11,7 +11,7 @@ interface MessageMetaDataSnippetExtractor {
    * Extracts metadata snippet from the message.
    * @return message metadata if at least one metadata attribute could be extracted, null otherwise.
    */
-  fun <P> extractMetaData(message: AbstractGenericMessage<P>): MessageMetaDataSnippet?
+  fun <P> extractMetaData(message: AbstractChannelMessage<P>): MessageMetaDataSnippet?
 
   /**
    * Checks if the extractor supports this message.

@@ -1,9 +1,9 @@
-package io.holunda.camunda.bpm.correlate.metadata
+package io.holunda.camunda.bpm.correlate.correlation.metadata
 
 import kotlin.reflect.full.memberProperties
 
 /**
- * An metadata extractor may produce only parts of metadata, represented by metadata snippet.
+ * A metadata extractor may produce only parts of metadata, represented by metadata snippet.
  */
 data class MessageMetaDataSnippet(
   /**
@@ -11,9 +11,13 @@ data class MessageMetaDataSnippet(
    */
   var messageId: String? = null,
   /**
-   * Type representing the message payload class.
+   * Type name representing the message payload.
    */
-  var payloadClass: String? = null,
+  var payloadTypeInfo: TypeInfo = TypeInfo.UNKNOWN,
+  /**
+   * Payload encoding.
+   */
+  var payloadEncoding: String? = null,
   /**
    * TTL as duration string.
    */
@@ -38,8 +42,14 @@ data class MessageMetaDataSnippet(
           it
         }
       }.let {
-        if (other.payloadClass != null) {
-          it.copy(payloadClass = other.payloadClass)
+        if (other.payloadEncoding != null) {
+          it.copy(payloadEncoding = other.payloadEncoding)
+        } else {
+          it
+        }
+      }.let {
+        if (other.payloadTypeInfo != TypeInfo.UNKNOWN && it.payloadTypeInfo.overwritePossible) {
+          it.copy(payloadTypeInfo = other.payloadTypeInfo)
         } else {
           it
         }

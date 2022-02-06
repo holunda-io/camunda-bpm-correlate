@@ -1,9 +1,7 @@
 package io.holunda.camunda.bpm.correlate.event
 
-import io.holunda.camunda.bpm.correlate.metadata.MessageMetaData
-import org.springframework.stereotype.Component
+import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 
-@Component
 class CamundaCorrelationEventFactoryRegistry(
   private val factories: List<CamundaCorrelationEventFactory>
 ) {

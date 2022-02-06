@@ -1,22 +1,33 @@
-package io.holunda.camunda.bpm.correlate.process
+package io.holunda.camunda.bpm.correlate.correlation.impl
 
+import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatch
+import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatchResult
+import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatchResult.Error
+import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatchResult.Success
+import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationService
+import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.event.*
-import io.holunda.camunda.bpm.correlate.metadata.MessageMetaData
-import io.holunda.camunda.bpm.correlate.process.BatchCorrelationResult.Error
-import io.holunda.camunda.bpm.correlate.process.BatchCorrelationResult.Success
 import mu.KLogging
 import org.camunda.bpm.engine.RuntimeService
 
-class CorrelationService(
+/**
+ * Service responsible for correlation with Camunda Platform engine.
+ */
+class CamundaBpmCorrelationService(
   private val registry: CamundaCorrelationEventFactoryRegistry,
   private val runtimeService: RuntimeService
-) {
+): BatchCorrelationService {
 
   companion object : KLogging()
 
-  fun correlateBatch(messages: List<Pair<MessageMetaData, Any>>): BatchCorrelationResult {
+  /**
+   * Correlates the batch.
+   * @param correlationBatch batch of messages to correlate.
+   * @return result of correlation.
+   */
+  override fun correlateBatch(correlationBatch: CorrelationBatch): CorrelationBatchResult {
     val successfulCorrelations = mutableListOf<MessageMetaData>()
-    messages.forEach { (messageMetaData, payload) ->
+    correlationBatch.correlationMessages.forEach { (messageMetaData, payload) ->
       val factory = registry.getFactory(messageMetaData)
       if (factory != null) {
         val event = factory.create(messageMetaData, payload)
@@ -52,6 +63,7 @@ class CorrelationService(
       CorrelationScope.GLOBAL -> builder.setVariables(event.variables)
       CorrelationScope.LOCAL -> builder.setVariablesLocal(event.variables)
     }
+    event.correlationHint.sanityCheck(logger)
     with(event.correlationHint) {
       if (this.processStart) {
         builder.startMessageOnly()
@@ -73,14 +85,8 @@ class CorrelationService(
           }
           Unit
         }
-        TenantHint.WITHOUT_TENANT -> {
-          builder.withoutTenantId()
-          checkAndReportProcessCorrelationHintsUsingTenant(event.correlationHint)
-        }
-        else -> {
-          builder.tenantId(this.tenantHint.tenantId)
-          checkAndReportProcessCorrelationHintsUsingTenant(event.correlationHint)
-        }
+        TenantHint.WITHOUT_TENANT -> builder.withoutTenantId()
+        else -> builder.tenantId(this.tenantHint.tenantId)
       }
     }
     builder.correlate()
@@ -88,15 +94,6 @@ class CorrelationService(
 
   private fun correlateSignal(event: CamundaCorrelationEvent) {
     TODO("Not yet implemented")
-  }
-
-  private fun checkAndReportProcessCorrelationHintsUsingTenant(correlationHint: CorrelationHint) {
-    if (correlationHint.processDefinitionId != null) {
-      logger.warn { "The tenant correlation hint was set, so provided process definition id ${correlationHint.processDefinitionId} is ignored." }
-    }
-    if (correlationHint.processInstanceId != null) {
-      logger.warn { "The tenant correlation hint was set, so provided process instance id ${correlationHint.processInstanceId} is ignored." }
-    }
   }
 
 }
