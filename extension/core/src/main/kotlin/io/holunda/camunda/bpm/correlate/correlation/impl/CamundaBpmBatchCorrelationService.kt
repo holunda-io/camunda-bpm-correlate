@@ -13,7 +13,7 @@ import org.camunda.bpm.engine.RuntimeService
 /**
  * Service responsible for correlation with Camunda Platform engine.
  */
-class CamundaBpmCorrelationService(
+class CamundaBpmBatchCorrelationService(
   private val registry: CamundaCorrelationEventFactoryRegistry,
   private val runtimeService: RuntimeService
 ): BatchCorrelationService {
@@ -32,7 +32,6 @@ class CamundaBpmCorrelationService(
       if (factory != null) {
         val event = factory.create(messageMetaData, payload)
         if (event != null) {
-          // TODO: error strategy "NOOP" could be applied here, so we continue if we do not care
           try {
             correlate(event)
             successfulCorrelations += messageMetaData
@@ -50,6 +49,7 @@ class CamundaBpmCorrelationService(
   }
 
   fun correlate(event: CamundaCorrelationEvent) {
+    event.correlationHint.sanityCheck(logger, event.correlationScope, event.correlationType)
     when (event.correlationType) {
       CorrelationType.MESSAGE -> correlateMessage(event)
       CorrelationType.SIGNAL -> correlateSignal(event)
@@ -64,7 +64,6 @@ class CamundaBpmCorrelationService(
       CorrelationScope.GLOBAL -> builder.setVariables(event.variables)
       CorrelationScope.LOCAL -> builder.setVariablesLocal(event.variables)
     }
-    event.correlationHint.sanityCheck(logger)
     with(event.correlationHint) {
       if (this.processStart) {
         builder.startMessageOnly()
@@ -94,7 +93,24 @@ class CamundaBpmCorrelationService(
   }
 
   private fun correlateSignal(event: CamundaCorrelationEvent) {
-    TODO("Not yet implemented")
+    val builder = runtimeService
+      .createSignalEvent(event.name)
+      .setVariables(event.variables)
+
+    with(event.correlationHint) {
+      when (this.tenantHint) {
+        // only if no tenant hint is used, check for process definition and instance
+        TenantHint.NONE -> {
+          if (this.processInstanceId != null) {
+            builder.executionId(this.executionId)
+          }
+          Unit
+        }
+        TenantHint.WITHOUT_TENANT -> builder.withoutTenantId()
+        else -> builder.tenantId(this.tenantHint.tenantId)
+      }
+    }
+    builder.send()
   }
 
 }

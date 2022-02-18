@@ -12,7 +12,7 @@ sealed class MessageErrorHandlingResult {
   /**
    * Delete the entity.
    */
-  data class Delete(val entityId: String) : MessageErrorHandlingResult()
+  data class Drop(val entityId: String) : MessageErrorHandlingResult()
 
   /**
    * Nothing to do.

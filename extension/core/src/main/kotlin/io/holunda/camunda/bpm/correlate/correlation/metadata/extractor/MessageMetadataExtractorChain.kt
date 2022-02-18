@@ -22,7 +22,7 @@ class MessageMetadataExtractorChain(
    */
   fun <P> extractChainedMetaData(message: AbstractChannelMessage<P>): MessageMetaData {
     val snippet = extractMetaData(message)
-    requireNotNull(snippet) { "Meta data must not be null" }
+    requireNotNull(snippet) { "Meta data must not be null, extraction failed and delivered no valid metadata snippets" }
     return MessageMetaData(snippet)
   }
 
@@ -30,16 +30,10 @@ class MessageMetadataExtractorChain(
     if (!supports(message.headers)) {
       return null
     }
-
     // extract snippets from the chain
     val extractedMetadataSnippets = extractors.mapNotNull { it.extractMetaData(message) }
     // merge
-    // FIXME jan: reducer should work with default initial, so we can always reduce
-    return when (extractedMetadataSnippets.size) {
-      0 -> throw IllegalStateException("No meta data could be extracted, bit one of the extractors reported support.")
-      1 -> extractedMetadataSnippets[0]
-      else -> extractedMetadataSnippets.reduce(MessageMetaDataSnippet::reduce)
-    }
+    return extractedMetadataSnippets.reduceOrNull(MessageMetaDataSnippet::reduce)
   }
 
   override fun supports(headers: Map<String, Any>): Boolean {

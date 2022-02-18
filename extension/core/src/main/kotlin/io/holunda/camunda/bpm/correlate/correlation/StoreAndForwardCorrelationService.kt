@@ -6,7 +6,7 @@ import mu.KLogging
 /**
  *
  */
-class DefaultCorrelationService(
+class StoreAndForwardCorrelationService(
   private val persistenceService: MessagePersistenceService,
   private val correlationService: BatchCorrelationService,
   private val correlationMetrics: CorrelationMetrics

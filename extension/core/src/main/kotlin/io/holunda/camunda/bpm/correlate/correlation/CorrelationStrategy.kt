@@ -12,4 +12,10 @@ interface CorrelationStrategy {
    * Determines correlation hints based on message metadata.
    */
   fun correlationSelector(): (CorrelationMessage) -> CorrelationHint
+
+  /**
+   * Sorter for messages.
+   * @return message comparator used for message sorting.
+   */
+  fun correlationMessageSorter(): Comparator<CorrelationMessage>
 }

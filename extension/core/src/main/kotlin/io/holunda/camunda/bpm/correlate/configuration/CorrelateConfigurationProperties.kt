@@ -1,7 +1,7 @@
 package io.holunda.camunda.bpm.correlate.configuration
 
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfigurationProperties
-import io.holunda.camunda.bpm.correlate.persist.error.RetryErrorHandlingProperties
+import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.boot.context.properties.NestedConfigurationProperty
 
@@ -18,5 +18,5 @@ data class CorrelateConfigurationProperties(
   val channels: Map<String, ChannelConfigurationProperties> = mapOf(),
 
   @NestedConfigurationProperty
-  val retry: RetryErrorHandlingProperties
+  val retry: RetryingErrorHandlingProperties
 )

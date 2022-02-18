@@ -13,7 +13,7 @@ import kotlin.math.pow
 
 class RetryingErrorHandlingStrategy(
   private val clock: Clock,
-  private val retryErrorHandlingProperties: RetryErrorHandlingProperties
+  private val retryErrorHandlingProperties: RetryingErrorHandlingProperties
 ) : MessageErrorHandlingStrategy {
 
   companion object : KLogging()

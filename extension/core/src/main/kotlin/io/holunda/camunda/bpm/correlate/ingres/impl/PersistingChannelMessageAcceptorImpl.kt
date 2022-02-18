@@ -1,15 +1,15 @@
-package io.holunda.camunda.bpm.correlate.ingres
+package io.holunda.camunda.bpm.correlate.ingres.impl
 
 import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.MessageMetadataExtractorChain
-import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
-import org.springframework.stereotype.Component
+import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
+import io.holunda.camunda.bpm.correlate.persist.impl.DefaultMessagePersistenceService
 
 /**
  * Acceptor persisting the message.
  */
-class PersistingMessageAcceptorImpl(
-  private val messagePersistenceService: MessagePersistenceService,
+class PersistingChannelMessageAcceptorImpl(
+  private val messagePersistenceService: DefaultMessagePersistenceService,
   private val metadataExtractorChain: MessageMetadataExtractorChain
 ) : ChannelMessageAcceptor {
 

@@ -1,5 +1,6 @@
 package io.holunda.camunda.bpm.correlate.event
 
+import io.holunda.camunda.bpm.correlate.correlation.impl.CamundaBpmBatchCorrelationService
 import mu.KLogger
 
 
@@ -24,6 +25,10 @@ data class CorrelationHint(
    */
   val processInstanceId: String? = null,
   /**
+   * Execution id.
+   */
+  val executionId: String? = null,
+  /**
    * Tenant information.
    */
   val tenantHint: TenantHint = TenantHint.NONE,
@@ -36,8 +41,33 @@ data class CorrelationHint(
   /**
    * Executes sanity check of the correlation hint.
    * @param logger logger to report results.
+   * @param scope scope for variables to set during correlation.
+   * @param type correlation type.
    */
-  fun sanityCheck(logger: KLogger) {
+  fun sanityCheck(logger: KLogger, scope: CorrelationScope, type: CorrelationType) {
+    when(type) {
+      CorrelationType.MESSAGE -> {
+        if (executionId != null) {
+          logger.warn { "The executionId hint is ignored by correlation of messages." }
+        }
+      }
+      CorrelationType.SIGNAL -> {
+        if (scope == CorrelationScope.LOCAL) {
+          logger.warn { "The correlation of signal with local variables is not supported." }
+        }
+        if (processDefinitionId != null) {
+          logger.warn { "The processDefinitionId hint is ignored by correlation of signals." }
+        }
+        if (processInstanceId != null) {
+          logger.warn { "The processDefinitionId hint is ignored by correlation of signals." }
+        }
+        if (correlationVariables.isNotEmpty()) {
+          logger.warn { "The correlationVariables hint is ignored by correlation of signals." }
+        }
+      }
+    }
+
+
     if (this.tenantHint != TenantHint.WITHOUT_TENANT) {
       if (this.processDefinitionId != null) {
         logger.warn { "The tenant correlation hint was set, so provided process definition id $processDefinitionId is ignored." }
