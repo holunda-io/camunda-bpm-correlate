@@ -7,7 +7,7 @@ sealed class MessageErrorHandlingResult {
   /**
    * Update the entity.
    */
-  data class Update(val entity: MessageEntity) : MessageErrorHandlingResult()
+  data class Retry(val entity: MessageEntity) : MessageErrorHandlingResult()
 
   /**
    * Delete the entity.

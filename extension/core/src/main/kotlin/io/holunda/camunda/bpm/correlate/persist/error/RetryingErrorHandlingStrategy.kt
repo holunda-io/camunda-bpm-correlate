@@ -19,12 +19,12 @@ class RetryingErrorHandlingStrategy(
   companion object : KLogging()
 
   override fun evaluateError(entity: MessageEntity, errorDescription: String): MessageErrorHandlingResult {
-    return if (isLive(entity)) {
-      // still live, no error
+    return if (isAlive(entity)) {
+      // still alive, no error
       logger.trace { "Error message is still inside TTL, not reporting any error." }
       MessageErrorHandlingResult.NoOp
     } else {
-      MessageErrorHandlingResult.Update(
+      MessageErrorHandlingResult.Retry(
         entity.apply {
           val retries = this.retries + 1 // increment retry
           this.retries = retries
@@ -40,7 +40,7 @@ class RetryingErrorHandlingStrategy(
   }
 
 
-  private fun isLive(entity: MessageEntity): Boolean {
+  private fun isAlive(entity: MessageEntity): Boolean {
     return if (entity.timeToLive != null) {
       val titleToLiveDuration = try {
         Duration.parse(entity.timeToLive)

@@ -61,5 +61,3 @@ data class MessageMetaDataSnippet(
    */
   fun isEmpty(): Boolean = this::class.memberProperties.all { p -> p.getter.call(this) == null }
 }
-
-

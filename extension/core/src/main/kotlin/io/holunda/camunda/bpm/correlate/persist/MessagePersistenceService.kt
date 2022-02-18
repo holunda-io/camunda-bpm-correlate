@@ -65,6 +65,7 @@ class MessagePersistenceService(
       )
     }
 
+    // FIXME: batches must be in logical order
     // build batches
     val batches: List<CorrelationBatch> = messagesWithRetries
       .keys
@@ -100,10 +101,10 @@ class MessagePersistenceService(
    * Protocol error of correlation.
    */
   fun error(errorMessageMetaData: MessageMetaData, errorDescription: String) {
-    val message = messageRepository.findByIdOrNull(errorMessageMetaData.messageId)
+    val message: MessageEntity? = messageRepository.findByIdOrNull(errorMessageMetaData.messageId)
     requireNotNull(message) { "Something went wrong, message (message id: ${errorMessageMetaData.messageId}) causing correlation error is not found." }
     when (val result = errorHandlingStrategy.evaluateError(message, errorDescription)) {
-      is Update -> messageRepository.save(result.entity)
+      is Retry -> messageRepository.save(result.entity)
       is Delete -> messageRepository.deleteById(result.entityId)
       is NoOp -> Unit
     }

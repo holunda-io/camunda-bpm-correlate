@@ -32,6 +32,7 @@ class CamundaBpmCorrelationService(
       if (factory != null) {
         val event = factory.create(messageMetaData, payload)
         if (event != null) {
+          // TODO: error strategy "NOOP" could be applied here, so we continue if we do not care
           try {
             correlate(event)
             successfulCorrelations += messageMetaData

@@ -28,8 +28,8 @@ data class TypeInfo(
     fun fromFQCN(fqcn: String): TypeInfo {
       return if (fqcn.lastIndexOf(".") != -1) {
         from(
-          namespace = fqcn.substring(0, fqcn.lastIndexOf(".")),
-          name = fqcn.substring(fqcn.lastIndexOf(".")),
+          namespace = fqcn.substringBeforeLast("."),
+          name = fqcn.substringAfterLast("."),
           revision = null
         )
       } else {

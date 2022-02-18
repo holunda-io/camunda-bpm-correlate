@@ -34,6 +34,7 @@ class MessageMetadataExtractorChain(
     // extract snippets from the chain
     val extractedMetadataSnippets = extractors.mapNotNull { it.extractMetaData(message) }
     // merge
+    // FIXME jan: reducer should work with default initial, so we can always reduce
     return when (extractedMetadataSnippets.size) {
       0 -> throw IllegalStateException("No meta data could be extracted, bit one of the extractors reported support.")
       1 -> extractedMetadataSnippets[0]
