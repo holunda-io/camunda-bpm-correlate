@@ -1,0 +1,85 @@
+correlate:
+  channels:
+    stream:
+      channelEnabled: true
+      message:
+        timeToLiveAsString: PT5S
+        payloadEncoding: jackson
+  retry:
+    retryMaxBackoffMinutes: 5 # default 180
+    retryBackoffBase: 2.0 # default 2.0
+  persistence:
+    messageMaxRetries: 5 # default 100
+    messageFetchPageSize: 100 # default 100
+  batch:
+    mode: all # default fail_first
+    query:
+      pollInitialDelay: PT10S
+      pollInterval: PT6S
+    cleanup:
+      pollInitialDelay: PT1M
+      pollInterval: PT1M
+
+
+spring:
+  application:
+    name: Kafka Travel Agency Example
+  jpa:
+    open-in-view: true
+    show-sql: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer # org.springframework.kafka.support.serializer.JsonSerializer
+    security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
+    template:
+      default-topic: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingres}
+  cloud:
+    stream:
+      bindings:
+        correlate-ingres:
+          content-type: application/json
+          destination: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingres}
+          binder: correlate-ingres
+          group: ${KAFKA_GROUP_ID}
+      function:
+        definition: streamByteMessageConsumer
+        bindings:
+          streamByteMessageConsumer-in-0: correlate-ingres
+      binders:
+        correlate-ingres:
+          type: kafka
+          defaultCandidate: false
+          inheritEnvironment: false
+          environment:
+            spring:
+              kafka:
+                consumer:
+                  key-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+                  value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      autoCreateTopics: false
+                      autoAddPartitions: false
+                      brokers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
+                      configuration:
+                        security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
+                      bindings:
+                        correlate-ingres:
+                          consumer:
+                            ack-mode: record
+                            enableDlq: false
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      email: admin@localhost
+      first-name: Admin
+      last-name: Administratus
+      password: admin
+    metrics:
+      enabled: false
+      db-reporter-activate: false

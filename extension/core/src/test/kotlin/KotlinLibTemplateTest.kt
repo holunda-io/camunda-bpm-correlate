@@ -5,8 +5,9 @@ import org.junit.jupiter.api.Test
 
 internal class KotlinLibTemplateTest {
 
+
   @Test
-  fun `dummy test`() {
+  fun `serialization and deserialization`() {
     assertThat(1 + 1).isEqualTo(2)
   }
 }

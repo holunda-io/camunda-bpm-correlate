@@ -1,12 +1,16 @@
 package io.holunda.camunda.bpm.correlate.correlation
 
+import mu.KLogging
+
 class CorrelationMetrics {
 
+  companion object: KLogging()
+
   fun incrementSuccess(size: Int) {
-    TODO("Not yet implemented")
+    logger.debug { "Correlated $size messages" }
   }
 
-  fun incrementError() {
-    TODO("Not yet implemented")
+  fun incrementError(size: Int) {
+    logger.debug { "Error during correlation of $size messages" }
   }
 }

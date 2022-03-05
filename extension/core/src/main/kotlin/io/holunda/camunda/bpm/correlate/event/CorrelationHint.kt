@@ -67,8 +67,7 @@ data class CorrelationHint(
       }
     }
 
-
-    if (this.tenantHint != TenantHint.WITHOUT_TENANT) {
+    if (this.tenantHint != TenantHint.NONE) {
       if (this.processDefinitionId != null) {
         logger.warn { "The tenant correlation hint was set, so provided process definition id $processDefinitionId is ignored." }
       }

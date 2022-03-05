@@ -4,7 +4,6 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
-import org.springframework.stereotype.Component
 
 /**
  * Chain of extractor with the every further extractor overwriting values of previous.

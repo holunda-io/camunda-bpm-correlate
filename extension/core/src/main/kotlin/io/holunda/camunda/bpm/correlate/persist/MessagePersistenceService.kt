@@ -17,9 +17,9 @@ interface MessagePersistenceService {
   fun success(successfulCorrelations: List<MessageMetaData>)
 
   /**
-   * Protocol error of correlation.
+   * Protocol error of correlations.
    */
-  fun error(errorMessageMetaData: MessageMetaData, errorDescription: String)
+  fun error(errorCorrelations: Map<MessageMetaData, String>)
 
   /**
    * Persists the received message.

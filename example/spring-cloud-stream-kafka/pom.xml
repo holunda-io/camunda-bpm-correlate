@@ -4,32 +4,24 @@
 
   <parent>
     <groupId>io.holunda</groupId>
-    <artifactId>camunda-bpm-correlate-root</artifactId>
+    <artifactId>camunda-bpm-correlate-example-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
+
+  <name>example/spring-cloud-stream-kafka</name>
   <artifactId>camunda-bpm-correlate-example-spring-cloud-stream-kafka</artifactId>
   <packaging>jar</packaging>
-  <name>example/spring-cloud-stream-kafka</name>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.holunda</groupId>
-        <artifactId>camunda-bpm-correlate-bom</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>
       <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+    </dependency>
   </dependencies>
-
 </project>

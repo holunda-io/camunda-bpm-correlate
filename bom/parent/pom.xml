@@ -12,12 +12,24 @@
   <artifactId>camunda-bpm-correlate-parent</artifactId>
   <packaging>pom</packaging>
 
+  <properties>
+    <spring-boot.version>2.6.3</spring-boot.version>
+    <junit.version>5.8.2</junit.version>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.8.2</version>
+        <version>${junit.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

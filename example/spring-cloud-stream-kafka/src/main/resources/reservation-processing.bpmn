@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_17tlool" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.0.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_17tlool" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.12.0">
   <bpmn:collaboration id="Collaboration_0drvxjt">
     <bpmn:participant id="travel_agency_reservation_processing" name="Reservation Processing" processRef="io.holunda.example.travel-agency.reservation-processing" />
     <bpmn:participant id="airline" name="Airline Service" />
@@ -14,7 +14,7 @@
       <bpmn:outgoing>Flow_1gatt2m</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_11wg0bc" messageRef="Message_0xfihjh" />
     </bpmn:startEvent>
-    <bpmn:sendTask id="send_book_airline" name="Book flight">
+    <bpmn:sendTask id="send_book_airline" name="Book flight" camunda:delegateExpression="${bookFlightDelegate}">
       <bpmn:incoming>Flow_1gatt2m</bpmn:incoming>
       <bpmn:outgoing>Flow_1b10965</bpmn:outgoing>
     </bpmn:sendTask>
@@ -23,7 +23,7 @@
       <bpmn:outgoing>Flow_1ml6y7f</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_085dexj" messageRef="Message_085nzz4" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:sendTask id="send_book_hotel" name="Book hotel">
+    <bpmn:sendTask id="send_book_hotel" name="Book hotel" camunda:delegateExpression="${bookHotelDelegate}">
       <bpmn:incoming>Flow_1ml6y7f</bpmn:incoming>
       <bpmn:outgoing>Flow_1gtzzrn</bpmn:outgoing>
     </bpmn:sendTask>

@@ -1,5 +1,6 @@
 package io.holunda.camunda.bpm.correlate.event
 
+import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 
 /**
@@ -9,11 +10,10 @@ interface CamundaCorrelationEventFactory {
 
   /**
    * Create a camunda correlation event from message.
-   * @param messageMetadata message meta data.
-   * @param payload message payload.
+   * @param message message with meta data and payload.
    * @return Camunda correlation event, may be null.
    */
-  fun create(messageMetadata: MessageMetaData, payload: Any): CamundaCorrelationEvent?
+  fun create(message: CorrelationMessage): CamundaCorrelationEvent?
 
   /**
    * Answers the question if the message with this metadata is supported.

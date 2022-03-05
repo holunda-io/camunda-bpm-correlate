@@ -8,6 +8,10 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
 interface PayloadDecoder {
 
   /**
+   * Checks if the decoder supports the payload encoding.
+   */
+  fun supports(payloadEncoding: String): Boolean
+  /**
    * Decodes the payload.
    * @param payload payload bytes.
    * @param payloadTypeInfo type information.

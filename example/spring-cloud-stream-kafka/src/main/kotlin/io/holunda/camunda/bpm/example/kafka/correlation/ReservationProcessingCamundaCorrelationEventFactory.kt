@@ -1,11 +1,10 @@
 package io.holunda.camunda.bpm.example.kafka.correlation
 
+import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEvent
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactory
-import io.holunda.camunda.bpm.correlate.event.CorrelationHint
 import io.holunda.camunda.bpm.data.CamundaBpmData.builder
-import io.holunda.camunda.bpm.example.kafka.ReservationProcessingFactoryBean.Companion.KEY
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessingFactoryBean.Elements.FLIGHT_RECEIVED
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessingFactoryBean.Elements.HOTEL_RECEIVED
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessingFactoryBean.Elements.RESERVATION_RECEIVED
@@ -25,12 +24,15 @@ import io.holunda.camunda.bpm.example.kafka.domain.ReservationReceivedEvent
 import org.springframework.stereotype.Component
 
 @Component
-class ReservationProcessingCamundaCorrelationEventFactory : CamundaCorrelationEventFactory {
+class ReservationProcessingCamundaCorrelationEventFactory(
+  reservationProcessingSingleMessageCorrelationStrategy: ReservationProcessingSingleMessageCorrelationStrategy
+) : CamundaCorrelationEventFactory {
 
-  override fun create(messageMetadata: MessageMetaData, payload: Any): CamundaCorrelationEvent? {
+  private val correlationSelector = reservationProcessingSingleMessageCorrelationStrategy.correlationSelector()
+
+  override fun create(message: CorrelationMessage): CamundaCorrelationEvent? {
     val builder = builder()
-    return when (payload) {
-
+    return when (val payload = message.payload) {
       is ReservationReceivedEvent -> CamundaCorrelationEvent(
         name = RESERVATION_RECEIVED,
         variables = builder
@@ -41,24 +43,16 @@ class ReservationProcessingCamundaCorrelationEventFactory : CamundaCorrelationEv
           .set(ARRIVAL_DATE, payload.from)
           .set(DEPARTURE_DATE, payload.to)
           .build(),
-        correlationHint = CorrelationHint(
-          processDefinitionId = KEY,
-          processStart = true,
-        )
+        correlationHint = correlationSelector.invoke(message)
       )
-
       is FlightReservationReceivedEvent -> CamundaCorrelationEvent(
         name = FLIGHT_RECEIVED,
         variables = builder
           .set(FLIGHT_INFO_INCOMING, payload.incomingFlight)
           .set(FLIGHT_INFO_OUTGOING, payload.outgoingFlight)
           .build(),
-        correlationHint = CorrelationHint(
-          processDefinitionId = KEY,
-          correlationVariables = mapOf(CUSTOMER_NAME.name to payload.passengersName)
-        )
+        correlationHint = correlationSelector.invoke(message)
       )
-
       is HotelReservationReceivedEvent -> CamundaCorrelationEvent(
         name = HOTEL_RECEIVED,
         variables = builder
@@ -72,12 +66,8 @@ class ReservationProcessingCamundaCorrelationEventFactory : CamundaCorrelationEv
             )
           )
           .build(),
-        correlationHint = CorrelationHint(
-          processDefinitionId = KEY,
-          correlationVariables = mapOf(CUSTOMER_NAME.name to payload.guestName)
-        )
+        correlationHint = correlationSelector.invoke(message)
       )
-
       else -> null
     }
   }

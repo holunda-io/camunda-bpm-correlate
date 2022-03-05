@@ -1,5 +1,6 @@
 package io.holunda.camunda.bpm.correlate.correlation.metadata
 
+import java.time.Instant
 import kotlin.reflect.full.memberProperties
 
 /**
@@ -22,6 +23,10 @@ data class MessageMetaDataSnippet(
    * TTL as duration string.
    */
   var timeToLive: String? = null,
+  /**
+   * Expiration.
+   */
+  var expiration: Instant? = null
 ) {
 
   companion object {
@@ -38,6 +43,12 @@ data class MessageMetaDataSnippet(
       }.let {
         if (other.timeToLive != null) {
           it.copy(timeToLive = other.timeToLive)
+        } else {
+          it
+        }
+      }.let {
+        if (other.expiration != null) {
+          it.copy(expiration = other.expiration)
         } else {
           it
         }

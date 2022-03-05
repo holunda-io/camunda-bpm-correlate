@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.correlate.persist.impl
 
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatch
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
-import io.holunda.camunda.bpm.correlate.correlation.CorrelationStrategy
+import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
 import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
@@ -11,83 +11,99 @@ import io.holunda.camunda.bpm.correlate.persist.*
 import io.holunda.camunda.bpm.correlate.persist.MessageErrorHandlingResult.*
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import mu.KLogging
-import org.springframework.data.domain.Pageable
-import org.springframework.data.repository.findByIdOrNull
 import java.time.Clock
 
 /**
  * Persistence for messages.
  */
 class DefaultMessagePersistenceService(
+  private val messagePersistenceConfig: MessagePersistenceConfig,
   private val messageRepository: MessageRepository,
-  private val decoder: PayloadDecoder,
+  private val payloadDecoders: List<PayloadDecoder>,
   private val clock: Clock,
-  private val correlationStrategy: CorrelationStrategy,
-  private val errorHandlingStrategy: MessageErrorHandlingStrategy,
-  private val messagePersistenceProperties: MessagePersistenceProperties
+  private val singleMessageCorrelationStrategy: SingleMessageCorrelationStrategy,
+  private val singleMessageErrorHandlingStrategy: SingleMessageErrorHandlingStrategy
 ) : MessagePersistenceService {
 
   companion object : KLogging()
 
+  object PayloadNotAvailable
+
+  /**
+   * Fetch messages and build batches.
+   */
   override fun fetchMessageBatches(): List<CorrelationBatch> {
 
-    // retrieve messages (paged).
-    val allMessages: List<MessageEntity> = messageRepository.findAll(
-      Pageable.ofSize(messagePersistenceProperties.pageSize)
-    ).content
+    // retrieve messages.
+    val allMessages: List<MessageEntity> = messageRepository.findAll(messagePersistenceConfig.getPageSize())
 
     // enrich with retry infos
-    val messagesWithRetries = allMessages.associate { entity ->
+    val messagesWithRetries = allMessages
+      .associate { entity ->
 
-      val typeInfo = TypeInfo.from(
-        namespace = entity.payloadTypeNamespace,
-        name = entity.payloadTypeName,
-        revision = entity.payloadTypeRevision
-      )
-      val payload: Any = decoder.decode(payloadTypeInfo = typeInfo, payload = entity.payload)
-
-      CorrelationMessage(
-        messageMetaData = MessageMetaData(
+        val typeInfo = TypeInfo.from(
+          namespace = entity.payloadTypeNamespace,
+          name = entity.payloadTypeName,
+          revision = entity.payloadTypeRevision
+        )
+        val messageMetaData = MessageMetaData(
           messageId = entity.id,
           payloadTypeInfo = typeInfo,
-          timeToLive = entity.timeToLive,
-          payloadEncoding = entity.payloadEncoding
-        ),
-        payload = payload
-      ) to RetryInfo(
-        retries = entity.retries,
-        nextRetry = entity.nextRetry
-      )
+          timeToLive = entity.timeToLiveDuration,
+          payloadEncoding = entity.payloadEncoding,
+          expiration = entity.expiration
+        )
+
+        // create the payload or get an exception
+        val payloadResult = decodePayloadOrError(entity, typeInfo)
+
+        if (payloadResult.isSuccess) {
+          CorrelationMessage(messageMetaData = messageMetaData, payload = payloadResult.getOrNull()!!) to
+            RetryInfo(retries = entity.retries, nextRetry = entity.nextRetry)
+        } else {
+          // eventually persist the message error
+          handleErrorMessage(messageMetaData, payloadResult.exceptionOrNull()!!.stackTraceToString(), entity)
+          // reload to get the eventually new retry infos
+          val updated = messageRepository.findByIdOrNull(messageMetaData.messageId)
+            ?: throw IllegalStateException("Unable to load message ${messageMetaData.messageId}. Failure during message decoder error recovery, the batch can't be built.")
+          CorrelationMessage(messageMetaData = messageMetaData, payload = PayloadNotAvailable) to RetryInfo(
+            retries = updated.retries, nextRetry = updated.nextRetry // use reloaded retry information
+          )
+        }
+      }
+
+    allMessages.forEach {
+      logger.info { "Message ${it.payloadTypeName}, ${it.retries}, ${it.error}" }
     }
 
     // build batches
     val batches: List<CorrelationBatch> = messagesWithRetries
       .keys
-      .groupBy(correlationStrategy.correlationSelector())
+      .groupBy(singleMessageCorrelationStrategy.correlationSelector())
       .map {
         CorrelationBatch(
           correlationHint = it.key,
-          correlationMessages = it.value.sortedWith(correlationStrategy.correlationMessageSorter())
+          correlationMessages = it.value.sortedWith(singleMessageCorrelationStrategy.correlationMessageSorter())
         )
       }
+
+    /*
+     * Fast access fun to retry info for message.
+     */
+    fun CorrelationMessage.retryInfo() = messagesWithRetries.getValue(this)
 
     // filter batches for processing
     return batches.filter { batch ->
       with(batch.correlationMessages) {
-        /*
-         * Fast access to retry info for message.
-         */
-        fun retryInfo(message: CorrelationMessage) = messagesWithRetries.getValue(message)
-        val hasNoErrors = this.all { m -> retryInfo(m).retries == 0 } // no errors at all
-        val dueForRetry = this.all { m -> retryInfo(m).retries <= messagePersistenceProperties.maxRetries } // no exceed on retry
-          && this.any { m -> retryInfo(m).nextRetry != null && retryInfo(m).nextRetry!! <= clock.instant() } // and at least one due
+        val hasNoErrors = this.all { m -> m.retryInfo().retries == 0 } // no errors at all
+        val dueForRetry = this.all { m -> m.retryInfo().retries <= messagePersistenceConfig.getMaxRetries() } // no exceed on retry
+          && this.any { m -> m.retryInfo().nextRetry != null && m.retryInfo().nextRetry!! <= clock.instant() } // and at least one due
 
         // take those without errors or if they are due for retry
         hasNoErrors || dueForRetry
       }
     }
   }
-
 
   /**
    * Protocol success of correlation.
@@ -97,17 +113,25 @@ class DefaultMessagePersistenceService(
   }
 
   /**
-   * Protocol error of correlation.
+   * Protocol errors of correlation.
    */
-  override fun error(errorMessageMetaData: MessageMetaData, errorDescription: String) {
-    val message: MessageEntity? = messageRepository.findByIdOrNull(errorMessageMetaData.messageId)
+  override fun error(errorCorrelations: Map<MessageMetaData, String>) {
+    // TODO: reason if the error handling strategy should work on a single message or on a list of messages
+    errorCorrelations.forEach { (errorMessageMetaData, errorDescription) ->
+      val message: MessageEntity? = messageRepository.findByIdOrNull(errorMessageMetaData.messageId)
+      handleErrorMessage(errorMessageMetaData, errorDescription, message)
+    }
+  }
+
+  private fun handleErrorMessage(errorMessageMetaData: MessageMetaData, errorDescription: String, message: MessageEntity?) {
     requireNotNull(message) { "Something went wrong, message (message id: ${errorMessageMetaData.messageId}) causing correlation error is not found." }
-    when (val result = errorHandlingStrategy.evaluateError(message, errorDescription)) {
+    when (val result = singleMessageErrorHandlingStrategy.evaluateMessageError(message, errorDescription)) {
       is Retry -> messageRepository.save(result.entity)
-      is Drop -> messageRepository.deleteById(result.entityId)
+      is Drop -> messageRepository.deleteAllById(listOf(result.entityId))
       is NoOp -> Unit
     }
   }
+
 
   /**
    * Persists the received message.
@@ -129,10 +153,21 @@ class DefaultMessagePersistenceService(
         payloadTypeNamespace = metaData.payloadTypeInfo.namespace,
         payloadTypeName = metaData.payloadTypeInfo.name,
         payloadTypeRevision = metaData.payloadTypeInfo.revision,
-        timeToLive = metaData.timeToLive,
+        timeToLiveDuration = metaData.timeToLive,
+        expiration = metaData.expiration,
         payload = payload
       )
     )
   }
 
+  /*
+   * Decodes the payload using the decoder, on any error, delivers that.
+   */
+  private fun decodePayloadOrError(entity: MessageEntity, typeInfo: TypeInfo): Result<Any> {
+    return runCatching {
+      val decoder = payloadDecoders.firstOrNull { it.supports(entity.payloadEncoding) }
+        ?: throw IllegalStateException("Could not decode message, no payload decoder found for a message ${entity.id} with encoding ${entity.payloadEncoding}")
+      decoder.decode(payloadTypeInfo = typeInfo, payload = entity.payload)
+    }
+  }
 }

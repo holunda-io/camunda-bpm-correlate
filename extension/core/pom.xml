@@ -13,21 +13,12 @@
   <packaging>jar</packaging>
 
   <properties>
-    <spring-boot.version>2.6.3</spring-boot.version>
-
     <camunda-bpm.version>7.16.0</camunda-bpm.version>
     <camunda-bpm-data.version>1.2.5</camunda-bpm-data.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring-boot.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
       <dependency>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>
@@ -44,11 +35,6 @@
   </dependencyManagement>
 
   <dependencies>
-    <!-- FIXME throw away! Use MyBatis? -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine</artifactId>

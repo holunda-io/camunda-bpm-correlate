@@ -1,13 +1,14 @@
 package io.holunda.camunda.bpm.correlate.correlation.metadata.extractor
 
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
+import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
 import io.holunda.camunda.bpm.data.CamundaBpmData.reader
 import io.holunda.camunda.bpm.data.CamundaBpmData.stringVariable
 import org.camunda.bpm.engine.variable.Variables.createVariables
-import org.springframework.stereotype.Component
+import java.time.Instant
+import java.time.format.DateTimeParseException
 
 /**
  * Implementation of a metadata extractor from message headers.
@@ -21,6 +22,7 @@ class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
     val HEADER_MESSAGE_PAYLOAD_TYPE_REVISION = stringVariable("X-Correlate-PayloadType-Revision")
     val HEADER_MESSAGE_PAYLOAD_ENCODING = stringVariable("X-Correlate-Payload-Encoding")
     val HEADER_MESSAGE_TTL = stringVariable("X-Correlate-TTL")
+    val HEADER_MESSAGE_EXPIRATION = stringVariable("X-Correlate-Expiration")
     val HEADER_MESSAGE_ID = stringVariable("X-Message-ID")
   }
 
@@ -45,16 +47,29 @@ class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
       messageId = reader.getOrNull(HEADER_MESSAGE_ID),
       payloadTypeInfo = extractTypeInfo(headers),
       payloadEncoding = reader.getOrNull(HEADER_MESSAGE_PAYLOAD_ENCODING),
-      timeToLive = reader.getOrNull(HEADER_MESSAGE_TTL)
+      timeToLive = reader.getOrNull(HEADER_MESSAGE_TTL),
+      expiration = extractExpiration(reader.getOrNull(HEADER_MESSAGE_EXPIRATION))
     )
+  }
+
+  private fun extractExpiration(expirationString: String?): Instant? {
+    return if (expirationString != null) {
+      try {
+        Instant.parse(expirationString)
+      } catch (e: DateTimeParseException) {
+        null
+      }
+    } else {
+      null
+    }
   }
 
   private fun extractTypeInfo(headers: Map<String, Any>): TypeInfo {
     val reader = reader(createVariables().apply { this.putAll(headers) })
-    val fqcn = reader.getOrNull(HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME)
-    return if (fqcn != null) {
+    val fullQualifiedClassName = reader.getOrNull(HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME)
+    return if (fullQualifiedClassName != null) {
       // got a class name
-      TypeInfo.fromFQCN(fqcn)
+      TypeInfo.fromFQCN(fullQualifiedClassName)
     } else {
       // try from coordinates
       val namespace = reader.getOrNull(HEADER_MESSAGE_PAYLOAD_TYPE_NAMESPACE)

@@ -1,10 +1,11 @@
 package io.holunda.camunda.bpm.correlate.correlation.impl
 
+import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationMode
+import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationService
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatch
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatchResult
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatchResult.Error
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatchResult.Success
-import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationService
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.event.*
 import mu.KLogging
@@ -15,8 +16,9 @@ import org.camunda.bpm.engine.RuntimeService
  */
 class CamundaBpmBatchCorrelationService(
   private val registry: CamundaCorrelationEventFactoryRegistry,
-  private val runtimeService: RuntimeService
-): BatchCorrelationService {
+  private val runtimeService: RuntimeService,
+  private val batchCorrelationMode: BatchCorrelationMode
+) : BatchCorrelationService {
 
   companion object : KLogging()
 
@@ -27,27 +29,42 @@ class CamundaBpmBatchCorrelationService(
    */
   override fun correlateBatch(correlationBatch: CorrelationBatch): CorrelationBatchResult {
     val successfulCorrelations = mutableListOf<MessageMetaData>()
-    correlationBatch.correlationMessages.forEach { (messageMetaData, payload) ->
-      val factory = registry.getFactory(messageMetaData)
-      if (factory != null) {
-        val event = factory.create(messageMetaData, payload)
-        if (event != null) {
-          try {
-            correlate(event)
-            successfulCorrelations += messageMetaData
-          } catch (e: Exception) {
-            return Error(successfulCorrelations, messageMetaData, e.stackTraceToString())
+    val errorCorrelations = mutableMapOf<MessageMetaData, String>()
+    correlationBatch
+      .correlationMessages
+      .forEach { message ->
+        val factory = registry.getFactory(message.messageMetaData)
+        if (factory != null) {
+          val event = factory.create(message)
+          if (event != null) {
+            try {
+              correlate(event)
+              successfulCorrelations += message.messageMetaData
+            } catch (e: Exception) {
+              errorCorrelations[message.messageMetaData] = e.stackTraceToString()
+            }
+          } else {
+            errorCorrelations[message.messageMetaData] = "Could not map message to event."
           }
         } else {
-          return Error(successfulCorrelations, messageMetaData, "Could not map message to event.")
+          errorCorrelations[message.messageMetaData] = "No event factory found for message."
         }
-      } else {
-        return Error(successfulCorrelations, messageMetaData, "No event factory found for message.")
+        // error occurred and the batch correlation mode is set to abort on first error
+        if (batchCorrelationMode == BatchCorrelationMode.FAIL_FIRST && errorCorrelations.isNotEmpty()) {
+          return Error(successfulCorrelations, errorCorrelations)
+        }
       }
+    return if (errorCorrelations.isEmpty()) {
+      Success(successfulCorrelations)
+    } else {
+      Error(successfulCorrelations, errorCorrelations)
     }
-    return Success(successfulCorrelations)
   }
 
+  /**
+   * Performs correlation of the correlation event with process engine.
+   * @param event event to correlation. might be a BPMN signal or BPMN message.
+   */
   fun correlate(event: CamundaCorrelationEvent) {
     event.correlationHint.sanityCheck(logger, event.correlationScope, event.correlationType)
     when (event.correlationType) {

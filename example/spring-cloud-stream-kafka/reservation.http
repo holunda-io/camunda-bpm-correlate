@@ -1,0 +1,14 @@
+POST http://localhost:8080/admin/start
+
+###
+
+POST http://localhost:8080/admin/correlate
+
+###
+
+POST http://localhost:8080/admin/flightReservationReceived
+
+###
+
+POST http://localhost:8080/admin/hotelReservationReceived
+

@@ -31,14 +31,13 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>camunda-bpm-correlate</artifactId>
+      <artifactId>camunda-bpm-correlate-spring-starter</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream</artifactId>
     </dependency>
-
   </dependencies>
 
 </project>

@@ -15,8 +15,7 @@ sealed interface CorrelationBatchResult {
   /**
    * Error during correlation of the batch.
    * @param successfulCorrelations successfully correlated messages.
-   * @param errorCorrelation error message.
-   * @param errorDescription error description.
+   * @param errorCorrelations messages correlated with errors.
    */
-  class Error(val successfulCorrelations: List<MessageMetaData>, val errorCorrelation: MessageMetaData, val errorDescription: String) : CorrelationBatchResult
+  class Error(val successfulCorrelations: List<MessageMetaData>, val errorCorrelations: Map<MessageMetaData, String>) : CorrelationBatchResult
 }

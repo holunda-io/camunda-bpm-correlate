@@ -19,6 +19,7 @@
     <module>bom/parent</module>
     <module>bom/bom</module>
     <module>extension/core</module>
+    <module>extension/spring-starter</module>
     <module>extension/spring-cloud-stream</module>
   </modules>
 
@@ -31,7 +32,7 @@
       </activation>
       <id>examples</id>
       <modules>
-        <module>example/spring-cloud-stream-kafka</module>
+        <module>example</module>
       </modules>
     </profile>
   </profiles>
