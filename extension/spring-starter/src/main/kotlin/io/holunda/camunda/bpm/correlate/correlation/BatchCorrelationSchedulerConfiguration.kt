@@ -1,6 +1,7 @@
 package io.holunda.camunda.bpm.correlate.correlation
 
-import io.holunda.camunda.bpm.correlate.persist.impl.MessageCleanupService
+import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
+import mu.KLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,9 +17,11 @@ import java.util.concurrent.Executors
 @EnableScheduling
 class BatchCorrelationSchedulerConfiguration(
   private val batchCorrelationProcessor: BatchCorrelationProcessor,
-  private val messageCleanupService: MessageCleanupService,
+  private val messageCleanupService: MessageManagementService,
   private val batchConfigurationProperties: BatchConfigurationProperties
 ) : SchedulingConfigurer {
+
+  companion object : KLogging()
 
   // FIXME: implement better scheduler
 
@@ -28,6 +31,11 @@ class BatchCorrelationSchedulerConfiguration(
   )
   fun runCorrelation() {
     batchCorrelationProcessor.correlate()
+    val remaining = messageCleanupService.listAllMessages()
+    logger.info { "There are ${remaining.size} messages in the message table." }
+    remaining.forEach {
+      logger.debug { "The message is : $it" }
+    }
   }
 
   @Scheduled(

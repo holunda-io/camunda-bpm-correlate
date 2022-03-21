@@ -12,10 +12,15 @@ import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
 import io.holunda.camunda.bpm.correlate.ingres.impl.PersistingChannelMessageAcceptorImpl
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
+import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
+import io.holunda.camunda.bpm.correlate.persist.impl.MyBatisMessageMapper
+import io.holunda.camunda.bpm.correlate.persist.impl.MyBatisMessageRepository
 import mu.KLogging
 import org.camunda.bpm.engine.RuntimeService
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -108,5 +113,15 @@ class CamundaBpmCorrelateConfiguration {
   @Bean
   fun batchConfigurationProperties(correlateConfigurationProperties: CorrelateConfigurationProperties): BatchConfigurationProperties =
     correlateConfigurationProperties.batch
+
+  @Autowired
+  fun registerMyBatisMappers(processEngineConfiguration: ProcessEngineConfigurationImpl) {
+    processEngineConfiguration.sqlSessionFactory.configuration.mapperRegistry.addMapper(MyBatisMessageMapper::class.java)
+  }
+
+  @ConditionalOnMissingBean
+  @Bean
+  fun messageRepository(processEngineConfiguration: ProcessEngineConfigurationImpl): MessageRepository =
+    MyBatisMessageRepository(sqlSessionFactory = processEngineConfiguration.sqlSessionFactory)
 
 }

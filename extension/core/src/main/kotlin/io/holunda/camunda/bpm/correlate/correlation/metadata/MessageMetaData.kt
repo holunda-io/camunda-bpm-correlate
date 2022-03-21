@@ -21,11 +21,11 @@ data class MessageMetaData(
    */
   val payloadEncoding: String,
   /**
-   * TTL as duration string.String
+   * TTL as duration as string, measured from receipt / insert instant.
    */
   val timeToLive: String?,
   /**
-   * Expiration as string.
+   * Expiration of the message.
    */
   val expiration: Instant?
 ) {

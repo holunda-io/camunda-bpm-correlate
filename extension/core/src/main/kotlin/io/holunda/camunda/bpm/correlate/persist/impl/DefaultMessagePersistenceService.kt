@@ -37,6 +37,8 @@ class DefaultMessagePersistenceService(
     // retrieve messages.
     val allMessages: List<MessageEntity> = messageRepository.findAll(messagePersistenceConfig.getPageSize())
 
+    logger.info { "Found ${allMessages.size} messages, building batches." }
+
     // enrich with retry infos
     val messagesWithRetries = allMessages
       .associate { entity ->
@@ -86,6 +88,8 @@ class DefaultMessagePersistenceService(
           correlationMessages = it.value.sortedWith(singleMessageCorrelationStrategy.correlationMessageSorter())
         )
       }
+
+    logger.info { "Built ${batches.size} batches." }
 
     /*
      * Fast access fun to retry info for message.
@@ -158,6 +162,7 @@ class DefaultMessagePersistenceService(
         payload = payload
       )
     )
+    logger.info { "Saved message ${metaData.messageId}" }
   }
 
   /*

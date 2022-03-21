@@ -29,7 +29,7 @@ class RetryingSingleMessageErrorHandlingStrategy(
           val retries = this.retries + 1 // increment retry
           this.retries = retries
           this.nextRetry = calculateNextRetry(now = clock.instant(), retries = retries)
-          this.error = errorDescription
+          this.error = errorDescription.substring(0, errorDescription.length.coerceAtMost(9999)) // FIXME -> determine the length
         }
       )
     }

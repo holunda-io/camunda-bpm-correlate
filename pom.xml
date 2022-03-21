@@ -21,6 +21,7 @@
     <module>extension/core</module>
     <module>extension/spring-starter</module>
     <module>extension/spring-cloud-stream</module>
+    <module>extension/axon</module>
   </modules>
 
   <profiles>

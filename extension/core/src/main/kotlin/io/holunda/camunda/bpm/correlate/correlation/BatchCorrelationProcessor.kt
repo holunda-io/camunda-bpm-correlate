@@ -4,7 +4,7 @@ import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
 import mu.KLogging
 
 /**
- *
+ * Main processor driving the correlation.
  */
 class BatchCorrelationProcessor(
   private val persistenceService: MessagePersistenceService,
@@ -20,8 +20,9 @@ class BatchCorrelationProcessor(
       .filterNot { it.correlationMessages.isEmpty() }
       .forEach { batch ->
         try {
+          logger.info { "Correlating batch ${batch.correlationHint} containing ${batch.correlationMessages.size} messages." }
           val result = correlationService.correlateBatch(batch)
-          logger.trace { "Processing result for batch ${batch.correlationHint}: $result" }
+          logger.info { "Processing result for batch ${batch.correlationHint}: $result" }
           when (result) {
             is CorrelationBatchResult.Success -> {
               persistenceService.success(successfulCorrelations = result.successfulCorrelations)

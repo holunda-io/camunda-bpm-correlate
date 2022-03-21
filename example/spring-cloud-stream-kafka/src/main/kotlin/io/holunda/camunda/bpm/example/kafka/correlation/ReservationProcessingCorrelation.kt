@@ -4,8 +4,8 @@ import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
 import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
 import io.holunda.camunda.bpm.correlate.correlation.impl.MessageIdCorrelationMessageComparator
 import io.holunda.camunda.bpm.correlate.event.CorrelationHint
-import io.holunda.camunda.bpm.example.kafka.ReservationProcessingFactoryBean.Companion.KEY
-import io.holunda.camunda.bpm.example.kafka.ReservationProcessingFactoryBean.Variables.CUSTOMER_NAME
+import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Companion.KEY
+import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.CUSTOMER_NAME
 import io.holunda.camunda.bpm.example.kafka.domain.FlightReservationReceivedEvent
 import io.holunda.camunda.bpm.example.kafka.domain.HotelReservationReceivedEvent
 import io.holunda.camunda.bpm.example.kafka.domain.ReservationReceivedEvent
@@ -13,7 +13,7 @@ import org.camunda.bpm.engine.RepositoryService
 import org.springframework.stereotype.Component
 
 @Component
-class ReservationProcessingSingleMessageCorrelationStrategy(
+class ReservationProcessingCorrelation(
   val repositoryService: RepositoryService
 ) : SingleMessageCorrelationStrategy {
 

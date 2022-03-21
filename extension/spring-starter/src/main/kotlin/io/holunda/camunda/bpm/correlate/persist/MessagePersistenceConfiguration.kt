@@ -9,7 +9,7 @@ import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingSingleMessageErrorHandlingStrategy
 import io.holunda.camunda.bpm.correlate.persist.impl.DefaultMessagePersistenceService
-import io.holunda.camunda.bpm.correlate.persist.impl.MessageCleanupService
+import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
 import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -71,8 +71,8 @@ class MessagePersistenceConfiguration {
     messageRepository: MessageRepository,
     messagePersistenceProperties: MessagePersistenceProperties,
     clock: Clock,
-  ): MessageCleanupService =
-    MessageCleanupService(
+  ): MessageManagementService =
+    MessageManagementService(
       messageRepository = messageRepository,
       persistenceConfig = messagePersistenceProperties,
       clock = clock

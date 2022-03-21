@@ -16,14 +16,15 @@ import java.time.format.DateTimeParseException
 class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
 
   companion object {
-    val HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME = stringVariable("X-Correlate-PayloadType-FQCN")
-    val HEADER_MESSAGE_PAYLOAD_TYPE_NAMESPACE = stringVariable("X-Correlate-PayloadType-Namespace")
-    val HEADER_MESSAGE_PAYLOAD_TYPE_NAME = stringVariable("X-Correlate-PayloadType-Name")
-    val HEADER_MESSAGE_PAYLOAD_TYPE_REVISION = stringVariable("X-Correlate-PayloadType-Revision")
-    val HEADER_MESSAGE_PAYLOAD_ENCODING = stringVariable("X-Correlate-Payload-Encoding")
-    val HEADER_MESSAGE_TTL = stringVariable("X-Correlate-TTL")
-    val HEADER_MESSAGE_EXPIRATION = stringVariable("X-Correlate-Expiration")
-    val HEADER_MESSAGE_ID = stringVariable("X-Message-ID")
+    val HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME = stringVariable("X-CORRELATE-PayloadType-FQCN")
+    val HEADER_MESSAGE_PAYLOAD_TYPE_NAMESPACE = stringVariable("X-CORRELATE-PayloadType-Namespace")
+    val HEADER_MESSAGE_PAYLOAD_TYPE_NAME = stringVariable("X-CORRELATE-PayloadType-Name")
+    val HEADER_MESSAGE_PAYLOAD_TYPE_REVISION = stringVariable("X-CORRELATE-PayloadType-Revision")
+    val HEADER_MESSAGE_PAYLOAD_ENCODING = stringVariable("X-CORRELATE-Payload-Encoding")
+    val HEADER_MESSAGE_TTL = stringVariable("X-CORRELATE-TTL")
+    val HEADER_MESSAGE_EXPIRATION = stringVariable("X-CORRELATE-Expiration")
+    val HEADER_MESSAGE_ID = stringVariable("X-CORRELATE-ID")
+    val HEADER_MESSAGE_TIMESTAMP = stringVariable("X-CORRELATE-Timestamp")
   }
 
   override fun <P> extractMetaData(message: AbstractChannelMessage<P>): MessageMetaDataSnippet? {
@@ -40,7 +41,6 @@ class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
     return snippet.messageId != null && snippet.payloadTypeInfo != TypeInfo.UNKNOWN
   }
 
-
   private fun readMetaDataSnippet(headers: Map<String, Any>): MessageMetaDataSnippet {
     val reader = reader(createVariables().apply { this.putAll(headers) })
     return MessageMetaDataSnippet(
@@ -48,14 +48,15 @@ class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
       payloadTypeInfo = extractTypeInfo(headers),
       payloadEncoding = reader.getOrNull(HEADER_MESSAGE_PAYLOAD_ENCODING),
       timeToLive = reader.getOrNull(HEADER_MESSAGE_TTL),
-      expiration = extractExpiration(reader.getOrNull(HEADER_MESSAGE_EXPIRATION))
+      expiration = extractInstant(reader.getOrNull(HEADER_MESSAGE_EXPIRATION)),
+      messageTimestamp = extractInstant(reader.getOrNull(HEADER_MESSAGE_TIMESTAMP))
     )
   }
 
-  private fun extractExpiration(expirationString: String?): Instant? {
-    return if (expirationString != null) {
+  private fun extractInstant(value: String?) : Instant? {
+    return if (value != null) {
       try {
-        Instant.parse(expirationString)
+        Instant.parse(value)
       } catch (e: DateTimeParseException) {
         null
       }

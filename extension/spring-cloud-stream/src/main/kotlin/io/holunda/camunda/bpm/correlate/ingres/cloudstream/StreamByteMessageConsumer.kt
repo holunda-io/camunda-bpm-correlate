@@ -1,7 +1,6 @@
 package io.holunda.camunda.bpm.correlate.ingres.cloudstream
 
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
-import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageHeaderConverter
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
 import io.holunda.camunda.bpm.correlate.ingres.message.ByteMessage
 import mu.KLogging
@@ -14,14 +13,14 @@ import java.util.function.Consumer
 class StreamByteMessageConsumer(
   private val messageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngresMetrics,
-  private val channelMessageHeaderConverter: ChannelMessageHeaderConverter
+  private val channelMessageHeaderConverter: ChannelMessageHeaderExtractor
 ) : Consumer<Message<ByteArray>> {
 
   companion object : KLogging()
 
   override fun accept(message: Message<ByteArray>) {
     metrics.incrementReceived()
-    val headers = channelMessageHeaderConverter.convertChannelHeaders(message.headers)
+    val headers = channelMessageHeaderConverter.extractMessageHeaders(message)
     if (messageAcceptor.supports(headers)) {
       messageAcceptor.accept(ByteMessage(headers = headers, payload = message.payload))
       logger.trace { "Accepted message $headers" }

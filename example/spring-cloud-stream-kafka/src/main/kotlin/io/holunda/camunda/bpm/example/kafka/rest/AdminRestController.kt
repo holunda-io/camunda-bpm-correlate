@@ -42,6 +42,9 @@ class AdminRestController(
       toCity = "Berlin"
     )
     val payload = objectMapper.writeValueAsBytes(event)
+
+    logger.info { "Payload: ${String(payload)}" }
+
     val now = Instant.now().let { "${it.epochSecond}${it.nano}" }
     val message = MessageBuilder
       .withPayload(payload)
@@ -56,23 +59,27 @@ class AdminRestController(
 
   @PostMapping("/flightReservationReceived")
   fun flightReservationReceived(): ResponseEntity<Void> {
+    val now = Instant.now().let { "${it.epochSecond}${it.nano}" }
     val event = FlightReservationReceivedEvent(
       passengersName = "Chuck Norris",
       outgoingFlight = FlightInfo(
         fromAirport = "HAM",
         toAirport = "BER",
         flightNumber = "LH-001",
-        seat = "10C"
+        seat = "10C",
+        departure = OffsetDateTime.now().plusDays(2)
       ),
       incomingFlight = FlightInfo(
         fromAirport = "BER",
         toAirport = "HAM",
         flightNumber = "LH-002",
-        seat = "17A"
+        seat = "17A",
+        departure = OffsetDateTime.now().plusDays(4)
       )
     )
     val payload = objectMapper.writeValueAsBytes(event)
-    val now = Instant.now().let { "${it.epochSecond}${it.nano}" }
+
+
     val message = MessageBuilder
       .withPayload(payload)
       .setHeaders(MessageHeaderAccessor().also {

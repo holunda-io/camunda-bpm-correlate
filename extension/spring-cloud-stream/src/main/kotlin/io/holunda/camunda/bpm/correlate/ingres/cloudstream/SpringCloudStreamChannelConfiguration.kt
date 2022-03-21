@@ -5,7 +5,6 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnip
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfig
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfigMessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
-import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageHeaderConverter
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -15,7 +14,6 @@ import org.springframework.core.annotation.Order
 
 @Configuration
 @EnableCamundaBpmCorrelate
-// TODO: why don't it work?!
 @ConditionalOnProperty(value = ["correlate.channels.stream.channelEnabled"], havingValue = "true", matchIfMissing = false)
 class SpringCloudStreamChannelConfiguration {
 
@@ -24,7 +22,7 @@ class SpringCloudStreamChannelConfiguration {
   fun streamByteMessageConsumer(
     channelMessageAcceptor: ChannelMessageAcceptor,
     metrics: IngresMetrics,
-    channelMessageHeaderConverter: ChannelMessageHeaderConverter
+    channelMessageHeaderConverter: ChannelMessageHeaderExtractor
   ) = StreamByteMessageConsumer(
     messageAcceptor = channelMessageAcceptor,
     metrics = metrics,
@@ -33,7 +31,7 @@ class SpringCloudStreamChannelConfiguration {
 
   @ConditionalOnMissingBean
   @Bean
-  fun channelMessageHeaderConverter(): ChannelMessageHeaderConverter = KafkaMessageHeaderConverter()
+  fun channelMessageHeaderConverter(): ChannelMessageHeaderExtractor = DefaultKafkaMessageHeaderConverter()
 
   @Bean
   @Order(10)

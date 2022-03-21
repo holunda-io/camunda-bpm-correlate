@@ -4,15 +4,17 @@ import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.customVariable
 import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.stringVariable
 import io.holunda.camunda.bpm.example.kafka.domain.FlightInfo
 import io.holunda.camunda.bpm.example.kafka.domain.HotelInfo
-import mu.KLogging
-import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 
-@Component
-class ReservationProcessingFactoryBean {
+class ReservationProcessing {
 
-  companion object: KLogging() {
+  companion object {
     const val KEY = "io.holunda.example.travel-agency.reservation-processing"
+  }
+
+  object Commands {
+    const val BOOK_FLIGHT = "bookFlight"
+    const val BOOK_HOTEL = "bookHotel"
   }
 
   object Elements {
@@ -24,8 +26,8 @@ class ReservationProcessingFactoryBean {
   object Variables {
     val RESERVATION_ID = stringVariable("reservationId")
     val CUSTOMER_NAME = stringVariable("customerName")
-    val ARRIVAL_DATE = customVariable<OffsetDateTime>("arrivalDate")
-    val DEPARTURE_DATE = customVariable<OffsetDateTime>("departureDate")
+    val DESTINATION_ARRIVAL_DATE = customVariable<OffsetDateTime>("arrivalDate")
+    val DESTINATION_DEPARTURE_DATE = customVariable<OffsetDateTime>("departureDate")
     val SOURCE = stringVariable("source")
     val DESTINATION = stringVariable("destination")
 

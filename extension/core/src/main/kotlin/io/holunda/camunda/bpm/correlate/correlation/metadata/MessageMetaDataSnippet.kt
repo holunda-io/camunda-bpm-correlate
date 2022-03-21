@@ -26,7 +26,11 @@ data class MessageMetaDataSnippet(
   /**
    * Expiration.
    */
-  var expiration: Instant? = null
+  var expiration: Instant? = null,
+  /**
+   * Message timestamp
+   */
+  var messageTimestamp: Instant? = null
 ) {
 
   companion object {
@@ -61,6 +65,12 @@ data class MessageMetaDataSnippet(
       }.let {
         if (other.payloadTypeInfo != TypeInfo.UNKNOWN && it.payloadTypeInfo.overwritePossible) {
           it.copy(payloadTypeInfo = other.payloadTypeInfo)
+        } else {
+          it
+        }
+      }.let {
+        if (other.messageTimestamp != null) {
+          it.copy(messageTimestamp = other.messageTimestamp)
         } else {
           it
         }

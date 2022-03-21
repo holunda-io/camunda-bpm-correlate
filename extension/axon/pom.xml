@@ -9,19 +9,19 @@
     <relativePath>../../bom/parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
+  <artifactId>camunda-bpm-correlate-axon-framework</artifactId>
   <packaging>jar</packaging>
 
   <properties>
-    <spring-cloud.version>2020.0.4</spring-cloud.version>
+    <axon-framework.version>4.5.11</axon-framework.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
+        <groupId>org.axonframework</groupId>
+        <artifactId>axon-bom</artifactId>
+        <version>${axon-framework.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -35,15 +35,9 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-stream</artifactId>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-messaging</artifactId>
     </dependency>
-    <!-- Kafka Support -->
-    <dependency>
-      <groupId>org.springframework.kafka</groupId>
-      <artifactId>spring-kafka</artifactId>
-    </dependency>
-
   </dependencies>
 
 </project>
