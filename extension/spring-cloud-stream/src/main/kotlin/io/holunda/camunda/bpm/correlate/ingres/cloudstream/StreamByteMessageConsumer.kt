@@ -26,7 +26,7 @@ class StreamByteMessageConsumer(
       logger.trace { "Accepted message $headers" }
       metrics.incrementAccepted()
     } else {
-      logger.trace { "Ignored message $headers, it is not supported by client." }
+      logger.warn { "Ignored message $headers, it is not supported by client." }
       metrics.incrementIgnored()
     }
   }

@@ -17,6 +17,10 @@ import org.springframework.core.annotation.Order
 @ConditionalOnProperty(value = ["correlate.channels.stream.channelEnabled"], havingValue = "true", matchIfMissing = false)
 class SpringCloudStreamChannelConfiguration {
 
+  companion object {
+    const val TYPE = "stream"
+  }
+
   @ConditionalOnMissingBean
   @Bean
   fun streamByteMessageConsumer(
@@ -37,6 +41,6 @@ class SpringCloudStreamChannelConfiguration {
   @Order(10)
   fun streamChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>): MessageMetaDataSnippetExtractor =
     ChannelConfigMessageMetaDataSnippetExtractor(
-      channelConfig = requireNotNull(channelConfigs["stream"]) { "Configuration for channel 'stream' is required." }
+      channelConfig = requireNotNull(channelConfigs[TYPE]) { "Configuration for channel '${TYPE}' is required." }
     )
 }

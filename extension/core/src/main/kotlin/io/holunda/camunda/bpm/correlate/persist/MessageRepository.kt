@@ -21,7 +21,12 @@ interface MessageRepository {
   fun findByIdOrNull(id: String): MessageEntity?
 
   /**
-   * Saves message.
+   * Inserts a new message.
+   * @param message message to save.
+   */
+  fun insert(message: MessageEntity)
+  /**
+   * Saves modified message.
    * @param message message to save.
    */
   fun save(message: MessageEntity)

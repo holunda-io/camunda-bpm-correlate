@@ -30,6 +30,22 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+    </dependency>
+      <dependency>
+          <groupId>org.camunda.bpm</groupId>
+          <artifactId>camunda-engine-spring</artifactId>
+          <version>7.16.0</version>
+          <scope>compile</scope>
+      </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+      <version>7.16.0</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
 </project>

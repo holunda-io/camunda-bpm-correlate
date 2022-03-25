@@ -1,0 +1,8 @@
+{
+  "passengersName": "Chuck Norris",
+  "bookingReference": "0815",
+  "sourceCity": "Hamburg",
+  "destinationCity": "Berlin",
+  "destinationArrivalDate": "2022-03-20T00:00:00.000000+01:00",
+  "destinationDepartureDate": "2022-03-22T00:00:00.000000+01:00"
+}

@@ -17,6 +17,10 @@
   <dependencies>
     <dependency>
       <groupId>io.holunda</groupId>
+      <artifactId>camunda-bpm-correlate-example-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
     </dependency>
     <dependency>

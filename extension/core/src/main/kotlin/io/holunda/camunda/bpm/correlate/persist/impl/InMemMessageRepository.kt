@@ -4,6 +4,9 @@ import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import mu.KLogging
 
+/**
+ * In-memory implementation.
+ */
 class InMemMessageRepository() : MessageRepository {
 
   companion object : KLogging()
@@ -19,6 +22,10 @@ class InMemMessageRepository() : MessageRepository {
   }
 
   override fun save(message: MessageEntity) {
+    store[message.id] = message
+  }
+
+  override fun insert(message: MessageEntity) {
     store[message.id] = message
   }
 

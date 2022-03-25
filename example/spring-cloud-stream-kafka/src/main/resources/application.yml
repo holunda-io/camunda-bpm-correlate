@@ -1,26 +1,3 @@
-correlate:
-  channels:
-    stream:
-      channelEnabled: true
-      message:
-        timeToLiveAsString: PT5S
-        payloadEncoding: jackson
-  retry:
-    retryMaxBackoffMinutes: 5 # default 180
-    retryBackoffBase: 2.0 # default 2.0
-  persistence:
-    messageMaxRetries: 5 # default 100
-    messageFetchPageSize: 100 # default 100
-  batch:
-    mode: all # default fail_first
-    query:
-      pollInitialDelay: PT10S
-      pollInterval: PT6S
-    cleanup:
-      pollInitialDelay: PT1M
-      pollInterval: PT1M
-
-
 spring:
   application:
     name: Kafka Travel Agency Example
@@ -31,10 +8,8 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer # org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
     security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
-    template:
-      default-topic: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingres}
   cloud:
     stream:
       bindings:
@@ -70,8 +45,34 @@ spring:
                       bindings:
                         correlate-ingres:
                           consumer:
-                            ack-mode: record
+                            ack-mode:
                             enableDlq: false
+
+correlate:
+  channels:
+    stream:
+      channelEnabled: true
+      message:
+        timeToLiveAsString: PT5S
+        payloadEncoding: jackson
+
+  retry:
+    retryMaxBackoffMinutes: 5 # default 180
+    retryBackoffBase: 2.0 # default 2.0
+  persistence:
+    messageMaxRetries: 5 # default 100
+    messageFetchPageSize: 100 # default 100
+  batch:
+    mode: all # default fail_first
+    query:
+      pollInitialDelay: PT10S
+      pollInterval: PT6S
+    cleanup:
+      pollInitialDelay: PT1M
+      pollInterval: PT1M
+
+
+
 camunda:
   bpm:
     admin-user:

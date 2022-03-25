@@ -29,15 +29,22 @@ class MyBatisMessageRepository(
     }
   }
 
+  override fun insert(message: MessageEntity) {
+    return sqlSessionFactory.openSession().use {
+      val mapper = it.getMapper(MyBatisMessageMapper::class.java)
+      val existing = mapper.findById(message.id)
+      require (existing == null) { "Message with id ${message.id} already exists." }
+      mapper.insert(message)
+      it.commit()
+    }
+  }
+
   override fun save(message: MessageEntity) {
     return sqlSessionFactory.openSession().use {
       val mapper = it.getMapper(MyBatisMessageMapper::class.java)
       val existing = mapper.findById(message.id)
-      if (existing == null) {
-        mapper.insert(message)
-      } else {
-        mapper.update(message)
-      }
+      requireNotNull (existing) { "Could not find message with id ${message.id}" }
+      mapper.update(message)
       it.commit()
     }
   }

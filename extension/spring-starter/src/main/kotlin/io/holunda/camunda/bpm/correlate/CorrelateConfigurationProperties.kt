@@ -15,6 +15,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty
 @ConfigurationProperties(prefix = "correlate")
 data class CorrelateConfigurationProperties(
 
+  val enabled: Boolean = true,
   /**
    * Channel configuration.
    */

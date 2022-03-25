@@ -1,0 +1,18 @@
+{
+  "passengersName":"Chuck Norris",
+  "bookingReference": "274f64e8-e796-4f68-b8d3-5c2f5fd07c5a",
+  "outgoingFlight": {
+    "fromAirport": "HAM",
+    "toAirport": "BER",
+    "flightNumber": "LH-001",
+    "departure":"2022-03-20T07:00:00.000000+01:00",
+    "seat": "7C"
+  },
+  "incomingFlight": {
+    "fromAirport": "BER",
+    "toAirport": "HAM",
+    "flightNumber": "LH-002",
+    "departure": "2022-03-22T19:00:00.000000+01:00",
+    "seat": "2A"
+  }
+}

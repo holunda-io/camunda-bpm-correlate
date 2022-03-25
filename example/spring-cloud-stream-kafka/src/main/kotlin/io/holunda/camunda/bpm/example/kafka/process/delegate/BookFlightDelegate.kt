@@ -1,19 +1,31 @@
 package io.holunda.camunda.bpm.example.kafka.process.delegate
 
+import io.holunda.camunda.bpm.data.CamundaBpmData.reader
+import io.holunda.camunda.bpm.example.common.domain.flight.BookFlightCommand
+import io.holunda.camunda.bpm.example.kafka.ReservationProcessing
 import mu.KLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.JavaDelegate
-import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 
 @Component
 class BookFlightDelegate(
-  val kafkaTemplate: KafkaTemplate<String, ByteArray>,
-): JavaDelegate {
+  val commandService: CommandService
+) : JavaDelegate {
 
-  companion object: KLogging()
+  companion object : KLogging()
 
   override fun execute(execution: DelegateExecution) {
-    logger.info("Should book flight")
+    val reader = reader(execution)
+    val command = BookFlightCommand(
+      passengersName = reader.get(ReservationProcessing.Variables.CUSTOMER_NAME),
+      sourceCity = reader.get(ReservationProcessing.Variables.SOURCE),
+      destinationCity = reader.get(ReservationProcessing.Variables.DESTINATION),
+      destinationArrivalDate = reader.get(ReservationProcessing.Variables.DESTINATION_ARRIVAL_DATE),
+      destinationDepartureDate = reader.get(ReservationProcessing.Variables.DESTINATION_DEPARTURE_DATE),
+      bookingReference = reader.get(ReservationProcessing.Variables.RESERVATION_ID)
+    )
+    commandService.bookFlight(command)
+    logger.info("Book flight sent.")
   }
 }

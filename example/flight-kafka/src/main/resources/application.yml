@@ -1,0 +1,54 @@
+server:
+  port: 8081
+
+camunda:
+  bpm:
+    enabled: false
+spring:
+  application:
+    name: Kafka Flight Example Service
+  cloud:
+    stream:
+      function:
+        definition: flightProcessor
+        bindings:
+          flightProcessor-in-0: flights-binding
+          flightProcessor-out-0: flights-result-binding
+      bindings:
+        flights-binding:
+          destination: ${KAFKA_TOPIC_FLIGHTS:flight}
+          binder: flights
+          group: ${KAFKA_GROUP_ID}
+        flights-result-binding:
+          destination: ${KAFKA_TOPIC_FLIGHTS_RESULT:correlate-ingres}
+          binder: flights
+          group: ${KAFKA_GROUP_ID}
+      binders:
+        flights:
+          type: kafka
+          defaultCandidate: false
+          inheritEnvironment: false
+          environment:
+            spring:
+              kafka:
+                producer:
+                  key-serializer: org.apache.kafka.common.serialization.StringSerializer
+                  value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+                consumer:
+                  key-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+                  value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      autoCreateTopics: false
+                      autoAddPartitions: false
+                      brokers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
+                      configuration:
+                        security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
+#                      bindings:
+#                        flights-binding:
+#                          consumer:
+#                            ack-mode: record
+#                            enableDlq: false
+

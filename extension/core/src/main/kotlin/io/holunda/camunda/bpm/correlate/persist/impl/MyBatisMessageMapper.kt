@@ -49,7 +49,7 @@ interface MyBatisMessageMapper {
   @Insert("INSERT INTO COR_MESSAGE(ID, PAYLOAD_ENCODING, PAYLOAD_TYPE_NAMESPACE, PAYLOAD_TYPE_NAME, PAYLOAD_TYPE_REVISION, PAYLOAD, INSERTED, TTL_DURATION, EXPIRATION, RETRIES, NEXT_RETRY, ERROR) VALUES (#{id}, #{payloadEncoding}, #{payloadTypeNamespace}, #{payloadTypeName}, #{payloadTypeRevision}, #{payload}, #{inserted}, #{timeToLiveDuration}, #{expiration}, #{retries}, #{nextRetry}, #{error})")
   fun insert(message: MessageEntity)
 
-  @Update("UPDATE COR_MESSAGE SET ID=#{id}, PAYLOAD_ENCODING=#{payloadEncoding}, PAYLOAD_TYPE_NAMESPACE=#{payloadTypeNamespace}, PAYLOAD_TYPE_NAME=#{payloadTypeName}, PAYLOAD_TYPE_REVISION=#{payloadTypeRevision}, PAYLOAD=#{payload}, INSERTED=#{inserted}, TTL_DURATION=#{timeToLiveDuration}, EXPIRATION=#{expiration}, RETRIES=#{retries}, NEXT_RETRY=#{nextRetry}, ERROR=#{error}")
+  @Update("UPDATE COR_MESSAGE SET PAYLOAD_ENCODING=#{payloadEncoding}, PAYLOAD_TYPE_NAMESPACE=#{payloadTypeNamespace}, PAYLOAD_TYPE_NAME=#{payloadTypeName}, PAYLOAD_TYPE_REVISION=#{payloadTypeRevision}, PAYLOAD=#{payload}, INSERTED=#{inserted}, TTL_DURATION=#{timeToLiveDuration}, EXPIRATION=#{expiration}, RETRIES=#{retries}, NEXT_RETRY=#{nextRetry}, ERROR=#{error} WHERE ID=#{id}")
   fun update(message: MessageEntity)
 
 }

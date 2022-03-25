@@ -24,10 +24,10 @@ class AxonEventMessageHandler(
     if (messageAcceptor.supports(headers)) {
       val serializedPayload: SerializedObject<ByteArray> = eventMessage.serializePayload(serializer, ByteArray::class.java)
       messageAcceptor.accept(ByteMessage(headers = headers, payload = serializedPayload.data))
-      logger.info { "Accepted message $headers" }
+      logger.debug { "Accepted message $headers" }
       metrics.incrementAccepted()
     } else {
-      logger.info { "Ignored message $headers, it is not supported by client." }
+      logger.debug { "Ignored message $headers, it is not supported by client." }
       metrics.incrementIgnored()
     }
 

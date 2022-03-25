@@ -15,6 +15,7 @@ services:
     depends_on:
       - zookeeper
     environment:
+      KAFKA_CREATE_TOPICS: "flight:1:1, hotel:1:1, correlate-ingres:1:1"
       KAFKA_BROKER_ID: 1
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
       KAFKA_LISTENERS: "PLAINTEXT://:9092"

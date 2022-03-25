@@ -1,22 +1,43 @@
 #!/usr/bin/env bash
 
-source env.env
 
-CLIENT_BIN="kafkacat"
+DIR="$(dirname $0)"
+source "$DIR/env.env"
+
+CLIENT_BIN="kcat"
+TIMESTAMP="$(date +%s)"
 
 case "$1" in
-  "create-reservation")
-  JSON="$(jq . "local/create-reservation.json")"
-  echo Sending create reservation message: $JSON
-  echo $JSON | $CLIENT_BIN \
-    -b $KAFKA_BOOTSTRAP_SERVER_HOST:$KAFKA_BOOTSTRAP_SERVER_PORT \
-    -t $KAFKA_TOPIC_CORRELATE_INGRES \
-    -P \
-    -H X-CORRELATE-ID=1647609548 \
-    -H X-CORRELATE-PayloadType-FQCN=io.holunda.camunda.bpm.example.kafka.domain.ReservationReceivedEvent
+  "reservation")
+    JSON="$(jq . "$DIR/local/reservation-created.json")"
+    EVENT_TYPE="io.holunda.camunda.bpm.example.common.domain.ReservationReceivedEvent"
+    echo Sending create reservation message: $JSON
+  ;;
+
+  "flight")
+    JSON="$(jq . "$DIR/local/flight-reserved.json")"
+    EVENT_TYPE="io.holunda.camunda.bpm.example.common.domain.flight.FlightReservationConfirmedEvent"
+    echo Sending create flight message: $JSON
+  ;;
+
+  "hotel")
+    JSON="$(jq . "$DIR/local/hotel-booked.json")"
+    EVENT_TYPE="io.holunda.camunda.bpm.example.common.domain.hotel.HotelReservationConfirmedEvent"
+    echo Sending create hotel message: $JSON
+  ;;
+  "all")
+    $0 reservation
+    $0 flight
+    $0 hotel
   ;;
   *)
-  echo "Usage: $0 create-reservation"
-  exit 1
+    echo "Usage: $0 reservation | flight | hotel"
+    exit 1
   ;;
 esac
+
+echo $JSON | $CLIENT_BIN \
+  -b $KAFKA_BOOTSTRAP_SERVER_HOST:$KAFKA_BOOTSTRAP_SERVER_PORT \
+  -t $KAFKA_TOPIC_CORRELATE_INGRES \
+  -P \
+  -H X-CORRELATE-PayloadType-FQCN=$EVENT_TYPE

@@ -5,12 +5,15 @@
     </encoder>
   </appender>
 
-  <logger name="org.camunda.bpm.engine" level="INFO"/>
+  <logger name="org.camunda" level="WARN"/>
+  <logger name="org.camunda.bpm.engine" level="WARN"/>
   <logger name="org.camunda.bpm.engine.persistence" level="WARN"/>
   <logger name="org.camunda.bpm.engine.jobexecutor" level="WARN"/>
   <logger name="org.apache.kafka.clients.producer" level="WARN"/>
   <logger name="org.apache.kafka.clients.consumer" level="WARN"/>
+  <logger name="org.apache.kafka.clients.Metadata" level="WARN" />
   <logger name="org.apache.kafka.clients.admin" level="WARN"/>
+  <logger name="org.apache.kafka.common.utils.AppInfoParser" level="WARN" />
 
   <root level="INFO">
     <appender-ref ref="STDOUT" />

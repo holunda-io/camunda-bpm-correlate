@@ -1,0 +1,56 @@
+package io.holunda.camunda.bpm.example.kafka.correlation.correlate
+
+import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
+import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
+import io.holunda.camunda.bpm.correlate.correlation.impl.MessageIdCorrelationMessageComparator
+import io.holunda.camunda.bpm.correlate.event.CorrelationHint
+import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Companion.KEY
+import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.CUSTOMER_NAME
+import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.RESERVATION_ID
+import io.holunda.camunda.bpm.example.common.domain.flight.FlightReservationConfirmedEvent
+import io.holunda.camunda.bpm.example.common.domain.hotel.HotelReservationConfirmedEvent
+import io.holunda.camunda.bpm.example.common.domain.ReservationReceivedEvent
+import org.camunda.bpm.engine.RepositoryService
+import org.springframework.stereotype.Component
+
+class ReservationProcessingCorrelation(
+  val repositoryService: RepositoryService
+) : SingleMessageCorrelationStrategy {
+
+  private val processDefinitionId by lazy {
+    requireNotNull(
+      repositoryService
+        .createProcessDefinitionQuery()
+        .processDefinitionKey(KEY)
+        .active()
+        .latestVersion()
+        .singleResult()
+    ) { "Reservation process with key $KEY is not deployed" }.id
+  }
+
+  override fun correlationSelector(): (CorrelationMessage) -> CorrelationHint {
+    return { message ->
+      when (val payload = message.payload) {
+        is ReservationReceivedEvent -> CorrelationHint(
+          processDefinitionId = processDefinitionId,
+          processStart = true,
+        )
+        is FlightReservationConfirmedEvent -> CorrelationHint(
+          correlationVariables = mapOf(
+            CUSTOMER_NAME.name to payload.passengersName,
+            RESERVATION_ID.name to payload.bookingReference
+          )
+        )
+        is HotelReservationConfirmedEvent -> CorrelationHint(
+          correlationVariables = mapOf(
+            CUSTOMER_NAME.name to payload.guestName,
+            RESERVATION_ID.name to payload.bookingReference
+          )
+        )
+        else -> throw IllegalArgumentException("Could not determine correlation hint for message ${message.messageMetaData}")
+      }
+    }
+  }
+
+  override fun correlationMessageSorter(): Comparator<CorrelationMessage> = MessageIdCorrelationMessageComparator()
+}

@@ -37,7 +37,7 @@ class DefaultMessagePersistenceService(
     // retrieve messages.
     val allMessages: List<MessageEntity> = messageRepository.findAll(messagePersistenceConfig.getPageSize())
 
-    logger.info { "Found ${allMessages.size} messages, building batches." }
+    logger.debug { "Found ${allMessages.size} messages, building batches." }
 
     // enrich with retry infos
     val messagesWithRetries = allMessages
@@ -75,7 +75,7 @@ class DefaultMessagePersistenceService(
       }
 
     allMessages.forEach {
-      logger.info { "Message ${it.payloadTypeName}, ${it.retries}, ${it.error}" }
+      logger.debug { "Message ${it.payloadTypeName}, ${it.retries}, ${it.error}" }
     }
 
     // build batches
@@ -89,7 +89,7 @@ class DefaultMessagePersistenceService(
         )
       }
 
-    logger.info { "Built ${batches.size} batches." }
+    logger.debug { "Built ${batches.size} batches." }
 
     /*
      * Fast access fun to retry info for message.
@@ -149,7 +149,7 @@ class DefaultMessagePersistenceService(
         throw IllegalArgumentException("Unsupported message type for ${channelMessage.headers}")
       }
     }
-    messageRepository.save(
+    messageRepository.insert(
       MessageEntity(
         id = metaData.messageId,
         inserted = clock.instant(),
@@ -162,7 +162,7 @@ class DefaultMessagePersistenceService(
         payload = payload
       )
     )
-    logger.info { "Saved message ${metaData.messageId}" }
+    logger.debug { "Saved message ${metaData.messageId}" }
   }
 
   /*

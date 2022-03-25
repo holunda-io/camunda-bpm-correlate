@@ -65,7 +65,7 @@ class CamundaBpmBatchCorrelationService(
    * Performs correlation of the correlation event with process engine.
    * @param event event to correlation. might be a BPMN signal or BPMN message.
    */
-  fun correlate(event: CamundaCorrelationEvent) {
+  private fun correlate(event: CamundaCorrelationEvent) {
     event.correlationHint.sanityCheck(logger, event.correlationScope, event.correlationType)
     when (event.correlationType) {
       CorrelationType.MESSAGE -> correlateMessage(event)

@@ -32,7 +32,7 @@ class BatchCorrelationSchedulerConfiguration(
   fun runCorrelation() {
     batchCorrelationProcessor.correlate()
     val remaining = messageCleanupService.listAllMessages()
-    logger.info { "There are ${remaining.size} messages in the message table." }
+    logger.debug { "There are ${remaining.size} messages in the message table." }
     remaining.forEach {
       logger.debug { "The message is : $it" }
     }

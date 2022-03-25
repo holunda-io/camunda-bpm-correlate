@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+DIR="$(dirname $0)"
+source "$DIR/env.env"
+
+CLIENT_BIN="kcat"
+JSON="$(jq . "$DIR/local/book-hotel.json")"
+
+echo $JSON | $CLIENT_BIN \
+  -b $KAFKA_BOOTSTRAP_SERVER_HOST:$KAFKA_BOOTSTRAP_SERVER_PORT \
+  -t $KAFKA_TOPIC_CORRELATE_HOTEL -P
+
+$CLIENT_BIN -C -b $KAFKA_BOOTSTRAP_SERVER_HOST:$KAFKA_BOOTSTRAP_SERVER_PORT \
+  -t $KAFKA_TOPIC_CORRELATE_HOTEL_RESULT -C
+
