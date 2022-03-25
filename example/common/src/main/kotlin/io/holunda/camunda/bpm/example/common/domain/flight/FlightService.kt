@@ -1,10 +1,18 @@
 package io.holunda.camunda.bpm.example.common.domain.flight
 
-import org.springframework.stereotype.Component
+import mu.KLogging
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-class FlightService {
+class FlightService(
+  val delay: Long
+) {
+
+  companion object : KLogging()
+
+  init {
+    logger.warn { "Flight service delays responses for $delay seconds." }
+  }
 
   private val flights = mapOf<Pair<Location, Location>, String>(
     Location("Hamburg", "HAM") to Location("Berlin", "BER") to "LH-001",
@@ -20,6 +28,11 @@ class FlightService {
 
     requireNotNull(outgoing) { "Could not find flight from ${bookFlightCommand.sourceCity} to ${bookFlightCommand.destinationCity}" }
     requireNotNull(incoming) { "Could not find flight from ${bookFlightCommand.destinationCity} to ${bookFlightCommand.sourceCity}" }
+
+    for (i in 0..delay) {
+      Thread.sleep(1000)
+      logger.info { "$i / $delay" }
+    }
 
     return FlightReservationConfirmedEvent(
       passengersName = bookFlightCommand.passengersName,

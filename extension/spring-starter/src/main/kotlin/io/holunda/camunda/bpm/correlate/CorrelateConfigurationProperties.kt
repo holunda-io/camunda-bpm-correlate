@@ -15,6 +15,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty
 @ConfigurationProperties(prefix = "correlate")
 data class CorrelateConfigurationProperties(
 
+  /**
+   * Flag to enable or disable camunda correlate. Defaults to true.
+   */
   val enabled: Boolean = true,
   /**
    * Channel configuration.
@@ -22,12 +25,21 @@ data class CorrelateConfigurationProperties(
   @NestedConfigurationProperty
   val channels: Map<String, ChannelConfigurationProperties> = mapOf(),
 
+  /**
+   * Retry error handling configuration.
+   */
   @NestedConfigurationProperty
   val retry: RetryingErrorHandlingProperties,
 
+  /**
+   * Message persistence configuration.
+   */
   @NestedConfigurationProperty
   val persistence: MessagePersistenceProperties,
 
+  /**
+   * Message batch configuration.
+   */
   @NestedConfigurationProperty
   val batch: BatchConfigurationProperties
 )

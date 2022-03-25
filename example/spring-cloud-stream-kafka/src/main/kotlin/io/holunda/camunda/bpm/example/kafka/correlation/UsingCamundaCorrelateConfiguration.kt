@@ -2,14 +2,17 @@ package io.holunda.camunda.bpm.example.kafka.correlation
 
 import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
 import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
+import io.holunda.camunda.bpm.example.kafka.correlation.UsingCamundaCorrelateConfiguration.Companion.PROFILE
 import io.holunda.camunda.bpm.example.kafka.correlation.correlate.ReservationProcessingCorrelation
 import io.holunda.camunda.bpm.example.kafka.correlation.correlate.ReservationProcessingEventFactory
 import io.holunda.camunda.bpm.example.kafka.correlation.correlate.rest.AdminRestController
 import org.camunda.bpm.engine.RepositoryService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 
 @Configuration
+@Profile(PROFILE)
 class UsingCamundaCorrelateConfiguration {
 
   companion object {

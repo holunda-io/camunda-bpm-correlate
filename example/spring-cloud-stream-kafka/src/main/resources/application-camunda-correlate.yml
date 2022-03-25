@@ -1,2 +1,33 @@
+spring:
+  cloud:
+    stream:
+      function:
+        definition: streamByteMessageConsumer
+        bindings:
+          streamByteMessageConsumer-in-0: correlate-ingres
+
+correlate:
+  enabled: true
+  channels:
+    stream:
+      channelEnabled: true
+      message:
+        timeToLiveAsString: PT5S
+        payloadEncoding: jackson
+
+  retry:
+    retryMaxBackoffMinutes: 5 # default 180
+    retryBackoffBase: 2.0 # default 2.0
+  persistence:
+    messageMaxRetries: 5 # default 100
+    messageFetchPageSize: 100 # default 100
+  batch:
+    mode: all # default fail_first
+    query:
+      pollInitialDelay: PT10S
+      pollInterval: PT6S
+    cleanup:
+      pollInitialDelay: PT1M
+      pollInterval: PT1M
 
 

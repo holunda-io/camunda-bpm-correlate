@@ -1,6 +1,9 @@
 package io.holunda.camunda.bpm.correlate
 
-import io.holunda.camunda.bpm.correlate.correlation.*
+import io.holunda.camunda.bpm.correlate.correlation.BatchConfigurationProperties
+import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationProcessor
+import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationService
+import io.holunda.camunda.bpm.correlate.correlation.CorrelationMetrics
 import io.holunda.camunda.bpm.correlate.correlation.impl.CamundaBpmBatchCorrelationService
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfig
@@ -20,18 +23,26 @@ import io.holunda.camunda.bpm.correlate.persist.impl.MyBatisMessageRepository
 import mu.KLogging
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
+import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Import
 import org.springframework.core.annotation.Order
 import java.time.Clock
 
 @Configuration
+@ConditionalOnProperty(
+  prefix = "correlate",
+  name = ["enabled"],
+  matchIfMissing = true,
+  havingValue = "true"
+)
+@AutoConfigureAfter(CamundaBpmAutoConfiguration::class)
 @EnableConfigurationProperties(CorrelateConfigurationProperties::class)
-@Import(BatchCorrelationSchedulerConfiguration::class)
 class CamundaBpmCorrelateConfiguration {
 
   companion object : KLogging()
@@ -50,16 +61,6 @@ class CamundaBpmCorrelateConfiguration {
 
   @ConditionalOnMissingBean
   @Bean
-  fun channelMessageAcceptor(
-    messagePersistenceService: MessagePersistenceService,
-    messageMetadataExtractorChain: MessageMetadataExtractorChain
-  ): ChannelMessageAcceptor = PersistingChannelMessageAcceptorImpl(
-    messagePersistenceService = messagePersistenceService,
-    messageMetadataExtractorChain = messageMetadataExtractorChain
-  )
-
-  @ConditionalOnMissingBean
-  @Bean
   fun messageMetadataExtractorChain(extractors: List<MessageMetaDataSnippetExtractor>): MessageMetadataExtractorChain =
     MessageMetadataExtractorChain(extractors = extractors)
 
@@ -68,35 +69,9 @@ class CamundaBpmCorrelateConfiguration {
   @Order(20)
   fun headerMessageMetaDataSnippetExtractor() = HeaderMessageMetaDataSnippetExtractor()
 
-  @ConditionalOnMissingBean
-  @Bean
-  fun batchCorrelationService(
-    runtimeService: RuntimeService,
-    registry: CamundaCorrelationEventFactoryRegistry,
-    batchConfigurationProperties: BatchConfigurationProperties
-  ): BatchCorrelationService =
-    CamundaBpmBatchCorrelationService(
-      runtimeService = runtimeService,
-      registry = registry,
-      batchCorrelationMode = batchConfigurationProperties.mode
-    )
-
   @Bean
   fun camundaCorrelationEventFactoryRegistry(factories: List<CamundaCorrelationEventFactory>): CamundaCorrelationEventFactoryRegistry =
     CamundaCorrelationEventFactoryRegistry(factories)
-
-  @Bean
-  fun batchCorrelationProcessor(
-    persistenceService: MessagePersistenceService,
-    batchCorrelationService: BatchCorrelationService,
-    correlationMetrics: CorrelationMetrics
-  ): BatchCorrelationProcessor =
-    BatchCorrelationProcessor(
-      persistenceService = persistenceService,
-      correlationService = batchCorrelationService,
-      correlationMetrics = correlationMetrics
-    )
-
 
   @Bean
   fun channelConfigs(correlateConfigurationProperties: CorrelateConfigurationProperties): Map<String, ChannelConfig> =
@@ -113,15 +88,5 @@ class CamundaBpmCorrelateConfiguration {
   @Bean
   fun batchConfigurationProperties(correlateConfigurationProperties: CorrelateConfigurationProperties): BatchConfigurationProperties =
     correlateConfigurationProperties.batch
-
-  @Autowired
-  fun registerMyBatisMappers(processEngineConfiguration: ProcessEngineConfigurationImpl) {
-    processEngineConfiguration.sqlSessionFactory.configuration.mapperRegistry.addMapper(MyBatisMessageMapper::class.java)
-  }
-
-  @ConditionalOnMissingBean
-  @Bean
-  fun messageRepository(processEngineConfiguration: ProcessEngineConfigurationImpl): MessageRepository =
-    MyBatisMessageRepository(sqlSessionFactory = processEngineConfiguration.sqlSessionFactory)
 
 }

@@ -2,39 +2,70 @@ package io.holunda.camunda.bpm.correlate.persist
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.holunda.camunda.bpm.correlate.CamundaBpmCorrelateConfiguration
 import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
 import io.holunda.camunda.bpm.correlate.persist.encoding.JacksonJsonDecoder
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingSingleMessageErrorHandlingStrategy
-import io.holunda.camunda.bpm.correlate.persist.impl.DefaultMessagePersistenceService
-import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
-import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
+import io.holunda.camunda.bpm.correlate.persist.impl.*
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
+import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.autoconfigure.AutoConfigureAfter
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.time.Clock
 
+/**
+ * Configuration of message serialization and persistence.
+ */
 @Configuration
+@ConditionalOnBean(name = ["messagePersistenceProperties"])
+@AutoConfigureAfter(CamundaBpmCorrelateConfiguration::class)
 class MessagePersistenceConfiguration {
 
+  companion object {
+    const val CORRELATE_OBJECT_MAPPER = "correlateObjectMapper"
+  }
+
   @Bean
-  @ConditionalOnMissingBean
-  @Qualifier("correlateObjectMapper")
+  @ConditionalOnMissingBean(name = [CORRELATE_OBJECT_MAPPER])
+  @Qualifier(CORRELATE_OBJECT_MAPPER)
   fun correlateObjectMapper(): ObjectMapper = jacksonObjectMapper()
-    .findAndRegisterModules()
+    .registerModule(JavaTimeModule())
     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+
 
   @Bean
   @ConditionalOnMissingBean
   fun payloadDecoder(
-    @Qualifier("correlateObjectMapper")
+    @Qualifier(CORRELATE_OBJECT_MAPPER)
     objectMapper: ObjectMapper
   ): PayloadDecoder = JacksonJsonDecoder(
     objectMapper = objectMapper
   )
+
+  @Autowired
+  fun registerMyBatisMappers(processEngineConfiguration: ProcessEngineConfigurationImpl) {
+    processEngineConfiguration.sqlSessionFactory.configuration.mapperRegistry.let { registry ->
+      if (!registry.hasMapper(MyBatisMessageMapper::class.java)) {
+        registry.addMapper(MyBatisMessageMapper::class.java)
+      }
+    }
+  }
+
+  @ConditionalOnMissingBean
+  @Bean
+  fun messageRepository(processEngineConfiguration: ProcessEngineConfigurationImpl): MessageRepository =
+    MyBatisMessageRepository(sqlSessionFactory = processEngineConfiguration.sqlSessionFactory)
+
 
   @ConditionalOnMissingBean
   @Bean

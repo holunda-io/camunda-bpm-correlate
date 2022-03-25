@@ -1,6 +1,12 @@
 server:
   port: 8083
 
+hotel:
+  processing-delay: 5
+
+correlate:
+  enabled: false
+
 camunda:
   bpm:
     enabled: false
@@ -8,6 +14,8 @@ camunda:
 spring:
   application:
     name: Kafka Hotel Example Service
+  jpa:
+    open-in-view: false
   cloud:
     stream:
       function:

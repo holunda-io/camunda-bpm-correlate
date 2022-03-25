@@ -11,11 +11,10 @@ import io.holunda.camunda.bpm.example.common.domain.hotel.HotelInfo
 import io.holunda.camunda.bpm.example.common.domain.hotel.HotelReservationConfirmedEvent
 import java.time.OffsetDateTime
 
-class ReservationProcessing {
+object ReservationProcessing {
 
-  companion object {
-    const val KEY = "io.holunda.example.travel-agency.reservation-processing"
-  }
+  const val KEY = "io.holunda.example.travel-agency.reservation-processing"
+
 
   object Commands {
     const val BOOK_FLIGHT = "bookFlight"

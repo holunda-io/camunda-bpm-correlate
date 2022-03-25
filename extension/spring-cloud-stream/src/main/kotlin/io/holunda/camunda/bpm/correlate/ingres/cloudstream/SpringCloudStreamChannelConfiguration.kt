@@ -1,11 +1,13 @@
 package io.holunda.camunda.bpm.correlate.ingres.cloudstream
 
-import io.holunda.camunda.bpm.correlate.EnableCamundaBpmCorrelate
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfig
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfigMessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
+import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptorConfiguration
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
+import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
+import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
@@ -13,8 +15,13 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 
 @Configuration
-@EnableCamundaBpmCorrelate
-@ConditionalOnProperty(value = ["correlate.channels.stream.channelEnabled"], havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(
+  prefix = "correlate.channels.stream",
+  name = ["channelEnabled"],
+  matchIfMissing = false,
+  havingValue = "true"
+)
+@AutoConfigureAfter(ChannelMessageAcceptorConfiguration::class)
 class SpringCloudStreamChannelConfiguration {
 
   companion object {

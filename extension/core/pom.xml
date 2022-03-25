@@ -11,29 +11,7 @@
 
   <artifactId>camunda-bpm-correlate</artifactId>
   <packaging>jar</packaging>
-
-  <properties>
-    <camunda-bpm.version>7.16.0</camunda-bpm.version>
-    <camunda-bpm-data.version>1.2.5</camunda-bpm-data.version>
-  </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.camunda.bpm</groupId>
-        <artifactId>camunda-bom</artifactId>
-        <version>${camunda-bpm.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>io.holunda.data</groupId>
-        <artifactId>camunda-bpm-data</artifactId>
-        <version>${camunda-bpm-data.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
+  
   <dependencies>
     <dependency>
       <groupId>org.camunda.bpm</groupId>

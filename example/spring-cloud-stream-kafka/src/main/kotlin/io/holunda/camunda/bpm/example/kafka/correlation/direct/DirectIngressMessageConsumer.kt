@@ -1,4 +1,4 @@
-package io.holunda.camunda.bpm.example.kafka.correlation.native
+package io.holunda.camunda.bpm.example.kafka.correlation.direct
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.Companion.HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME

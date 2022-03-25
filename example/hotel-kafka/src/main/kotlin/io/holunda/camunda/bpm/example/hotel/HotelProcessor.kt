@@ -2,7 +2,6 @@ package io.holunda.camunda.bpm.example.hotel
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.Companion.HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME
 import io.holunda.camunda.bpm.example.common.domain.hotel.BookHotelCommand
 import io.holunda.camunda.bpm.example.common.domain.hotel.HotelReservationConfirmedEvent
 import io.holunda.camunda.bpm.example.common.domain.hotel.HotelService
@@ -24,11 +23,12 @@ class HotelProcessor(
     val command = objectMapper.readValue<BookHotelCommand>(message.payload)
     logger.info { "Received command: $command" }
     val result = hotelService.bookHotel(command)
+    logger.info { "Sending result: $result" }
     return MessageBuilder.createMessage(
       objectMapper.writeValueAsBytes(result),
       MessageHeaders(
         mapOf(
-          HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME.name to HotelReservationConfirmedEvent::class.java.canonicalName.toByteArray()
+          "X-CORRELATE-PayloadType-FQCN" to HotelReservationConfirmedEvent::class.java.canonicalName.toByteArray()
         )
       )
     )

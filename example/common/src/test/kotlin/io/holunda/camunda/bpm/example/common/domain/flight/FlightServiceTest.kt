@@ -7,7 +7,7 @@ import java.util.UUID
 
 class FlightServiceTest {
 
-  private val flightService = FlightService()
+  private val flightService = FlightService(0)
 
   @Test
   fun `should book flight`() {

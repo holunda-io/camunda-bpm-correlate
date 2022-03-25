@@ -2,7 +2,6 @@ package io.holunda.camunda.bpm.correlate.ingres.axon
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.thoughtworks.xstream.XStream
-import io.holunda.camunda.bpm.correlate.EnableCamundaBpmCorrelate
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfig
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfigMessageMetaDataSnippetExtractor
@@ -19,16 +18,15 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 
 @Configuration
-@EnableCamundaBpmCorrelate
 @ConditionalOnProperty(value = ["correlate.channels.axon.channelEnabled"], havingValue = "true", matchIfMissing = false)
 class AxonChannelConfiguration {
 
   companion object {
-    const val SERIALIZER = "messageCorrelateSerializer"
+    const val MESSAGE_CORRELATE_SERIALIZER = "messageCorrelateSerializer"
   }
 
   @Bean
-  @Qualifier(SERIALIZER)
+  @Qualifier(MESSAGE_CORRELATE_SERIALIZER)
   @ConditionalOnProperty(value = ["correlate.channels.axon.payloadEncoding"], havingValue = "jackson", matchIfMissing = false)
   fun messageCorrelateJacksonSerializer(objectMapper: ObjectMapper): Serializer =
     JacksonSerializer
@@ -38,7 +36,7 @@ class AxonChannelConfiguration {
       .build()
 
   @Bean
-  @Qualifier(SERIALIZER)
+  @Qualifier(MESSAGE_CORRELATE_SERIALIZER)
   @ConditionalOnProperty(value = ["correlate.channels.axon.payloadEncoding"], havingValue = "xstream", matchIfMissing = false)
   fun messageCorrelateXStreamSerializer(xStream: XStream): Serializer =
     XStreamSerializer
@@ -53,7 +51,7 @@ class AxonChannelConfiguration {
     channelMessageAcceptor: ChannelMessageAcceptor,
     metrics: IngresMetrics,
     axonEventHeaderExtractor: AxonEventHeaderExtractor,
-    @Qualifier(SERIALIZER) serializer: Serializer
+    @Qualifier(MESSAGE_CORRELATE_SERIALIZER) serializer: Serializer
   ) = AxonEventMessageHandler(
     messageAcceptor = channelMessageAcceptor,
     metrics = metrics,

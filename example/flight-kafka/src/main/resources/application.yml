@@ -1,10 +1,16 @@
+flight:
+  processing-delay: 5
+
 server:
   port: 8081
 
 camunda:
   bpm:
     enabled: false
+
 spring:
+  jpa:
+    open-in-view: true
   application:
     name: Kafka Flight Example Service
   cloud:

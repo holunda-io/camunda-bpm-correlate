@@ -13,6 +13,4 @@
   <artifactId>camunda-bpm-correlate-example-common</artifactId>
   <packaging>jar</packaging>
 
-  <dependencies>
-  </dependencies>
 </project>

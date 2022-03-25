@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.example.kafka.correlation
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.holunda.camunda.bpm.example.kafka.correlation.DirectCamundaCorrelationConfiguration.Companion.PROFILE
-import io.holunda.camunda.bpm.example.kafka.correlation.native.DirectIngressMessageConsumer
+import io.holunda.camunda.bpm.example.kafka.correlation.direct.DirectIngressMessageConsumer
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
 @Configuration
-@ConditionalOnBean(CamundaProcessEngineConfiguration::class) // FIXME -> autoconfig
 @Profile(PROFILE)
 class DirectCamundaCorrelationConfiguration {
 
