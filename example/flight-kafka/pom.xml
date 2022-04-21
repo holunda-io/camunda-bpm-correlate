@@ -9,7 +9,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>example/common</name>
+  <name>Example / Kafka Flight Service</name>
   <artifactId>camunda-bpm-correlate-example-flight-kafka</artifactId>
   <packaging>jar</packaging>
 

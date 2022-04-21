@@ -11,6 +11,7 @@
 
   <artifactId>camunda-bpm-correlate-bom</artifactId>
   <packaging>pom</packaging>
+  <name>POM / BOM</name>
 
   <dependencyManagement>
     <dependencies>

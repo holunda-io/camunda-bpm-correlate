@@ -11,6 +11,7 @@
 
   <artifactId>camunda-bpm-correlate-axon-framework</artifactId>
   <packaging>jar</packaging>
+  <name>Extension / Ingres Adapter Axon Framework</name>
 
   <properties>
     <axon-framework.version>4.5.11</axon-framework.version>
@@ -34,9 +35,23 @@
       <artifactId>camunda-bpm-correlate-spring-starter</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- FIXME, remove as soon as Axon Fixed that in a BOM -->
+    <!-- Fixing XStream CVE https://advisory.checkmarx.net/advisory/vulnerability/CVE-2021-43859/ -->
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.4.19</version>
+    </dependency>
     <dependency>
       <groupId>org.axonframework</groupId>
       <artifactId>axon-messaging</artifactId>
+    </dependency>
+
+    <!-- Camunda is provided -->
+    <dependency>
+      <groupId>org.camunda.commons</groupId>
+      <artifactId>camunda-commons-typed-values</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 

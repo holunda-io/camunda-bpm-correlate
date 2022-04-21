@@ -11,6 +11,7 @@
 
   <artifactId>camunda-bpm-correlate-spring-starter</artifactId>
   <packaging>jar</packaging>
+  <name>Extension / Spring Boot Starter</name>
 
   <dependencies>
     <dependency>
@@ -35,13 +36,17 @@
       <artifactId>javax.annotation-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.camunda.bpm.springboot</groupId>
-      <artifactId>camunda-bpm-spring-boot-starter</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
@@ -69,6 +74,7 @@
                 <annotationProcessorPath>
                   <groupId>org.springframework.boot</groupId>
                   <artifactId>spring-boot-configuration-processor</artifactId>
+                  <version>${spring-boot.version}</version>
                 </annotationProcessorPath>
               </annotationProcessorPaths>
             </configuration>

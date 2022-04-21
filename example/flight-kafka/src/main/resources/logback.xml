@@ -5,9 +5,13 @@
     </encoder>
   </appender>
 
-  <logger name="org.apache.kafka.clients.producer" level="WARN"/>
-  <logger name="org.apache.kafka.clients.consumer" level="WARN"/>
-  <logger name="org.apache.kafka.clients.admin" level="WARN"/>
+  <logger name="com.zaxxer" level="WARN" />
+  <logger name="org.hibernate" level="WARN" />
+  <logger name="org.apache.catalina" level="WARN" />
+  <logger name="org.apache.coyote" level="WARN" />
+  <logger name="org.springframework" level="WARN" />
+  <logger name="org.apache.kafka.common" level="WARN"/>
+  <logger name="org.apache.kafka.clients" level="WARN"/>
 
   <root level="INFO">
     <appender-ref ref="STDOUT" />

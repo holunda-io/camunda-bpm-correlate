@@ -7,6 +7,7 @@ import io.holunda.camunda.bpm.example.common.domain.flight.FlightReservationConf
 import io.holunda.camunda.bpm.example.common.domain.hotel.HotelReservationConfirmedEvent
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Elements.FLIGHT_RECEIVED
+import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Elements.HOTEL_RECEIVED
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Elements.RESERVATION_RECEIVED
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.CUSTOMER_NAME
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.RESERVATION_ID
@@ -41,6 +42,7 @@ class DirectIngressMessageConsumer(
           .createMessageCorrelation(RESERVATION_RECEIVED)
           .processDefinitionId(processDefinitionId)
           .setVariables(event.toProcessVariables())
+          .startMessageOnly()
           .correlate()
       }
       is FlightReservationConfirmedEvent -> {
@@ -53,7 +55,7 @@ class DirectIngressMessageConsumer(
       }
       is HotelReservationConfirmedEvent -> {
         runtimeService
-          .createMessageCorrelation(FLIGHT_RECEIVED)
+          .createMessageCorrelation(HOTEL_RECEIVED)
           .processInstanceVariableEquals(CUSTOMER_NAME.name, event.guestName)
           .processInstanceVariableEquals(RESERVATION_ID.name, event.bookingReference)
           .setVariables(event.toProcessVariables())
@@ -65,8 +67,8 @@ class DirectIngressMessageConsumer(
 
   private fun deserializeMessage(message: Message<ByteArray>): Any {
     val typeFullQualifiedName =
-      (message.headers.getValue(HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME.name) ?: throw IllegalArgumentException("Type must not be null.")) as String
-    val type = objectMapper.typeFactory.constructFromCanonical(typeFullQualifiedName)
+      (message.headers.getValue(HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME.name) ?: throw IllegalArgumentException("Type must not be null.")) as ByteArray
+    val type = objectMapper.typeFactory.constructFromCanonical(String(typeFullQualifiedName))
     return objectMapper.readValue(message.payload, type)
   }
 }

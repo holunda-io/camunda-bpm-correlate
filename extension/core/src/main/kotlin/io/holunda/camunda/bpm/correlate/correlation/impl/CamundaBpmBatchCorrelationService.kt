@@ -28,6 +28,7 @@ class CamundaBpmBatchCorrelationService(
    * @return result of correlation.
    */
   override fun correlateBatch(correlationBatch: CorrelationBatch): CorrelationBatchResult {
+
     val successfulCorrelations = mutableListOf<MessageMetaData>()
     val errorCorrelations = mutableMapOf<MessageMetaData, String>()
     correlationBatch

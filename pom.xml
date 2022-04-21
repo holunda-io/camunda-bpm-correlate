@@ -8,11 +8,13 @@
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <url>https://github.com/holunda-io/camunda-bpm-correlate/</url>
+  <description>A library for correlation of messages with processes running inside the Camunda 7 platform engine.</description>
 
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <kotlin.version>1.6.10</kotlin.version>
     <java.version>11</java.version>
+    <kotlin.version>1.6.21</kotlin.version>
+    <spring-boot.version>2.6.6</spring-boot.version>
   </properties>
 
   <modules>
@@ -26,12 +28,12 @@
 
   <profiles>
     <profile>
+      <id>examples</id>
       <activation>
         <property>
           <name>!skipExamples</name>
         </property>
       </activation>
-      <id>examples</id>
       <modules>
         <module>example</module>
       </modules>
@@ -40,6 +42,14 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
       <dependency>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-bom</artifactId>
@@ -74,7 +84,7 @@
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.7</version>
+          <version>0.8.8</version>
           <executions>
             <execution>
               <id>pre-unit-test</id>
@@ -125,7 +135,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.9.0</version>
+          <version>3.10.1</version>
           <configuration>
             <encoding>UTF-8</encoding>
             <release>${java.version}</release>

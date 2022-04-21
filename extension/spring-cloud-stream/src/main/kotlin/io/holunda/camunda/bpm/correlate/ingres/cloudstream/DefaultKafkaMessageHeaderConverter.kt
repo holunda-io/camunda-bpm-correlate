@@ -18,7 +18,7 @@ class DefaultKafkaMessageHeaderConverter : ChannelMessageHeaderExtractor {
       .set(HEADER_MESSAGE_ID, message.headers.id!!.toString())
       .build().apply {
         this.putAll(message.headers.normalized())
-      }
+      }.toMap()
   }
 
   fun MessageHeaders.normalized(): Map<String, Any> {

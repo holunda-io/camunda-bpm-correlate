@@ -6,21 +6,20 @@
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <!-- It is ok to use the extension parent, there is only Kotlin and some managed deps defined there -->
     <relativePath>../bom/parent/pom.xml</relativePath>
   </parent>
 
   <!--
   Defines a parent for all examples and to avoid large poms.
   -->
-  <name>example/parent</name>
+  <name>Example / Parent</name>
   <artifactId>camunda-bpm-correlate-example-parent</artifactId>
   <packaging>pom</packaging>
 
   <properties>
-    <camunda.version.ce>7.16.0</camunda.version.ce>
-    <camunda.version.ee>7.16.2-ee</camunda.version.ee>
     <spin.version>1.13.0</spin.version>
-    <spring-cloud.version>2020.0.4</spring-cloud.version>
+    <spring-cloud.version>2021.0.1</spring-cloud.version>
   </properties>
 
   <modules>
@@ -40,13 +39,6 @@
         <type>pom</type>
       </dependency>
       <dependency>
-        <groupId>org.camunda.bpm</groupId>
-        <artifactId>camunda-bom</artifactId>
-        <version>${camunda.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
         <groupId>org.camunda.spin</groupId>
         <artifactId>camunda-spin-bom</artifactId>
         <scope>import</scope>
@@ -60,7 +52,13 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-
+      <!-- FIXME: Remove as soon as spring fixes this CVE -->
+      <!-- Fixing Spring Cloud CVE https://advisory.checkmarx.net/advisory/vulnerability/CVE-2022-22963/ -->
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-function-context</artifactId>
+        <version>3.2.3</version>
+      </dependency>
       <!-- Examples Common -->
       <dependency>
         <groupId>io.holunda</groupId>
@@ -106,65 +104,4 @@
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>camunda-ce</id>
-      <activation>
-        <property>
-          <name>!camunda-ee</name>
-        </property>
-      </activation>
-      <properties>
-        <camunda.version>${camunda.version.ce}</camunda.version>
-      </properties>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.camunda.bpm.springboot</groupId>
-            <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-            <version>${camunda.version}</version>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
-      <dependencies>
-        <dependency>
-          <groupId>org.camunda.bpm.springboot</groupId>
-          <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>camunda-ee</id>
-      <activation>
-        <property>
-          <name>camunda-ee</name>
-        </property>
-      </activation>
-      <properties>
-        <camunda.version>${camunda.version.ee}</camunda.version>
-      </properties>
-      <repositories>
-        <repository>
-          <id>camunda-bpm-ee</id>
-          <name>camunda-bpm-ee</name>
-          <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-ee</url>
-        </repository>
-      </repositories>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.camunda.bpm.springboot</groupId>
-            <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-            <version>${camunda.version}</version>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
-      <dependencies>
-        <dependency>
-          <groupId>org.camunda.bpm.springboot</groupId>
-          <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>

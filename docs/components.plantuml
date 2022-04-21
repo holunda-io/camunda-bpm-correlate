@@ -1,0 +1,45 @@
+@startuml
+
+skinparam component {
+  backgroundColor<<camunda>> Red
+}
+
+interface "Channel Message Acceptor" as CMA
+
+package "Ingres Adapter" {
+  [ Kafka ]
+}
+
+package "Core" {
+  package "Receive" {
+    CMA -down- [ PersistingChannelMessageAcceptor ]
+  }
+  package "Process" {
+    BatchCorrelationService -down- [ CamundaBPMBatchCorrelationService ]
+    [ BatchCorrelationProcessor ] --> BatchCorrelationService : use
+
+    [ CamundaBPMBatchCorrelationService ] --> [ CamundaCorrelationEventFactoryRegistry ] : use
+  }
+  package "Persistence" {
+    MessagePersistenceService -down- [ DefaultMessagePersistenceService ]
+    [ DefaultMessagePersistenceService ] --> MessageRepository : use
+    MessageRepository -down- [ MyBatisRepository ]
+  }
+}
+
+package "Camunda Components" {
+  [ MyBatis ] <<camunda>>
+  [ Camunda Runtime Service ] <<camunda>>
+}
+
+database "Database" {
+  [ MESSAGE ]
+}
+
+[ MyBatisRepository ] --> [ MyBatis ] : use
+[ PersistingChannelMessageAcceptor ] --> MessagePersistenceService : use
+[ BatchCorrelationProcessor ] --> MessagePersistenceService : use
+[ Kafka ] --> CMA
+[ MyBatis ] <--> [ MESSAGE ]
+[ CamundaBPMBatchCorrelationService ] --> [ Camunda Runtime Service ] : use
+@enduml

@@ -5,7 +5,7 @@ DIR="$(dirname $0)"
 source "$DIR/env.env"
 
 CLIENT_BIN="kcat"
-TIMESTAMP="$(date +%s)"
+TIMESTAMP="$(date +%s%N)"
 
 case "$1" in
   "reservation")

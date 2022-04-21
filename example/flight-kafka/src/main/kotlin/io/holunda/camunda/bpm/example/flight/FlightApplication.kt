@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 
-fun main(args: Array<String>) = runApplication<FlightApplication>(*args).let { Unit }
+fun main(args: Array<String>) = runApplication<FlightApplication>(*args).let{ Unit }
 
 @SpringBootApplication
 class FlightApplication {
