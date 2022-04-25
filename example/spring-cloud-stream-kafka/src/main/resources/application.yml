@@ -46,6 +46,7 @@ spring:
 
 camunda:
   bpm:
+    default-serialization-format: application/json
     admin-user:
       id: admin
       email: admin@localhost

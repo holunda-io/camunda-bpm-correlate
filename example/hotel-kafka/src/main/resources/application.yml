@@ -1,21 +1,12 @@
+hotel:
+  processing-delay: ${PROCESSING_DELAY:1}
+
 server:
   port: 8083
-
-hotel:
-  processing-delay: 5
-
-correlate:
-  enabled: false
-
-camunda:
-  bpm:
-    enabled: false
 
 spring:
   application:
     name: Kafka Hotel Example Service
-  jpa:
-    open-in-view: false
   cloud:
     stream:
       function:
@@ -27,11 +18,11 @@ spring:
         hotels-binding:
           destination: ${KAFKA_TOPIC_HOTEL:hotel}
           binder: hotels
-          group: ${KAFKA_GROUP_ID}
+          group: ${KAFKA_GROUP_ID:hotel}
         hotels-result-binding:
           destination: ${KAFKA_TOPIC_HOTEL_RESULT:correlate-ingres}
           binder: hotels
-          group: ${KAFKA_GROUP_ID}
+          group: ${KAFKA_GROUP_ID:hotel}
       binders:
         hotels:
           type: kafka
@@ -41,7 +32,7 @@ spring:
             spring:
               kafka:
                 producer:
-                  key-serializer: org.apache.kafka.common.serialization.StringSerializer
+                  key-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
                   value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
                 consumer:
                   key-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
@@ -55,3 +46,5 @@ spring:
                       brokers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
                       configuration:
                         security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
+  jpa:
+    open-in-view: true

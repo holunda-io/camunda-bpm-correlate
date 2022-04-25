@@ -1,5 +1,6 @@
 package io.holunda.camunda.bpm.example.kafka
 
+import io.holunda.camunda.bpm.correlate.correlation.BatchConfigurationProperties
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
 import org.camunda.bpm.engine.spring.SpringProcessEnginePlugin
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication
@@ -11,7 +12,7 @@ fun main(args: Array<String>) = runApplication<TravelAgencyKafkaCorrelationAppli
 
 @SpringBootApplication
 @EnableProcessApplication
-class TravelAgencyKafkaCorrelationApplication {
+class TravelAgencyKafkaCorrelationApplication{
 
   @Bean
   fun disablingTelemetry(): SpringProcessEnginePlugin = object : SpringProcessEnginePlugin() {
@@ -20,4 +21,5 @@ class TravelAgencyKafkaCorrelationApplication {
       processEngineConfiguration.isInitializeTelemetry = false
     }
   }
+
 }

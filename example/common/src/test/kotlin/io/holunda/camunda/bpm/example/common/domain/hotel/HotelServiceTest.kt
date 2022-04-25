@@ -3,7 +3,7 @@ package io.holunda.camunda.bpm.example.common.domain.hotel
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.time.OffsetDateTime
-import java.util.UUID
+import java.util.*
 
 class HotelServiceTest {
 
@@ -23,7 +23,5 @@ class HotelServiceTest {
     assertThat(result.bookingReference).isEqualTo(command.bookingReference)
     assertThat(result.checkin).isEqualToIgnoringHours(command.checkin)
     assertThat(result.checkout).isEqualToIgnoringHours(command.checkout)
-
-
   }
 }

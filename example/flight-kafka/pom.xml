@@ -13,6 +13,10 @@
   <artifactId>camunda-bpm-correlate-example-flight-kafka</artifactId>
   <packaging>jar</packaging>
 
+  <properties>
+    <final-image-name>io.holunda/flight-kafka</final-image-name>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.holunda</groupId>
@@ -32,4 +36,22 @@
       <artifactId>spring-cloud-stream-binder-kafka</artifactId>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>docker-assembly</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

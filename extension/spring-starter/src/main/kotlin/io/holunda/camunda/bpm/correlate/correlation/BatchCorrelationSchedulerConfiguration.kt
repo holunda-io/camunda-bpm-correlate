@@ -36,10 +36,13 @@ class BatchCorrelationSchedulerConfiguration(
   )
   fun runCorrelation() {
     batchCorrelationProcessor.correlate()
+
     val remaining = messageCleanupService.listAllMessages()
-    logger.debug { "There are ${remaining.size} messages in the message table." }
+    if (remaining.isNotEmpty()) {
+      logger.debug { "There are ${remaining.size} messages in the message table." }
+    }
     remaining.forEach {
-      logger.debug { "The message is : $it" }
+      logger.debug { "Message with payload type ${it.payloadTypeNamespace}.${it.payloadTypeName} received at ${it.inserted} retried ${it.retries} is due at: ${it.nextRetry}." }
     }
   }
 

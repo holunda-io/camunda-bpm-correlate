@@ -1,16 +1,10 @@
 flight:
-  processing-delay: 5
+  processing-delay: ${PROCESSING_DELAY:5}
 
 server:
   port: 8081
 
-camunda:
-  bpm:
-    enabled: false
-
 spring:
-  jpa:
-    open-in-view: true
   application:
     name: Kafka Flight Example Service
   cloud:
@@ -24,11 +18,11 @@ spring:
         flights-binding:
           destination: ${KAFKA_TOPIC_FLIGHTS:flight}
           binder: flights
-          group: ${KAFKA_GROUP_ID}
+          group: ${KAFKA_GROUP_ID:flight}
         flights-result-binding:
           destination: ${KAFKA_TOPIC_FLIGHTS_RESULT:correlate-ingres}
           binder: flights
-          group: ${KAFKA_GROUP_ID}
+          group: ${KAFKA_GROUP_ID:flight}
       binders:
         flights:
           type: kafka
@@ -52,9 +46,5 @@ spring:
                       brokers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
                       configuration:
                         security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
-#                      bindings:
-#                        flights-binding:
-#                          consumer:
-#                            ack-mode: record
-#                            enableDlq: false
-
+  jpa:
+    open-in-view: true

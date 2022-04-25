@@ -2,27 +2,55 @@ version: "3.5"
 services:
 
   zookeeper:
-    hostname: zookeeper
     image: wurstmeister/zookeeper:latest
     container_name: correlate_zookeeper
+    hostname: zookeeper
     ports:
       - "2181:2181"
 
   kafka:
-    hostname: kafka
     image: wurstmeister/kafka:latest
     container_name: correlate_kafka
+    hostname: kafka
     depends_on:
       - zookeeper
     environment:
       KAFKA_CREATE_TOPICS: "flight:1:1, hotel:1:1, correlate-ingres:1:1"
       KAFKA_BROKER_ID: 1
-      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092"
       KAFKA_LISTENERS: "PLAINTEXT://:9092"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
     ports:
       - "9092:9092"
+
+
+  hotel:
+    image: io.holunda/hotel-kafka:latest
+    container_name: hotel_kafka
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BOOTSTRAP_SERVER_HOST: kafka
+      KAFKA_BOOTSTRAP_SERVER_PORT: 9092
+      KAFKA_SECURITY_PROTOCOL_OVERRIDE: PLAINTEXT
+      KAFKA_TOPIC_CORRELATE_HOTEL: hotel
+      KAFKA_TOPIC_CORRELATE_HOTEL_RESULT: correlate-ingres
+      KAFKA_GROUP_ID: hotel
+
+
+  flight:
+    image: io.holunda/flight-kafka:latest
+    container_name: flight_kafka
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BOOTSTRAP_SERVER_HOST: kafka
+      KAFKA_BOOTSTRAP_SERVER_PORT: 9092
+      KAFKA_SECURITY_PROTOCOL_OVERRIDE: PLAINTEXT
+      KAFKA_TOPIC_CORRELATE_HOTEL: flight
+      KAFKA_TOPIC_CORRELATE_HOTEL_RESULT: correlate-ingres
+      KAFKA_GROUP_ID: flight
 
 networks:
   default:

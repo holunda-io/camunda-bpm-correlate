@@ -24,6 +24,6 @@ class BookHotelDelegate(
       bookingReference = reader.get(ReservationProcessing.Variables.RESERVATION_ID)
     )
     commandService.bookHotel(command)
-    logger.info("Book hotel sent.")
+    logger.info { "[SEND BOOK HOTEL] Book hotel sent for ${reader.get(ReservationProcessing.Variables.RESERVATION_ID)}." }
   }
 }

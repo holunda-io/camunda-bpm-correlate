@@ -15,7 +15,6 @@ object ReservationProcessing {
 
   const val KEY = "io.holunda.example.travel-agency.reservation-processing"
 
-
   object Commands {
     const val BOOK_FLIGHT = "bookFlight"
     const val BOOK_HOTEL = "bookHotel"
@@ -42,7 +41,9 @@ object ReservationProcessing {
   }
 }
 
-
+/**
+ * Extract state change from the received message.
+ */
 fun ReservationReceivedEvent.toProcessVariables() =
   builder()
     .set(ReservationProcessing.Variables.RESERVATION_ID, this.reservationId)
@@ -54,12 +55,18 @@ fun ReservationReceivedEvent.toProcessVariables() =
     .set(ReservationProcessing.Variables.DELAY, this.delay ?: 10)
     .build()
 
+/**
+ * Extract state change from the received message.
+ */
 fun FlightReservationConfirmedEvent.toProcessVariables() =
   builder()
     .set(ReservationProcessing.Variables.FLIGHT_INFO_INCOMING, this.incomingFlight)
     .set(ReservationProcessing.Variables.FLIGHT_INFO_OUTGOING, this.outgoingFlight)
     .build()
 
+/**
+ * Extract state change from the received message.
+ */
 fun HotelReservationConfirmedEvent.toProcessVariables() =
   builder()
     .set(

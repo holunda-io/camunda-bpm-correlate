@@ -25,6 +25,9 @@ import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.RESE
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.SOURCE
 import io.holunda.camunda.bpm.example.kafka.toProcessVariables
 
+/**
+ * Specify the state update.
+ */
 class ReservationProcessingEventFactory(
   singleMessageCorrelationStrategy: SingleMessageCorrelationStrategy
 ) : CamundaCorrelationEventFactory {

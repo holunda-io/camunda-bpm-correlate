@@ -1,12 +1,12 @@
 package io.holunda.camunda.bpm.example.common.domain.hotel
 
-import io.holunda.camunda.bpm.example.common.domain.flight.setHours
+import io.holunda.camunda.bpm.example.common.domain.setHours
 import mu.KLogging
 
 class HotelService(
   private val delay: Long
 ) {
-  companion object: KLogging()
+  companion object : KLogging()
 
   init {
     logger.info { "Hotel Service will delay processing by $delay seconds." }

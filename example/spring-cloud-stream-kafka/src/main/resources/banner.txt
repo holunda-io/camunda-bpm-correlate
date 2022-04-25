@@ -1,0 +1,5 @@
+-------------------------------------------------------------------------------
+TRAVEL RESERVATION SERVICE using Kafka via Spring Cloud Streams
+-------------------------------------------------------------------------------
+Spring-Boot: ${spring-boot.formatted-version}
+Camunda BPM: ${camunda.bpm.formatted-version}

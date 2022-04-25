@@ -3,10 +3,9 @@ package io.holunda.camunda.bpm.example.kafka.correlation
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.holunda.camunda.bpm.example.kafka.correlation.DirectCamundaCorrelationConfiguration.Companion.PROFILE
 import io.holunda.camunda.bpm.example.kafka.correlation.direct.DirectIngressMessageConsumer
+import mu.KLogging
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -15,11 +14,15 @@ import org.springframework.context.annotation.Profile
 @Profile(PROFILE)
 class DirectCamundaCorrelationConfiguration {
 
-  companion object {
+  companion object: KLogging() {
     const val PROFILE = "direct"
   }
 
-  @Bean
+  init {
+    logger.info { "Using message consumer delivering messages directly" }
+  }
+
+  @Bean("directIngressMessageConsumer")
   fun directIngressMessageConsumer(
     objectMapper: ObjectMapper,
     runtimeService: RuntimeService,

@@ -9,6 +9,6 @@ class LoggerService {
   companion object: KLogging()
 
   fun log(message: String) {
-    logger.warn { "[LOG]: $message" }
+    logger.info { "[CORRELATE-LOG]: $message" }
   }
 }

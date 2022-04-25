@@ -104,4 +104,84 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <!-- Create a docker image for local development -->
+      <id>docker-assembly</id>
+
+      <properties>
+        <final-artifact-name>assembly</final-artifact-name>
+        <final-image-name>${project.groupId}/${project.artifactId}</final-image-name>
+      </properties>
+
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main/docker</directory>
+            <filtering>false</filtering>
+            <includes>
+              <include>Dockerfile</include>
+              <include>.maven-dockerexclude</include>
+            </includes>
+            <targetPath>${project.build.directory}</targetPath>
+          </resource>
+          <resource>
+            <directory>src/main/resources</directory>
+            <filtering>false</filtering>
+            <includes>
+              <include>**/*.*</include>
+            </includes>
+          </resource>
+        </resources>
+
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-maven-plugin</artifactId>
+              <version>${spring-boot.version}</version>
+              <configuration>
+                <finalName>${final-artifact-name}</finalName>
+              </configuration>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>repackage</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>io.fabric8</groupId>
+              <artifactId>docker-maven-plugin</artifactId>
+              <version>0.39.1</version>
+              <extensions>true</extensions>
+              <executions>
+                <execution>
+                  <id>build</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>build</goal>
+                  </goals>
+                  <configuration>
+                    <verbose>true</verbose>
+                    <images>
+                      <image>
+                        <name>${final-image-name}</name>
+                        <build>
+                          <contextDir>${project.build.directory}</contextDir>
+                          <dockerFile>Dockerfile</dockerFile>
+                        </build>
+                      </image>
+                    </images>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

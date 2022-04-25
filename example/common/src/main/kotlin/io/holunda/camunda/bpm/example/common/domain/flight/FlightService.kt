@@ -1,8 +1,7 @@
 package io.holunda.camunda.bpm.example.common.domain.flight
 
+import io.holunda.camunda.bpm.example.common.domain.setHours
 import mu.KLogging
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 class FlightService(
   val delay: Long
@@ -11,7 +10,7 @@ class FlightService(
   companion object : KLogging()
 
   init {
-    logger.warn { "Flight service delays responses for $delay seconds." }
+    logger.info { "Flight service delays responses for $delay seconds." }
   }
 
   private val flights = mapOf<Pair<Location, Location>, String>(
@@ -59,7 +58,4 @@ class FlightService(
     val airportCode: String
   )
 }
-
-internal fun OffsetDateTime.setHours(hours: Long) =
-  this.toLocalDate().atStartOfDay().plusHours(hours).atOffset(ZoneOffset.UTC)
 
