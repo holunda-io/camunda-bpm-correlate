@@ -7,19 +7,19 @@ spring:
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
     producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      key-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
       value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
     security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
   cloud:
     stream:
       bindings:
-        correlate-ingres:
+        correlate-ingres-binding:
           content-type: application/json
           destination: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingres}
-          binder: correlate-ingres
+          binder: correlate-ingres-binder
           group: ${KAFKA_GROUP_ID}
       binders:
-        correlate-ingres:
+        correlate-ingres-binder:
           type: kafka
           defaultCandidate: false
           inheritEnvironment: false
@@ -38,11 +38,6 @@ spring:
                       brokers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
                       configuration:
                         security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
-                      bindings:
-                        correlate-ingres:
-                          consumer:
-                            ack-mode:
-                            enableDlq: false
 
 camunda:
   bpm:

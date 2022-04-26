@@ -4,7 +4,7 @@ spring:
       function:
         definition: streamByteMessageConsumer
         bindings:
-          streamByteMessageConsumer-in-0: correlate-ingres
+          streamByteMessageConsumer-in-0: correlate-ingres-binding
 
 correlate:
   enabled: true
@@ -12,7 +12,7 @@ correlate:
     stream:
       channelEnabled: true
       message:
-        timeToLiveAsString: PT1S # errors during TTL seconds after receiving are ignored
+        timeToLiveAsString: PT10S # errors during TTL seconds after receiving are ignored
         payloadEncoding: jackson  # our bytes are actually JSON written by Jackson.
   batch:
     mode: all # default fail_first -> 'all' will correlate one message after another, resulting in ignoring the order of receiving
