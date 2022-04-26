@@ -5,49 +5,35 @@
 [![Build Status](https://github.com/toolisticon/kotlin-lib-template/workflows/Development%20branches/badge.svg)](https://github.com/toolisticon/kotlin-lib-template/actions)
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.git/kotlin-lib-template/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.git/kotlin-lib-template)
+![Compatible with: Camunda Platform 7](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c)
 
 ## Why should you use it?
 
-Imagine you integrate your Camunda Engine into a larger application landscape. In doing so the inter-system communication becomes important and questions on communication styles and patterns arrise. In the world of self-contained systems, the asynchronous communication with messages is wide adopted. This library helps you to solve integration problems around correlation of messages with processes.
+Imagine you integrate your Camunda process engine into a larger application landscape. 
+In doing so the inter-system communication becomes important and questions on 
+communication styles and patterns arise. In the world of self-contained systems, 
+the asynchronous communication with messages is wide adopted. This library helps 
+you to solve integration problems around correlation of messages with processes.
 
-## Ideas
+## Main Features
 
-- Develop a system accepting the message designed in a store-and-forward way
-- Support different messaging source systems (Kafka, Axon, Spring Cloud Streams and others)
-- Provide different correlation configurations (message/signal, message ttl, skip correlation/correlation retry)
-- Support different persistency (Camunda DB-Schema, ... )
-- Crazy but cool (allow INTERNAL correlation use the same library)
-- new/error might be different paced... (new - quick, error - exponential back-off)
+* Ingres adapters for:
+    * Spring Cloud Streams (e.g. Kafka Streams, Rabbit MQ, Azure Event Hubs, AWS SQS, AWS SNS, Solace PubSub+, Google PubSub)
+* Inbox pattern on message receiving
+* Message storage in the Camunda Platform 7 database
+    * MyBatis repository 
+* Asynchronous scheduled batch-mode correlation
+* Variety of error handling modes on mismatched correlation
+* Configurable timings, retry strategies and many other parameters
 
-## MVP
+## License
 
-- receive
-- write to DB
-- job exec (new/error) ->
-  - fetch
-  - map to vars
-  - correlate
-  - on error -> write to DB
+[![Apache License 2](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-## Current implementation
+This library is developed under Apache 2.0 License.
 
-channel -> storage
+## Contribution
 
-1. `extension/spring-cloud-stream` -> `StreamByteMessageConsumer` is a streaming consumer
-2. it requires a header converter (from user code) and calls acceptor
-3. this is implemented by `PersistingMessageAcceptorImpl`, which extracts metadata using `MessageMetadataExtractorChain` and persists the message using `MessagePersistenceService`
-4. the `MessageMetadataExtractorChain` consists of two extractors: `HeaderMessageMetaDataSnippetExtractor` and a `ChannelConfigurationMessageMetaDataSnippetExtractor`
-5. the extractors get metadata from message headers and config from properties
-6. the `MessagePersistenceService` uses a `MessageRepository` to store the message (TODO: implement)
+If you want to contribute to this project, feel free to do so. 
+Start with [Contributing guide](http://holunda.io/camunda-bpm-correlate/snapshot/developer-guide/contribution.html).
 
-storage -> correlation
-
-1. scheduler (TODO: schedlock)
-2. calls `DefaultCorrelationService` // TODO: find a better name
-3. `DefaultCorrelationService` fetches messages, calculate correlations and selects batches for correlations
-4. Every message is decoded using a `PayloadDecoder` and its `CorrelationHint` is determined by the `CorrelationStrategy`
-5. Messages with the same `CorrelationHint` build up a batch
-6. Every batch is passed to a `BatchCorrelationService` (currently one for Camunda BPM)
-7. The correlation delivers a `BatchCorrelationResult` which is either success or error
-8. `DefaultCorrelationService` deletes all succeed messages from the batch and updates the error message with information 
-retrieved from the `Error`. In order to determine the reaction on the error, the `MessageErrorHandlingStrategy` is used. 
