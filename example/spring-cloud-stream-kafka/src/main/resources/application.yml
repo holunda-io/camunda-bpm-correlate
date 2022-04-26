@@ -41,6 +41,9 @@ spring:
 
 camunda:
   bpm:
+    login:
+      enabled: true
+      user-id: admin
     default-serialization-format: application/json
     admin-user:
       id: admin
