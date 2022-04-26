@@ -2,9 +2,9 @@
 
 *Solution for correlation of events with processes.*
 
-[![Build Status](https://github.com/toolisticon/kotlin-lib-template/workflows/Development%20branches/badge.svg)](https://github.com/toolisticon/kotlin-lib-template/actions)
+[![Build Status](https://github.com/holunda-io/camunda-bpm-correlate/workflows/Development%20branches/badge.svg)](https://github.com/holunda-io/camunda-bpm-correlate/actions)
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.git/kotlin-lib-template/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.git/kotlin-lib-template)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.holunda/camunda-bpm-correlate/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.holunda/camunda-bpm-correlate)
 ![Compatible with: Camunda Platform 7](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c)
 
 ## Why should you use it?
