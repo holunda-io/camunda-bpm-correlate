@@ -1,7 +1,6 @@
 spring:
   cloud:
     stream:
-      bindings:
       function:
         definition: directIngressMessageConsumer
         bindings:

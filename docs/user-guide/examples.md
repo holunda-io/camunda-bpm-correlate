@@ -1,0 +1,58 @@
+## Working example 
+
+We provide examples demonstrating the usage of the library with different messaging technologies.
+The general example is a "Travel Reservation" business process, aiming to book flights and a hotel 
+in a target city. The reservation process receives the customer name, the source city, the target city 
+and the dates of the travel. Using this information, it requests the flights by the flight service and 
+a hotel by the hotel service. The confirmed flight information and hotel information is stored inside 
+the process payload variables.
+
+!["Example messaging process"](../assets/img/reservation-processing.png)
+
+
+### Required software
+
+* Docker
+* Docker-Compose
+* KCat (formerly known as KafkaCat)
+* JQ
+
+### Kafka example
+
+The example demonstrates the usage of the library using Kafka for communication. In doing so,
+we rely on the Spring Cloud Streams binding for Kafka. We constructed an example sending and 
+receiving data between services using Apache Kafka.
+
+To run the examples, you will need to have Docker installed on your machine. Please first run the
+build of the examples and construct the container images...To do so, please run:
+
+`mvn clean install -Pdocker-assembly -f examples`
+
+Then start the provided images using the supplied docker-compose file, by running:
+
+`docker-compose -f examples/spring-cloud-stream-kafka/docker-compose.yml up -d`
+
+This command will start Apache Kafka, Zookeeper, Flight Service and Hotel Service locally.
+As a next step, open your IDE and run the 
+`io/holunda/camunda/bpm/example/kafka/TravelAgencyKafkaCorrelationApplication.kt` application by 
+providing the spring profile `camunda-correlate`.
+
+Having it all up-and running, you can send the first message, by using the provided script, which uses 
+`kcat`/`kafkacat` and `jq` libraries. Please run:
+
+`examples/spring-cloud-stream-kafka/example.sh reservation` 
+
+to send the message to the reservation topic. As a result, the process should get started, and you should
+see the messages `[SEND BOOK FLIGHT]` and `[SEND BOOK HOTEL]` in your log, indicating that the messages
+are sent to corresponding topics. The services are executed delayed (2 secs, 5 secs), during the process 
+is executing the long-running task (saving the reservation details lasts 10 seconds), you will see
+the response messages coming in. For demonstration purposes, the service delays are configured in a way
+that the "expected" answer by the flight is received after the "unexpected" response from the hotel 
+is received. Therefor, you will see the exception (MismatchedCorrelationException) in the log first.
+
+After this, you can inspect the content of the inbox by calling an endpoint [http://localhost:8080/admin/list-messages/](http://localhost:8080/admin/list-messages/).
+
+
+
+
+

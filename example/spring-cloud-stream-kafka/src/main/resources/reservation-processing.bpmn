@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_17tlool" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.12.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_17tlool" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.12.0">
   <bpmn:collaboration id="Collaboration_0drvxjt">
     <bpmn:participant id="travel_agency_reservation_processing" name="Reservation Processing" processRef="io.holunda.example.travel-agency.reservation-processing" />
     <bpmn:participant id="airline" name="Airline Service" />
@@ -14,12 +14,9 @@
       <bpmn:outgoing>Flow_1gatt2m</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_11wg0bc" messageRef="Message_0xfihjh" />
     </bpmn:startEvent>
-    <bpmn:endEvent id="Event_0iq0v5h" name="Reservation processed">
-      <bpmn:incoming>Flow_0dtvozm</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1gatt2m" sourceRef="reservation_received" targetRef="send_book_airline" />
     <bpmn:sequenceFlow id="Flow_1gtzzrn" sourceRef="send_book_hotel" targetRef="Activity_0e5o43s" />
-    <bpmn:sequenceFlow id="Flow_1kosdez" sourceRef="catch_hotel_reservation_received" targetRef="user_task_confirm" />
+    <bpmn:sequenceFlow id="Flow_1kosdez" sourceRef="catch_hotel_reservation_received" targetRef="Event_19ntzuk" />
     <bpmn:sequenceFlow id="Flow_1075nde" sourceRef="send_book_airline" targetRef="send_book_hotel" />
     <bpmn:sequenceFlow id="Flow_16esor8" sourceRef="Activity_0e5o43s" targetRef="catch_flight_reservation_received" />
     <bpmn:sequenceFlow id="Flow_0p963zc" sourceRef="catch_flight_reservation_received" targetRef="catch_hotel_reservation_received" />
@@ -43,11 +40,6 @@
       <bpmn:outgoing>Flow_1kosdez</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0gjyyaa" messageRef="Message_096kvqn" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="Flow_0dtvozm" sourceRef="user_task_confirm" targetRef="Event_0iq0v5h" />
-    <bpmn:userTask id="user_task_confirm" name="Confirm reservation">
-      <bpmn:incoming>Flow_1kosdez</bpmn:incoming>
-      <bpmn:outgoing>Flow_0dtvozm</bpmn:outgoing>
-    </bpmn:userTask>
     <bpmn:sendTask id="send_book_hotel" name="Book hotel" camunda:delegateExpression="${bookHotelDelegate}">
       <bpmn:incoming>Flow_1075nde</bpmn:incoming>
       <bpmn:outgoing>Flow_1gtzzrn</bpmn:outgoing>
@@ -60,6 +52,17 @@
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
     <bpmn:dataStoreReference id="DataStoreReference_1ftst5t" />
+    <bpmn:sequenceFlow id="Flow_1iz8jv4" sourceRef="Event_19ntzuk" targetRef="Event_0iq0v5h" />
+    <bpmn:intermediateCatchEvent id="Event_19ntzuk" name="Break is taken">
+      <bpmn:incoming>Flow_1kosdez</bpmn:incoming>
+      <bpmn:outgoing>Flow_1iz8jv4</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_17kwdtw">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT5M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="Event_0iq0v5h" name="Reservation processed">
+      <bpmn:incoming>Flow_1iz8jv4</bpmn:incoming>
+    </bpmn:endEvent>
     <bpmn:textAnnotation id="TextAnnotation_028gy0j">
       <bpmn:text>async after</bpmn:text>
     </bpmn:textAnnotation>
@@ -72,6 +75,10 @@
       <bpmn:text>async after</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_1xnl8ox" sourceRef="send_book_hotel" targetRef="TextAnnotation_0vnveer" />
+    <bpmn:textAnnotation id="TextAnnotation_13vi8bh">
+      <bpmn:text>5min break</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0tv0qop" sourceRef="Event_19ntzuk" targetRef="TextAnnotation_13vi8bh" />
   </bpmn:process>
   <bpmn:message id="Message_0xfihjh" name="reservation_received" />
   <bpmn:message id="Message_085nzz4" name="flight_reservation_received" />
@@ -79,13 +86,10 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0drvxjt">
       <bpmndi:BPMNShape id="Participant_0c539e8_di" bpmnElement="travel_agency_reservation_processing" isHorizontal="true">
-        <dc:Bounds x="160" y="80" width="1110" height="270" />
+        <dc:Bounds x="160" y="80" width="1050" height="270" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_06wk4nx_di" bpmnElement="TextAnnotation_06wk4nx">
-        <dc:Bounds x="750" y="100" width="100" height="30" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_0vnveer_di" bpmnElement="TextAnnotation_0vnveer">
-        <dc:Bounds x="580" y="100" width="100" height="30" />
+      <bpmndi:BPMNShape id="TextAnnotation_13vi8bh_di" bpmnElement="TextAnnotation_13vi8bh">
+        <dc:Bounds x="1050" y="120" width="72" height="30" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0p963zc_di" bpmnElement="Flow_0p963zc">
         <di:waypoint x="828" y="220" />
@@ -101,7 +105,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1kosdez_di" bpmnElement="Flow_1kosdez">
         <di:waypoint x="938" y="220" />
-        <di:waypoint x="1010" y="220" />
+        <di:waypoint x="1012" y="220" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1gtzzrn_di" bpmnElement="Flow_1gtzzrn">
         <di:waypoint x="580" y="220" />
@@ -111,9 +115,9 @@
         <di:waypoint x="268" y="220" />
         <di:waypoint x="330" y="220" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0dtvozm_di" bpmnElement="Flow_0dtvozm">
-        <di:waypoint x="1110" y="220" />
-        <di:waypoint x="1182" y="220" />
+      <bpmndi:BPMNEdge id="Flow_1iz8jv4_di" bpmnElement="Flow_1iz8jv4">
+        <di:waypoint x="1048" y="220" />
+        <di:waypoint x="1122" y="220" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1hy60in_di" bpmnElement="reservation_received">
         <dc:Bounds x="232" y="202" width="36" height="36" />
@@ -121,17 +125,8 @@
           <dc:Bounds x="223" y="245" width="59" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0iq0v5h_di" bpmnElement="Event_0iq0v5h">
-        <dc:Bounds x="1182" y="202" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1171" y="245" width="59" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0cch316_di" bpmnElement="send_book_airline">
         <dc:Bounds x="330" y="180" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_028gy0j_di" bpmnElement="TextAnnotation_028gy0j">
-        <dc:Bounds x="430" y="100" width="100" height="30" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0p6k37b_di" bpmnElement="catch_flight_reservation_received">
         <dc:Bounds x="792" y="202" width="36" height="36" />
@@ -145,9 +140,6 @@
           <dc:Bounds x="878" y="172" width="84" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1k33y95_di" bpmnElement="user_task_confirm">
-        <dc:Bounds x="1010" y="180" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1fc0s3o_di" bpmnElement="send_book_hotel">
         <dc:Bounds x="480" y="180" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -156,6 +148,27 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_1ftst5t_di" bpmnElement="DataStoreReference_1ftst5t">
         <dc:Bounds x="665" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_028gy0j_di" bpmnElement="TextAnnotation_028gy0j">
+        <dc:Bounds x="430" y="100" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_06wk4nx_di" bpmnElement="TextAnnotation_06wk4nx">
+        <dc:Bounds x="750" y="100" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0vnveer_di" bpmnElement="TextAnnotation_0vnveer">
+        <dc:Bounds x="580" y="100" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_01ls5cb_di" bpmnElement="Event_19ntzuk">
+        <dc:Bounds x="1012" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="995" y="245" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0iq0v5h_di" bpmnElement="Event_0iq0v5h">
+        <dc:Bounds x="1122" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1111" y="245" width="59" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_0tji41c_di" bpmnElement="Association_0tji41c">
         <di:waypoint x="418" y="180" />
@@ -169,11 +182,15 @@
         <di:waypoint x="568" y="180" />
         <di:waypoint x="616" y="130" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0tv0qop_di" bpmnElement="Association_0tv0qop">
+        <di:waypoint x="1041" y="206" />
+        <di:waypoint x="1088" y="150" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_1hygzc8_di" bpmnElement="airline" isHorizontal="true">
-        <dc:Bounds x="160" y="440" width="1110" height="60" />
+        <dc:Bounds x="160" y="440" width="1050" height="60" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Participant_1sntzkd_di" bpmnElement="hotel" isHorizontal="true">
-        <dc:Bounds x="160" y="570" width="1110" height="60" />
+        <dc:Bounds x="160" y="570" width="1050" height="60" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="DataOutputAssociation_13fxslm_di" bpmnElement="DataOutputAssociation_13fxslm">
         <di:waypoint x="690" y="260" />
