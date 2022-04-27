@@ -9,15 +9,26 @@ the process payload variables.
 
 !["Example messaging process"](../assets/img/reservation-processing.png)
 
+The following sequence diagram illustrates the timing of messages being passed:
 
-### Required software
+!["Example messaging process"](../assets/img/reservation-processing-seq.png)
+
+As a result, the `HotelReservationConfirmed` is received before `FlightReservationConfirmed` causing a trouble,
+if message order is strict and must be preserved. In addition, at the time of the receiving of
+the first message, the process has not completed the long-running task of saving the details.
+
+In the following examples we are not focusing on demonstration of features resulting from the 
+race conditions (resolved faulty), but on purpose created illegal (unwished) message ordering,
+causing to fail the orchestration by design.
+
+### Software requirements to run examples
 
 * Docker
 * Docker-Compose
 * KCat (formerly known as KafkaCat)
 * JQ
 
-### Kafka example
+### Spring Cloud Streams with Kafka
 
 The example demonstrates the usage of the library using Kafka for communication. In doing so,
 we rely on the Spring Cloud Streams binding for Kafka. We constructed an example sending and 
