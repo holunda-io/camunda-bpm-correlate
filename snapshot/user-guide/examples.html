@@ -543,15 +543,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#required-software" class="md-nav__link">
-    Required software
+  <a href="#software-requirements-to-run-examples" class="md-nav__link">
+    Software requirements to run examples
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#kafka-example" class="md-nav__link">
-    Kafka example
+  <a href="#spring-cloud-streams-with-kafka" class="md-nav__link">
+    Spring Cloud Streams with Kafka
   </a>
   
 </li>
@@ -666,14 +666,22 @@ and the dates of the travel. Using this information, it requests the flights by 
 a hotel by the hotel service. The confirmed flight information and hotel information is stored inside 
 the process payload variables.</p>
 <p><img alt="&quot;Example messaging process&quot;" src="../assets/img/reservation-processing.png" /></p>
-<h3 id="required-software">Required software<a class="headerlink" href="#required-software" title="Permanent link">#</a></h3>
+<p>The following sequence diagram illustrates the timing of messages being passed:</p>
+<p><img alt="&quot;Example messaging process&quot;" src="../assets/img/reservation-processing-seq.png" /></p>
+<p>As a result, the <code>HotelReservationConfirmed</code> is received before <code>FlightReservationConfirmed</code> causing a trouble,
+if message order is strict and must be preserved. In addition, at the time of the receiving of
+the first message, the process has not completed the long-running task of saving the details.</p>
+<p>In the following examples we are not focusing on demonstration of features resulting from the 
+race conditions (resolved faulty), but on purpose created illegal (unwished) message ordering,
+causing to fail the orchestration by design.</p>
+<h3 id="software-requirements-to-run-examples">Software requirements to run examples<a class="headerlink" href="#software-requirements-to-run-examples" title="Permanent link">#</a></h3>
 <ul>
 <li>Docker</li>
 <li>Docker-Compose</li>
 <li>KCat (formerly known as KafkaCat)</li>
 <li>JQ</li>
 </ul>
-<h3 id="kafka-example">Kafka example<a class="headerlink" href="#kafka-example" title="Permanent link">#</a></h3>
+<h3 id="spring-cloud-streams-with-kafka">Spring Cloud Streams with Kafka<a class="headerlink" href="#spring-cloud-streams-with-kafka" title="Permanent link">#</a></h3>
 <p>The example demonstrates the usage of the library using Kafka for communication. In doing so,
 we rely on the Spring Cloud Streams binding for Kafka. We constructed an example sending and 
 receiving data between services using Apache Kafka.</p>
@@ -703,7 +711,7 @@ is received. Therefor, you will see the exception (MismatchedCorrelationExceptio
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">April 26, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">April 27, 2022</span>
       
     
   </small>
