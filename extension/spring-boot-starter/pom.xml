@@ -9,7 +9,7 @@
     <relativePath>../../bom/parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>camunda-bpm-correlate-spring-starter</artifactId>
+  <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
   <packaging>jar</packaging>
   <name>Extension / Spring Boot Starter</name>
 

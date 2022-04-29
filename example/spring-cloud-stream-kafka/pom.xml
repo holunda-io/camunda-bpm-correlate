@@ -14,10 +14,10 @@
   <packaging>jar</packaging>
 
   <dependencies>
-    <!-- Example -->
+    <!-- Core -->
     <dependency>
       <groupId>io.holunda</groupId>
-      <artifactId>camunda-bpm-correlate-example-common</artifactId>
+      <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
     </dependency>
     <!-- Ingres Adapter -->
     <dependency>
@@ -29,6 +29,14 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream-binder-kafka</artifactId>
     </dependency>
+
+    <!-- Example Fixtures -->
+    <dependency>
+      <groupId>io.holunda</groupId>
+      <artifactId>camunda-bpm-correlate-example-common</artifactId>
+    </dependency>
+
+
     <!-- Camunda -->
     <dependency>
       <groupId>io.holunda</groupId>
@@ -58,6 +66,10 @@
     <dependency>
       <groupId>org.camunda.spin</groupId>
       <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
     </dependency>
   </dependencies>
 

@@ -27,6 +27,9 @@ class ReservationProcessingCorrelation(
     ) { "Reservation process with key $KEY is not deployed" }.id
   }
 
+  /**
+   * Targeting the workflow instance.
+   */
   override fun correlationSelector(): (CorrelationMessage) -> CorrelationHint {
     return { message ->
       when (val payload = message.payload) {

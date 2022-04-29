@@ -12,6 +12,7 @@ import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Elements.RESER
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.CUSTOMER_NAME
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.RESERVATION_ID
 import io.holunda.camunda.bpm.example.kafka.toProcessVariables
+import mu.KLogging
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.springframework.messaging.Message
@@ -26,6 +27,8 @@ class DirectIngressMessageConsumer(
   private val runtimeService: RuntimeService,
   private val repositoryService: RepositoryService
 ) : Consumer<Message<ByteArray>> {
+
+  companion object : KLogging()
 
   /**
    * Latest version of the RESERVATION process.
@@ -46,7 +49,10 @@ class DirectIngressMessageConsumer(
    * @param message message received from Kafka, encoded as ByteArray (JSON inside).
    */
   override fun accept(message: Message<ByteArray>) {
-    when (val event = deserializeMessage(message)) {
+
+    val event = deserializeMessage(message)
+    logger.info { "Message received: $event" }
+    when (event) {
       is ReservationReceivedEvent -> {
         runtimeService
           .createMessageCorrelation(RESERVATION_RECEIVED)                             // TARGETING: by message name

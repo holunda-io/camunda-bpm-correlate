@@ -25,6 +25,12 @@ case "$1" in
     EVENT_TYPE="io.holunda.camunda.bpm.example.common.domain.hotel.HotelReservationConfirmedEvent"
     echo Sending create hotel message: $JSON
   ;;
+  "show")
+    $CLIENT_BIN -b $KAFKA_BOOTSTRAP_SERVER_HOST:$KAFKA_BOOTSTRAP_SERVER_PORT \
+    -t $KAFKA_TOPIC_CORRELATE_INGRES \
+    -C
+    exit 0
+  ;;
   "all")
     $0 reservation
     $0 flight

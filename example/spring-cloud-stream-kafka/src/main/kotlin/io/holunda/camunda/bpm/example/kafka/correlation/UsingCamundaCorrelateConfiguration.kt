@@ -30,7 +30,7 @@ class UsingCamundaCorrelateConfiguration(
   fun info() {
     logger.info { "[Camunda CORRELATE] Channels configured: ${correlateConfigurationProperties.channels.keys.joinToString(", ")}" }
     val streamsConfig = requireNotNull(correlateConfigurationProperties.channels["stream"])
-    logger.info { "[Camunda CORRELATE] Streams message TTL: ${streamsConfig.message.timeToLiveAsString}" }
+    logger.info { "[Camunda CORRELATE] Streams message TTL: ${streamsConfig.message.timeToLiveAsString ?: "none"}" }
   }
 
 

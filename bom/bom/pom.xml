@@ -22,9 +22,20 @@
       </dependency>
       <dependency>
         <groupId>${project.groupId}</groupId>
+        <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
         <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>camunda-bpm-correlate-axon-framework</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 

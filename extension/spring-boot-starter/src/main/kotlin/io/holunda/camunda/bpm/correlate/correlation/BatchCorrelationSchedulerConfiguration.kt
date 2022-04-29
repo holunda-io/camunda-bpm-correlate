@@ -39,10 +39,10 @@ class BatchCorrelationSchedulerConfiguration(
 
     val remaining = messageCleanupService.listAllMessages()
     if (remaining.isNotEmpty()) {
-      logger.debug { "There are ${remaining.size} messages in the message table." }
+      logger.debug { "There are ${remaining.size} messages in the message inbox." }
     }
     remaining.forEach {
-      logger.debug { "Message with payload type ${it.payloadTypeNamespace}.${it.payloadTypeName} received at ${it.inserted} retried ${it.retries} is due at: ${it.nextRetry}." }
+      logger.debug { "Message with payload type ${it.payloadTypeNamespace}.${it.payloadTypeName} received at ${it.inserted}, attempts: ${it.retries}, next due at: ${it.nextRetry}." }
     }
   }
 
