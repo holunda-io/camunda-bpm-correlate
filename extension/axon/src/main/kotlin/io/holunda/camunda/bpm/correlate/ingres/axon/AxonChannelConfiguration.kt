@@ -1,16 +1,15 @@
 package io.holunda.camunda.bpm.correlate.ingres.axon
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.thoughtworks.xstream.XStream
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfig
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfigMessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
+import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptorConfiguration
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
-import org.axonframework.serialization.Serializer
-import org.axonframework.serialization.json.JacksonSerializer
-import org.axonframework.serialization.xml.XStreamSerializer
-import org.springframework.beans.factory.annotation.Qualifier
+import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
+import org.axonframework.springboot.autoconfig.AxonAutoConfiguration
+import org.springframework.boot.autoconfigure.AutoConfigureAfter
+import org.springframework.boot.autoconfigure.AutoConfigureBefore
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
@@ -18,45 +17,27 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 
 @Configuration
-@ConditionalOnProperty(value = ["correlate.channels.axon.channelEnabled"], havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(
+  prefix = "correlate.channels.axon",
+  name = ["channelEnabled"],
+  matchIfMissing = false,
+  havingValue = "true"
+)
+@AutoConfigureAfter(AxonAutoConfiguration::class, ChannelMessageAcceptorConfiguration::class)
 class AxonChannelConfiguration {
-
-  companion object {
-    const val MESSAGE_CORRELATE_SERIALIZER = "messageCorrelateSerializer"
-  }
-
-  @Bean
-  @Qualifier(MESSAGE_CORRELATE_SERIALIZER)
-  @ConditionalOnProperty(value = ["correlate.channels.axon.payloadEncoding"], havingValue = "jackson", matchIfMissing = false)
-  fun messageCorrelateJacksonSerializer(objectMapper: ObjectMapper): Serializer =
-    JacksonSerializer
-      .builder()
-      .lenientDeserialization()
-      .objectMapper(objectMapper)
-      .build()
-
-  @Bean
-  @Qualifier(MESSAGE_CORRELATE_SERIALIZER)
-  @ConditionalOnProperty(value = ["correlate.channels.axon.payloadEncoding"], havingValue = "xstream", matchIfMissing = false)
-  fun messageCorrelateXStreamSerializer(xStream: XStream): Serializer =
-    XStreamSerializer
-      .builder()
-      .lenientDeserialization()
-      .xStream(xStream)
-      .build()
 
   @ConditionalOnMissingBean
   @Bean
-  fun axonEventHandler(
+  fun axonEventMessageHandler(
     channelMessageAcceptor: ChannelMessageAcceptor,
     metrics: IngresMetrics,
     axonEventHeaderExtractor: AxonEventHeaderExtractor,
-    @Qualifier(MESSAGE_CORRELATE_SERIALIZER) serializer: Serializer
-  ) = AxonEventMessageHandler(
+    payloadEncoder: PayloadDecoder
+  ): AxonEventMessageHandler = AxonEventMessageHandler(
     messageAcceptor = channelMessageAcceptor,
     metrics = metrics,
     axonEventHeaderExtractor = axonEventHeaderExtractor,
-    serializer = serializer
+    encoder = payloadEncoder
   )
 
   @ConditionalOnMissingBean
@@ -70,5 +51,4 @@ class AxonChannelConfiguration {
     ChannelConfigMessageMetaDataSnippetExtractor(
       channelConfig = requireNotNull(channelConfigs["axon"]) { "Configuration for channel 'axon' is required." }
     )
-
 }
