@@ -32,7 +32,7 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>camunda-bpm-correlate-spring-starter</artifactId>
+      <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!-- FIXME, remove as soon as Axon Fixed that in a BOM -->
