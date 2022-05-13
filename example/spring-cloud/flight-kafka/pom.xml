@@ -6,10 +6,10 @@
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-example-parent</artifactId>
     <version>0.0.2-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <name>Example / Kafka Flight Service</name>
+  <name>Example / Spring Cloud / Kafka Flight Service</name>
   <artifactId>camunda-bpm-correlate-example-flight-kafka</artifactId>
   <packaging>jar</packaging>
 

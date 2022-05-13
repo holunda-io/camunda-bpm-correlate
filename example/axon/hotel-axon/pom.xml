@@ -6,15 +6,15 @@
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-example-parent</artifactId>
     <version>0.0.2-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <name>Example / Kafka Hotel Service</name>
-  <artifactId>camunda-bpm-correlate-example-hotel-kafka</artifactId>
+  <name>Example / Axon / Hotel Service</name>
+  <artifactId>camunda-bpm-correlate-example-hotel-axon</artifactId>
   <packaging>jar</packaging>
 
   <properties>
-    <final-image-name>io.holunda/hotel-kafka</final-image-name>
+    <final-image-name>io.holunda/hotel-axon</final-image-name>
   </properties>
 
   <dependencies>
@@ -22,18 +22,9 @@
       <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-example-common</artifactId>
     </dependency>
-    <!-- Kafka Support -->
     <dependency>
-      <groupId>org.springframework.kafka</groupId>
-      <artifactId>spring-kafka</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-stream</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-spring-boot-starter</artifactId>
     </dependency>
   </dependencies>
 
@@ -54,5 +45,4 @@
       </build>
     </profile>
   </profiles>
-
 </project>

@@ -6,11 +6,11 @@
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-example-parent</artifactId>
     <version>0.0.2-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <name>Example / Kafka via Spring-Cloud-Stream</name>
-  <artifactId>camunda-bpm-correlate-example-spring-cloud-stream-kafka</artifactId>
+  <name>Example / Spring Cloud / Reservation with Kafka</name>
+  <artifactId>camunda-bpm-correlate-example-reservation-kafka</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
