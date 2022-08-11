@@ -53,8 +53,9 @@ class AxonChannelConfiguration {
 
   @Bean
   @Order(10)
-  fun axonChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>): MessageMetaDataSnippetExtractor =
+  fun axonChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>, payloadDecoders: List<PayloadDecoder>): MessageMetaDataSnippetExtractor =
     ChannelConfigMessageMetaDataSnippetExtractor(
-      channelConfig = requireNotNull(channelConfigs["axon"]) { "Configuration for channel 'axon' is required." }
+      channelConfig = requireNotNull(channelConfigs["axon"]) { "Configuration for channel 'axon' is required." },
+      payloadDecoders = payloadDecoders
     )
 }

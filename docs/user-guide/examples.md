@@ -87,7 +87,7 @@ Having it all up-and running, you can send the first message, by using the provi
 
 `example/axon/example.sh reservation`
 
-to send the message to the RESTful endpoit, which will emit an Axon event. As a result, the process should get started, and you should
+to send the message to the REST-ful endpoint, which will emit an Axon event. As a result, the process should get started, and you should
 see the messages `[SEND BOOK FLIGHT]` and `[SEND BOOK HOTEL]` in your log, indicating that the commands
 are sent to. The services are executed delayed (2 secs, 5 secs), during the process
 is executing the long-running task (saving the reservation details lasts 10 seconds), you will see

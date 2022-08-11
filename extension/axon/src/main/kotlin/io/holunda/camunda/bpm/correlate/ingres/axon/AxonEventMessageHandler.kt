@@ -8,11 +8,14 @@ import mu.KLogging
 import org.axonframework.eventhandling.EventMessage
 import org.axonframework.eventhandling.EventMessageHandler
 
+/**
+ * Generic event handler for Axon Framework connected to the event bus receiving all events.
+ */
 class AxonEventMessageHandler(
   private val messageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngresMetrics,
   private val axonEventHeaderExtractor: AxonEventHeaderExtractor,
-  private val encoder: PayloadDecoder,
+  private val encoder: PayloadDecoder
 ) : EventMessageHandler {
 
   companion object : KLogging()
@@ -20,6 +23,7 @@ class AxonEventMessageHandler(
   override fun handle(eventMessage: EventMessage<*>) {
     metrics.incrementReceived()
     val headers = axonEventHeaderExtractor.extractHeaders(eventMessage)
+
     if (messageAcceptor.supports(headers)) {
       messageAcceptor.accept(ByteMessage(headers = headers, payload = encoder.encode(eventMessage.payload)))
       logger.debug { "Accepted message $headers" }
