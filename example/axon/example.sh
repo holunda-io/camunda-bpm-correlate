@@ -3,11 +3,12 @@
 DIR="$(dirname $0)"
 
 CLIENT_BIN="curl"
-TIMESTAMP="$(date +%s%N)"
+TIMESTAMP=$(date +%s%N)
+RESERVATION_ID=$(cat /proc/sys/kernel/random/uuid)
 
 case "$1" in
   "reservation")
-    JSON="$(jq . "$DIR/../common/local/reservation-created.json")"
+    JSON=$(jq ".reservationId =\"$RESERVATION_ID\"" "$DIR/../common/local/reservation-created.json")
     echo "Sending create reservation message: $JSON"
   ;;
 

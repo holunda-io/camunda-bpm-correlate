@@ -9,7 +9,6 @@ import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import org.axonframework.springboot.autoconfig.AxonAutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
-import org.springframework.boot.autoconfigure.AutoConfigureBefore
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
@@ -32,13 +31,20 @@ class AxonChannelConfiguration {
     channelMessageAcceptor: ChannelMessageAcceptor,
     metrics: IngresMetrics,
     axonEventHeaderExtractor: AxonEventHeaderExtractor,
-    payloadEncoder: PayloadDecoder
-  ): AxonEventMessageHandler = AxonEventMessageHandler(
-    messageAcceptor = channelMessageAcceptor,
-    metrics = metrics,
-    axonEventHeaderExtractor = axonEventHeaderExtractor,
-    encoder = payloadEncoder
-  )
+    payloadDecoders: List<PayloadDecoder>,
+    channelConfigs: Map<String, ChannelConfig>
+  ): AxonEventMessageHandler {
+
+    val config = requireNotNull(channelConfigs["axon"]) { "Configuration for channel 'axon' is required." }
+    val encoding = requireNotNull(config.getMessagePayloadEncoding()) { "Channel encoding is required, please set message-payload-encoding." }
+    val encoder = requireNotNull(payloadDecoders.find { it.supports(encoding) }) { "Could not find decoder for configured message encoding '$encoding'." }
+    return AxonEventMessageHandler(
+      messageAcceptor = channelMessageAcceptor,
+      metrics = metrics,
+      axonEventHeaderExtractor = axonEventHeaderExtractor,
+      encoder = encoder
+    )
+  }
 
   @ConditionalOnMissingBean
   @Bean

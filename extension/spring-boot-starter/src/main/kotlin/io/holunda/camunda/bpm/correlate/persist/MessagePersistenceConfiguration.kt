@@ -12,13 +12,11 @@ import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingPrope
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingSingleMessageErrorHandlingStrategy
 import io.holunda.camunda.bpm.correlate.persist.impl.*
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
-import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.time.Clock
@@ -45,7 +43,7 @@ class MessagePersistenceConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  fun payloadDecoder(
+  fun jacksonPayloadDecoder(
     @Qualifier(CORRELATE_OBJECT_MAPPER)
     objectMapper: ObjectMapper
   ): PayloadDecoder = JacksonJsonDecoder(

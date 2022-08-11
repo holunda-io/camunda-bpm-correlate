@@ -3,13 +3,15 @@ package io.holunda.camunda.bpm.correlate.correlation.metadata.extractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
+import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 
 /**
  * Extracts metadata from channel config.
  */
 class ChannelConfigMessageMetaDataSnippetExtractor(
-  private val channelConfig: ChannelConfig
-) : MessageMetaDataSnippetExtractor {
+  private val channelConfig: ChannelConfig,
+  private val payloadDecoders: List<PayloadDecoder>
+  ) : MessageMetaDataSnippetExtractor {
 
   override fun <P> extractMetaData(message: AbstractChannelMessage<P>): MessageMetaDataSnippet? {
     val snippet = MessageMetaDataSnippet(
@@ -23,11 +25,7 @@ class ChannelConfigMessageMetaDataSnippetExtractor(
     }
   }
 
-  /**
-   * Property extractor is used as enricher or default provider for metadata.
-   * it can only provide some values, but never all values.
-   */
   override fun supports(headers: Map<String, Any>): Boolean {
-    return false
+    return true
   }
 }

@@ -4,6 +4,7 @@ import io.holunda.camunda.bpm.data.CamundaBpmData.builder
 import io.holunda.camunda.bpm.data.CamundaBpmData.longVariable
 import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.customVariable
 import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.stringVariable
+import io.holunda.camunda.bpm.example.axon.ReservationProcessing.Variables
 import io.holunda.camunda.bpm.example.common.domain.ReservationReceivedEvent
 import io.holunda.camunda.bpm.example.common.domain.flight.FlightInfo
 import io.holunda.camunda.bpm.example.common.domain.flight.FlightReservationConfirmedEvent
@@ -46,13 +47,13 @@ object ReservationProcessing {
  */
 fun ReservationReceivedEvent.toProcessVariables() =
   builder()
-    .set(ReservationProcessing.Variables.RESERVATION_ID, this.reservationId)
-    .set(ReservationProcessing.Variables.CUSTOMER_NAME, this.customerName)
-    .set(ReservationProcessing.Variables.SOURCE, this.fromCity)
-    .set(ReservationProcessing.Variables.DESTINATION, this.toCity)
-    .set(ReservationProcessing.Variables.DESTINATION_ARRIVAL_DATE, this.from)
-    .set(ReservationProcessing.Variables.DESTINATION_DEPARTURE_DATE, this.to)
-    .set(ReservationProcessing.Variables.DELAY, this.delay ?: 10)
+    .set(Variables.RESERVATION_ID, this.reservationId)
+    .set(Variables.CUSTOMER_NAME, this.customerName)
+    .set(Variables.SOURCE, this.fromCity)
+    .set(Variables.DESTINATION, this.toCity)
+    .set(Variables.DESTINATION_ARRIVAL_DATE, this.from)
+    .set(Variables.DESTINATION_DEPARTURE_DATE, this.to)
+    .set(Variables.DELAY, this.delay ?: 10)
     .build()
 
 /**
@@ -60,8 +61,8 @@ fun ReservationReceivedEvent.toProcessVariables() =
  */
 fun FlightReservationConfirmedEvent.toProcessVariables() =
   builder()
-    .set(ReservationProcessing.Variables.FLIGHT_INFO_INCOMING, this.incomingFlight)
-    .set(ReservationProcessing.Variables.FLIGHT_INFO_OUTGOING, this.outgoingFlight)
+    .set(Variables.FLIGHT_INFO_INCOMING, this.incomingFlight)
+    .set(Variables.FLIGHT_INFO_OUTGOING, this.outgoingFlight)
     .build()
 
 /**
@@ -70,7 +71,7 @@ fun FlightReservationConfirmedEvent.toProcessVariables() =
 fun HotelReservationConfirmedEvent.toProcessVariables() =
   builder()
     .set(
-      ReservationProcessing.Variables.HOTEL_INFO,
+      Variables.HOTEL_INFO,
       HotelInfo(
         customerName = this.guestName,
         checkin = this.checkin,

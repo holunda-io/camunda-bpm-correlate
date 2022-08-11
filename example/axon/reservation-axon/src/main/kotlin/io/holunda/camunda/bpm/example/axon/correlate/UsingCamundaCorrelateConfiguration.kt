@@ -14,16 +14,13 @@ import javax.annotation.PostConstruct
 class UsingCamundaCorrelateConfiguration(
   val correlateConfigurationProperties: CorrelateConfigurationProperties
 ) {
-
-  companion object : KLogging() {
-    const val PROFILE = "camunda-correlate"
-  }
+  companion object : KLogging()
 
   @PostConstruct
   fun info() {
     logger.info { "[Camunda CORRELATE] Channels configured: ${correlateConfigurationProperties.channels.keys.joinToString(", ")}" }
-    val streamsConfig = requireNotNull(correlateConfigurationProperties.channels["axon"])
-    logger.info { "[Camunda CORRELATE] Streams message TTL: ${streamsConfig.message.timeToLiveAsString ?: "none"}" }
+    val channelConfig = requireNotNull(correlateConfigurationProperties.channels["axon"])
+    logger.info { "[Camunda CORRELATE] Axon message TTL: ${channelConfig.message.timeToLiveAsString ?: "none"}" }
   }
 
   @Bean

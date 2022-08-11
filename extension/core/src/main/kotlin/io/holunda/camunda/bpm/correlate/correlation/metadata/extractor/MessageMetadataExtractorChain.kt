@@ -36,6 +36,6 @@ class MessageMetadataExtractorChain(
   }
 
   override fun supports(headers: Map<String, Any>): Boolean {
-    return extractors.any { it.supports(headers) }
+    return extractors.all { it.supports(headers) }
   }
 }
