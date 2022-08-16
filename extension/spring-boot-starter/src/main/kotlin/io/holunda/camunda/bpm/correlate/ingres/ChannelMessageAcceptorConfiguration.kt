@@ -1,6 +1,7 @@
 package io.holunda.camunda.bpm.correlate.ingres
 
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.MessageMetadataExtractorChain
+import io.holunda.camunda.bpm.correlate.ingres.filter.AllMessageFilter
 import io.holunda.camunda.bpm.correlate.ingres.impl.PersistingChannelMessageAcceptorImpl
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
@@ -19,10 +20,16 @@ class ChannelMessageAcceptorConfiguration {
   @Bean
   fun persistingChannelMessageAcceptor(
     messageMetadataExtractorChain: MessageMetadataExtractorChain,
-    messagePersistenceService: MessagePersistenceService
+    messagePersistenceService: MessagePersistenceService,
+    messageFilter: MessageFilter
   ): ChannelMessageAcceptor = PersistingChannelMessageAcceptorImpl(
     messageMetadataExtractorChain = messageMetadataExtractorChain,
-    messagePersistenceService = messagePersistenceService
+    messagePersistenceService = messagePersistenceService,
+    messageFilter = messageFilter
   )
+
+  @ConditionalOnMissingBean
+  @Bean
+  fun messageFilter(): MessageFilter = AllMessageFilter()
 
 }
