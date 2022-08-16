@@ -61,6 +61,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/filtering-messages.html</loc>
+         <lastmod>2022-08-16</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/ingres-axon.html</loc>
          <lastmod>2022-08-16</lastmod>
          <changefreq>daily</changefreq>
@@ -77,6 +82,11 @@
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/message-acceptor.html</loc>
+         <lastmod>2022-08-16</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/message-persistence.html</loc>
          <lastmod>2022-08-16</lastmod>
          <changefreq>daily</changefreq>
     </url>

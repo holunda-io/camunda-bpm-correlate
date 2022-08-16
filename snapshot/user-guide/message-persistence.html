@@ -12,14 +12,14 @@
         <meta name="author" content="Holisticon BPM Craftsman">
       
       
-        <link rel="canonical" href="https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/ingres-spring-cloud.html">
+        <link rel="canonical" href="https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/message-persistence.html">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.4.0">
     
     
       
-        <title>Spring Cloud Ingres Adapter - Camunda Platform Correlate</title>
+        <title>Message Persistence - Camunda Platform Correlate</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#message" class="md-skip">
+        <a href="#ms-sql-azure-sql" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Spring Cloud Ingres Adapter
+              Message Persistence
             
           </span>
         </div>
@@ -560,48 +560,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Spring Cloud Ingres Adapter
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="ingres-spring-cloud.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="ingres-spring-cloud.html" class="md-nav__link">
         Spring Cloud Ingres Adapter
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#message" class="md-nav__link">
-    Message
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -653,11 +616,55 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="message-persistence.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Message Persistence
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="message-persistence.html" class="md-nav__link md-nav__link--active">
         Message Persistence
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ms-sql-azure-sql" class="md-nav__link">
+    MS SQL / Azure SQL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#h2-hsql" class="md-nav__link">
+    H2 / HSQL
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -764,18 +771,135 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/holunda-io/camunda-bpm-correlate/edit/develop/docs/user-guide/ingres-spring-cloud.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/holunda-io/camunda-bpm-correlate/edit/develop/docs/user-guide/message-persistence.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-  <h1>Spring Cloud Ingres Adapter</h1>
+  <h1>Message Persistence</h1>
 
-<p>The Spring Cloud Ingres Adapter is a component responsible for receiving Spring Cloud messages (using configured binding like Kafka, AMQP or others) and 
-convert them into message format used by the library.</p>
-<h3 id="message">Message<a class="headerlink" href="#message" title="Permanent link">#</a></h3>
-<p>Kafka Message is received and the Kafka headers are converted to message headers. </p>
+<p>The messages received and accepted by the <a href="message-acceptor.html">message acceptor</a> are stored in a relation database. For doing so, we implemented
+a MyBatis mapper of the underlying entity in order to keep the dependency track as small as possible (MyBatis is a library used and supplied by Camunda Platform 7).
+For the persistence of the messages the library uses a database table <code>COR_MESSAGE</code> with the following structure:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Java Datatype</th>
+<th>JDBC Datatype</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td>String</td>
+<td>VARCHAR</td>
+<td>Message id (unique)</td>
+</tr>
+<tr>
+<td>PAYLOAD_ENCODING</td>
+<td>String</td>
+<td>VARCHAR</td>
+<td>Encoding of the payload</td>
+</tr>
+<tr>
+<td>PAYLOAD_TYPE_NAMESPACE</td>
+<td>String</td>
+<td>VARCHAR</td>
+<td>Namespace of the payload type, for example package</td>
+</tr>
+<tr>
+<td>PAYLOAD_TYPE_NAME</td>
+<td>String</td>
+<td>VARCHAR</td>
+<td>Simple type name of the payload type, for example class name</td>
+</tr>
+<tr>
+<td>PAYLOAD_TYPE_REVISION</td>
+<td>String</td>
+<td>VARCHAR</td>
+<td>Revision of the payload type.</td>
+</tr>
+<tr>
+<td>PAYLOAD</td>
+<td>ByteArray</td>
+<td>BINARY</td>
+<td>Byte array containing the encoded payload</td>
+</tr>
+<tr>
+<td>INSERTED</td>
+<td>Instant</td>
+<td>TIMESTAMP WITH TIMEZONE</td>
+<td>Timestamp of message ingestion</td>
+</tr>
+<tr>
+<td>TTL_DURATION</td>
+<td>String</td>
+<td>VARCHAR</td>
+<td>Time to live of the message as Duration string</td>
+</tr>
+<tr>
+<td>EXPIRATION</td>
+<td>Instant</td>
+<td>TIMESTAMP WITH TIMEZONE</td>
+<td>Expiration of the message as timestamp</td>
+</tr>
+<tr>
+<td>RETRIES</td>
+<td>Integer</td>
+<td>INTEGER</td>
+<td>Number of retries of message correlation</td>
+</tr>
+<tr>
+<td>NEXT_RETRY</td>
+<td>Instant</td>
+<td>TIMESTAMP WITH TIMEZONE</td>
+<td>Timestamp of the next retry</td>
+</tr>
+<tr>
+<td>ERROR</td>
+<td>String</td>
+<td>VARCHAR</td>
+<td>Last error stacktrace produced during correlation</td>
+</tr>
+</tbody>
+</table>
+<p>Depending on your database you will need different SQL DDLs to create the underlying DB table. Here are some dialects, we already tried out:</p>
+<h3 id="ms-sql-azure-sql">MS SQL / Azure SQL<a class="headerlink" href="#ms-sql-azure-sql" title="Permanent link">#</a></h3>
+<p>We use <code>NVARCHAR</code> as a basic type for strings because of improved index performance for UTF-8 encoded strings.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="nc">TABLE</span><span class="w"> </span><span class="n">COR_MESSAGE</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">ID</span><span class="w">                     </span><span class="nc">NVARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="ow">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">PAYLOAD_ENCODING</span><span class="w">       </span><span class="nc">NVARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w">        </span><span class="ow">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">PAYLOAD_TYPE_NAMESPACE</span><span class="w"> </span><span class="nc">NVARCHAR</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w">       </span><span class="ow">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">PAYLOAD_TYPE_NAME</span><span class="w">      </span><span class="nc">NVARCHAR</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w">       </span><span class="ow">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">PAYLOAD_TYPE_REVISION</span><span class="w">  </span><span class="nc">NVARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">PAYLOAD</span><span class="w">                </span><span class="nc">BINARY</span><span class="p">(</span><span class="mi">4096</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">INSERTED</span><span class="w">               </span><span class="nc">DATETIME2</span><span class="w">           </span><span class="ow">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">TTL_DURATION</span><span class="w">           </span><span class="nc">NVARCHAR</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span><span class="w"></span>
+<span class="w">    </span><span class="n">EXPIRATION</span><span class="w">             </span><span class="nc">DATETIME2</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">RETRIES</span><span class="w">                </span><span class="nc">INT</span><span class="w">                 </span><span class="ow">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">NEXT_RETRY</span><span class="w">             </span><span class="nc">DATETIME2</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">ERROR</span><span class="w">                  </span><span class="nc">NVARCHAR</span><span class="p">(</span><span class="nf">MAX</span><span class="p">)</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
+</code></pre></div>
+<h3 id="h2-hsql">H2 / HSQL<a class="headerlink" href="#h2-hsql" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code>CREATE TABLE COR_MESSAGE (
+    ID                     VARCHAR2(64) UNIQUE NOT NULL,
+    PAYLOAD_ENCODING       VARCHAR2(64)        NOT NULL,
+    PAYLOAD_TYPE_NAMESPACE VARCHAR2(128)       NOT NULL,
+    PAYLOAD_TYPE_NAME      VARCHAR2(128)       NOT NULL,
+    PAYLOAD_TYPE_REVISION  VARCHAR2(64),
+    PAYLOAD                BINARY(4096),
+    INSERTED               TIMESTAMP           NOT NULL,
+    TTL_DURATION           VARCHAR2(32),
+    EXPIRATION             TIMESTAMP,
+    RETRIES                INTEGER             NOT NULL,
+    NEXT_RETRY             TIMESTAMP,
+    ERROR                  CLOB(10000)
+);
+</code></pre></div>
 
   <hr>
 <div class="md-source-file">
@@ -810,7 +934,7 @@ convert them into message format used by the library.</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
-        <a href="ingres.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Ingres Adapter" rel="prev">
+        <a href="filtering-messages.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Message Filter" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -819,20 +943,20 @@ convert them into message format used by the library.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Ingres Adapter
+              Message Filter
             </div>
           </div>
         </a>
       
       
         
-        <a href="ingres-axon.html" class="md-footer__link md-footer__link--next" aria-label="Next: Axon Framework Ingres Adapter" rel="next">
+        <a href="examples.html" class="md-footer__link md-footer__link--next" aria-label="Next: Examples" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Axon Framework Ingres Adapter
+              Examples
             </div>
           </div>
           <div class="md-footer__button md-icon">
