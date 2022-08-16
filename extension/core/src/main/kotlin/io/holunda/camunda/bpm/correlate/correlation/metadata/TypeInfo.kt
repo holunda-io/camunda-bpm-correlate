@@ -17,7 +17,8 @@ data class TypeInfo(
    */
   val revision: String? = null,
   /**
-   * Indicates if the decision about the type is overridable. See [MessageMetaDataSnippet]
+   * Indicates if the decision about the type is overridable. See [MessageMetaDataSnippet].
+   * This value is set to false, if we are sure about the type info.
    */
   val overwritePossible: Boolean = true
 ) {

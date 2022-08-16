@@ -4,6 +4,7 @@ The library supports the following features:
 
 * Ingres Adapters:
     * Spring Cloud Kafka
+    * Axon Framework
 * MetaData extractors:
     * Channel based (Headers)
     * Properties

@@ -6,7 +6,7 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelCo
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptorConfiguration
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
-import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
+import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -33,7 +33,7 @@ class SpringCloudStreamChannelConfiguration {
   fun streamByteMessageConsumer(
     channelMessageAcceptor: ChannelMessageAcceptor,
     metrics: IngresMetrics,
-    channelMessageHeaderConverter: ChannelMessageHeaderExtractor
+    channelMessageHeaderConverter: ChannelMessageHeaderConverter
   ) = StreamByteMessageConsumer(
     messageAcceptor = channelMessageAcceptor,
     metrics = metrics,
@@ -42,12 +42,13 @@ class SpringCloudStreamChannelConfiguration {
 
   @ConditionalOnMissingBean
   @Bean
-  fun channelMessageHeaderConverter(): ChannelMessageHeaderExtractor = DefaultKafkaMessageHeaderConverter()
+  fun channelMessageHeaderConverter(): ChannelMessageHeaderConverter = DefaultKafkaMessageHeaderConverter()
 
   @Bean
   @Order(10)
-  fun streamChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>): MessageMetaDataSnippetExtractor =
+  fun streamChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>, payloadDecoders: List<PayloadDecoder>): MessageMetaDataSnippetExtractor =
     ChannelConfigMessageMetaDataSnippetExtractor(
-      channelConfig = requireNotNull(channelConfigs[TYPE]) { "Configuration for channel '${TYPE}' is required." }
+      channelConfig = requireNotNull(channelConfigs[TYPE]) { "Configuration for channel '${TYPE}' is required." },
+      payloadDecoders = payloadDecoders
     )
 }

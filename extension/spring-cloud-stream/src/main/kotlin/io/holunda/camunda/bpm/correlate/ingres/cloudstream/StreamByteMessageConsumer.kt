@@ -13,7 +13,7 @@ import java.util.function.Consumer
 class StreamByteMessageConsumer(
   private val messageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngresMetrics,
-  private val channelMessageHeaderConverter: ChannelMessageHeaderExtractor
+  private val channelMessageHeaderConverter: ChannelMessageHeaderConverter
 ) : Consumer<Message<ByteArray>> {
 
   companion object : KLogging()

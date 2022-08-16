@@ -3,11 +3,19 @@ package io.holunda.camunda.bpm.correlate.ingres.axon
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.Companion.HEADER_MESSAGE_ID
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.Companion.HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.Companion.HEADER_MESSAGE_TIMESTAMP
-import io.holunda.camunda.bpm.data.CamundaBpmData
 import io.holunda.camunda.bpm.data.CamundaBpmData.builder
 import org.axonframework.eventhandling.EventMessage
 
-class DefaultAxonEventHeaderExtractor : AxonEventHeaderExtractor {
+/**
+ * Default Axon Event Message Header Extractor.
+ * Retrieves from Axon Event Message:
+ *  - message-id
+ *  - payload-type-class-name
+ *  - message-timestamp
+ * These headers will make the [HeaderMessageMetaDataSnippetExtractor] happy.
+ * In addition, it adds all metadata headers as message headers.
+ */
+class DefaultAxonEventHeaderConverter : AxonEventHeaderConverter {
 
   override fun extractHeaders(eventMessage: EventMessage<*>): Map<String, Any> {
     return builder()

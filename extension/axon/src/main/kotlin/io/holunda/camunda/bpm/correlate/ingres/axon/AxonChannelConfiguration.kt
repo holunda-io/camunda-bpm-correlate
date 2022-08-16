@@ -9,7 +9,6 @@ import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import org.axonframework.springboot.autoconfig.AxonAutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
-import org.springframework.boot.autoconfigure.AutoConfigureBefore
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
@@ -31,24 +30,31 @@ class AxonChannelConfiguration {
   fun axonEventMessageHandler(
     channelMessageAcceptor: ChannelMessageAcceptor,
     metrics: IngresMetrics,
-    axonEventHeaderExtractor: AxonEventHeaderExtractor,
-    payloadEncoder: PayloadDecoder
-  ): AxonEventMessageHandler = AxonEventMessageHandler(
-    messageAcceptor = channelMessageAcceptor,
-    metrics = metrics,
-    axonEventHeaderExtractor = axonEventHeaderExtractor,
-    encoder = payloadEncoder
-  )
+    axonEventHeaderConverter: AxonEventHeaderConverter,
+    payloadDecoders: List<PayloadDecoder>,
+    channelConfigs: Map<String, ChannelConfig>
+  ): AxonEventMessageHandler {
+
+    val config = requireNotNull(channelConfigs["axon"]) { "Configuration for channel 'axon' is required." }
+    val encoding = requireNotNull(config.getMessagePayloadEncoding()) { "Channel encoding is required, please set message-payload-encoding." }
+    val encoder = requireNotNull(payloadDecoders.find { it.supports(encoding) }) { "Could not find decoder for configured message encoding '$encoding'." }
+    return AxonEventMessageHandler(
+      messageAcceptor = channelMessageAcceptor,
+      metrics = metrics,
+      axonEventHeaderConverter = axonEventHeaderConverter,
+      encoder = encoder
+    )
+  }
 
   @ConditionalOnMissingBean
   @Bean
-  fun axonEventHeaderExtractor(channelConfigs: Map<String, ChannelConfig>): AxonEventHeaderExtractor =
-    DefaultAxonEventHeaderExtractor()
+  fun axonEventHeaderExtractor(channelConfigs: Map<String, ChannelConfig>): AxonEventHeaderConverter = DefaultAxonEventHeaderConverter()
 
   @Bean
   @Order(10)
-  fun axonChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>): MessageMetaDataSnippetExtractor =
+  fun axonChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>, payloadDecoders: List<PayloadDecoder>): MessageMetaDataSnippetExtractor =
     ChannelConfigMessageMetaDataSnippetExtractor(
-      channelConfig = requireNotNull(channelConfigs["axon"]) { "Configuration for channel 'axon' is required." }
+      channelConfig = requireNotNull(channelConfigs["axon"]) { "Configuration for channel 'axon' is required." },
+      payloadDecoders = payloadDecoders
     )
 }

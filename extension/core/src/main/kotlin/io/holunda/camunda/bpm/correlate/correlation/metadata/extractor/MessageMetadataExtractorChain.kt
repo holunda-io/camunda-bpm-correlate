@@ -35,7 +35,10 @@ class MessageMetadataExtractorChain(
     return extractedMetadataSnippets.reduceOrNull(MessageMetaDataSnippet::reduce)
   }
 
+  /**
+   * The chain supports a message with given headers if all extractors support them.
+   */
   override fun supports(headers: Map<String, Any>): Boolean {
-    return extractors.any { it.supports(headers) }
+    return extractors.all { extractor -> extractor.supports(headers) }
   }
 }

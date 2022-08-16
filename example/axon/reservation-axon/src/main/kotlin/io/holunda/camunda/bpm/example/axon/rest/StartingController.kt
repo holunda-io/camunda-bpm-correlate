@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Simple controller allowing to start reservations via REST.
+ */
 @RestController
 @RequestMapping("/process")
 class StartingController(
