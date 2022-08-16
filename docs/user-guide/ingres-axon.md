@@ -1,5 +1,3 @@
-## Axon Framework Ingres Adapter
-
 The Axon Framework Ingres Adapter is responsible for receiving events on Axon Event bus and sending them for the correlation to the library. 
 
 ### Message

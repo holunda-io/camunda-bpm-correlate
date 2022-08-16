@@ -1,5 +1,3 @@
-# Message acceptor
-
 The message acceptor is a component responsible to receive the message from the Ingres adapter and store it into the database. 
 
 ## Message Metadata
@@ -24,10 +22,14 @@ the easiest way to detect the type of the message.
 
 ## Message filtering
 
-The `FilteringMessageMessageMetaDataSnippetExtractor` is not responsible for any metadata extraction but is used as a filter for incoming messages. You can
+Sometimes, more messages are sent through the channel as needed to be received by the Ingres Adapter and needs to be accepted and stored by the library. 
+For this purpose, a special filtering component `MessageFilter` is configured in the `MessageAcceptor`. For more details, how to use the filter please check the [Filtering messages](filtering-messages.md) section. 
+
+You can
 configure what messages it will support and filter the messages that will be delivered to the message acceptor.
 
 
 ## Persisting Channel Message Acceptor
 
-To implement the inbox pattern, the message acceptor stores received messages in a persistent storage. 
+To implement the inbox pattern, the message acceptor stores received messages in a persistent storage. For this purpose, the `PersistingChannelMessageAcceptor`
+is implemented. For more details, please check the [Message Persistence](message-persistence.md) section.
