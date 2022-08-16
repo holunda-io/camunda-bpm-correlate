@@ -8,13 +8,14 @@ import org.axonframework.eventhandling.EventMessage
 
 /**
  * Default Axon Event Message Header Extractor.
- * Retrieves:
+ * Retrieves from Axon Event Message:
  *  - message-id
  *  - payload-type-class-name
  *  - message-timestamp
- * Adds all additional metadata headers.
+ * These headers will make the [HeaderMessageMetaDataSnippetExtractor] happy.
+ * In addition, it adds all metadata headers as message headers.
  */
-class DefaultAxonEventHeaderExtractor : AxonEventHeaderExtractor {
+class DefaultAxonEventHeaderConverter : AxonEventHeaderConverter {
 
   override fun extractHeaders(eventMessage: EventMessage<*>): Map<String, Any> {
     return builder()

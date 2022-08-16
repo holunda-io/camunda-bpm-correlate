@@ -38,6 +38,7 @@ class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
 
   override fun supports(headers: Map<String, Any>): Boolean {
     val snippet = readMetaDataSnippet(headers)
+    // supports any message with a message id and payload type info.
     return snippet.messageId != null && snippet.payloadTypeInfo != TypeInfo.UNKNOWN
   }
 

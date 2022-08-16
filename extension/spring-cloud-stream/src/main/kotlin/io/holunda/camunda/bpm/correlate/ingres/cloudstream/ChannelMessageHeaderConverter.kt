@@ -5,7 +5,7 @@ import org.springframework.messaging.Message
 /**
  * Converts channel headers into message headers.
  */
-interface ChannelMessageHeaderExtractor {
+interface ChannelMessageHeaderConverter {
 
   /**
    * Convert channel headers into generic message headers.

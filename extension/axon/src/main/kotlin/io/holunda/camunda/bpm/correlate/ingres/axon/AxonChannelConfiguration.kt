@@ -30,7 +30,7 @@ class AxonChannelConfiguration {
   fun axonEventMessageHandler(
     channelMessageAcceptor: ChannelMessageAcceptor,
     metrics: IngresMetrics,
-    axonEventHeaderExtractor: AxonEventHeaderExtractor,
+    axonEventHeaderConverter: AxonEventHeaderConverter,
     payloadDecoders: List<PayloadDecoder>,
     channelConfigs: Map<String, ChannelConfig>
   ): AxonEventMessageHandler {
@@ -41,15 +41,14 @@ class AxonChannelConfiguration {
     return AxonEventMessageHandler(
       messageAcceptor = channelMessageAcceptor,
       metrics = metrics,
-      axonEventHeaderExtractor = axonEventHeaderExtractor,
+      axonEventHeaderConverter = axonEventHeaderConverter,
       encoder = encoder
     )
   }
 
   @ConditionalOnMissingBean
   @Bean
-  fun axonEventHeaderExtractor(channelConfigs: Map<String, ChannelConfig>): AxonEventHeaderExtractor =
-    DefaultAxonEventHeaderExtractor()
+  fun axonEventHeaderExtractor(channelConfigs: Map<String, ChannelConfig>): AxonEventHeaderConverter = DefaultAxonEventHeaderConverter()
 
   @Bean
   @Order(10)

@@ -26,6 +26,7 @@ class ChannelConfigMessageMetaDataSnippetExtractor(
   }
 
   override fun supports(headers: Map<String, Any>): Boolean {
+    // supports everything, since it uses information from the properties.
     return true
   }
 }

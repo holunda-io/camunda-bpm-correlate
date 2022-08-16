@@ -14,7 +14,7 @@ import org.axonframework.eventhandling.EventMessageHandler
 class AxonEventMessageHandler(
   private val messageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngresMetrics,
-  private val axonEventHeaderExtractor: AxonEventHeaderExtractor,
+  private val axonEventHeaderConverter: AxonEventHeaderConverter,
   private val encoder: PayloadDecoder
 ) : EventMessageHandler {
 
@@ -22,8 +22,10 @@ class AxonEventMessageHandler(
 
   override fun handle(eventMessage: EventMessage<*>) {
     metrics.incrementReceived()
-    val headers = axonEventHeaderExtractor.extractHeaders(eventMessage)
+    val headers = axonEventHeaderConverter.extractHeaders(eventMessage)
 
+    // The message acceptor will only get supported messages.
+    // This question is answered  by the [MessageMetadataExtractorChain] - a message is supported if all message metadata snippet extractors support them.
     if (messageAcceptor.supports(headers)) {
       messageAcceptor.accept(ByteMessage(headers = headers, payload = encoder.encode(eventMessage.payload)))
       logger.debug { "Accepted message $headers" }

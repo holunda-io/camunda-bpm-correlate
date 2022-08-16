@@ -5,7 +5,7 @@ import org.axonframework.eventhandling.EventMessage
 /**
  * Extractor for headers from Axon message.
  */
-interface AxonEventHeaderExtractor {
+interface AxonEventHeaderConverter {
 
   /**
    * Extracts headers.
