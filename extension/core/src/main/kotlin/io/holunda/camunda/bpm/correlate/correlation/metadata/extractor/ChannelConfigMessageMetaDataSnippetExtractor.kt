@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.correlate.correlation.metadata.extractor
 
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 
 /**
@@ -11,9 +11,9 @@ import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 class ChannelConfigMessageMetaDataSnippetExtractor(
   private val channelConfig: ChannelConfig,
   private val payloadDecoders: List<PayloadDecoder>
-  ) : MessageMetaDataSnippetExtractor {
+) : MessageMetaDataSnippetExtractor {
 
-  override fun <P> extractMetaData(message: AbstractChannelMessage<P>): MessageMetaDataSnippet? {
+  override fun <P> extractMetaData(message: ChannelMessage<P>): MessageMetaDataSnippet? {
     val snippet = MessageMetaDataSnippet(
       timeToLive = channelConfig.getMessageTimeToLiveAsString(),
       payloadEncoding = channelConfig.getMessagePayloadEncoding()

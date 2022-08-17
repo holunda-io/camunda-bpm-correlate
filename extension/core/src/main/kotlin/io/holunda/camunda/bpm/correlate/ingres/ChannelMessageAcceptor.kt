@@ -1,6 +1,6 @@
 package io.holunda.camunda.bpm.correlate.ingres
 
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
 
 /**
  * Accepts messages from channels.
@@ -18,6 +18,6 @@ interface ChannelMessageAcceptor {
    * Accepts the message.
    * @param message message received via channel.
    */
-  fun <P> accept(message: AbstractChannelMessage<P>)
+  fun <P> accept(message: ChannelMessage<P>)
 
 }

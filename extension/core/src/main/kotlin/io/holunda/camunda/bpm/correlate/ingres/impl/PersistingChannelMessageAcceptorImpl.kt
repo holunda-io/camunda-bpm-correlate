@@ -1,9 +1,10 @@
 package io.holunda.camunda.bpm.correlate.ingres.impl
 
+import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.MessageMetadataExtractorChain
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingres.MessageFilter
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
 
 /**
@@ -19,9 +20,9 @@ class PersistingChannelMessageAcceptorImpl(
     return messageMetadataExtractorChain.supports(headers)
   }
 
-  override fun <P> accept(message: AbstractChannelMessage<P>) {
-    val messageMetaData = messageMetadataExtractorChain.extractChainedMetaData(message)
-    if (messageFilter.accepts(message, messageMetaData)) {
+  override fun <P> accept(message: ChannelMessage<P>) {
+    val messageMetaData: MessageMetaData = messageMetadataExtractorChain.extractChainedMetaData(message)
+    if (messageFilter.accepts(channelMessage = message, metaData = messageMetaData)) {
       messagePersistenceService.persistMessage(channelMessage = message, metaData = messageMetaData)
       // TODO: metrics
     } else {

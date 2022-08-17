@@ -3,7 +3,7 @@ package io.holunda.camunda.bpm.correlate.correlation.metadata.extractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
 import io.holunda.camunda.bpm.data.CamundaBpmData.reader
 import io.holunda.camunda.bpm.data.CamundaBpmData.stringVariable
 import org.camunda.bpm.engine.variable.Variables.createVariables
@@ -27,7 +27,7 @@ class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
     val HEADER_MESSAGE_TIMESTAMP = stringVariable("X-CORRELATE-Timestamp")
   }
 
-  override fun <P> extractMetaData(message: AbstractChannelMessage<P>): MessageMetaDataSnippet? {
+  override fun <P> extractMetaData(message: ChannelMessage<P>): MessageMetaDataSnippet? {
     val snippet = readMetaDataSnippet(message.headers)
     return if (snippet.isEmpty()) {
       null
@@ -54,7 +54,7 @@ class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
     )
   }
 
-  private fun extractInstant(value: String?) : Instant? {
+  private fun extractInstant(value: String?): Instant? {
     return if (value != null) {
       try {
         Instant.parse(value)

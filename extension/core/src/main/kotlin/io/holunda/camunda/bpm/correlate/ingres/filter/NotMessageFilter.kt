@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.correlate.ingres.filter
 
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.ingres.MessageFilter
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
 
 /**
  * Filter implementing the NOT operator.
@@ -10,7 +10,7 @@ import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
 class NotMessageFilter(
   private val filter: MessageFilter
 ) : MessageFilter {
-  override fun <P> accepts(message: AbstractChannelMessage<P>, messageMetaData: MessageMetaData): Boolean {
-    return !filter.accepts(message, messageMetaData)
+  override fun <P> accepts(channelMessage: ChannelMessage<P>, metaData: MessageMetaData): Boolean {
+    return !filter.accepts(channelMessage, metaData)
   }
 }

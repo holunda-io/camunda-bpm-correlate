@@ -2,15 +2,18 @@ package io.holunda.camunda.bpm.correlate.ingres.filter
 
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.ingres.MessageFilter
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
 
 /**
  * Accepts all messages having payloads of specified types.
  */
 class TypeListMessageFilter(
-  private val types: Set<Class<Any>>
+  private vararg val fullQualifiedTypeNames: String
 ) : MessageFilter {
-  override fun <P> accepts(message: AbstractChannelMessage<P>, messageMetaData: MessageMetaData): Boolean {
-    return types.map { type -> type.canonicalName }.contains( messageMetaData.payloadTypeInfo.toFQCN() )
+
+  constructor(types: Set<Class<*>>) : this(* types.map { type -> type.canonicalName }.toTypedArray())
+
+  override fun <P> accepts(channelMessage: ChannelMessage<P>, metaData: MessageMetaData): Boolean {
+    return fullQualifiedTypeNames.contains(metaData.payloadTypeInfo.toFQCN())
   }
 }
