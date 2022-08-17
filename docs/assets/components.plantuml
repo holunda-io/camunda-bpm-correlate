@@ -1,7 +1,10 @@
 @startuml
 
+
+
 skinparam component {
-  backgroundColor<<camunda>> Red
+  backgroundColor<<camunda>> Orange
+  backgroundColor<<user>> Yellow
 }
 
 interface "Channel Message Acceptor" as CMA
@@ -17,19 +20,27 @@ package "Core" {
   package "Process" {
     BatchCorrelationService -down- [ CamundaBPMBatchCorrelationService ]
     [ BatchCorrelationProcessor ] --> BatchCorrelationService : use
-
     [ CamundaBPMBatchCorrelationService ] --> [ CamundaCorrelationEventFactoryRegistry ] : use
+    [ CamundaCorrelationEventFactoryRegistry ] -down-> CamundaCorrelationEventFactory : use
   }
   package "Persistence" {
     MessagePersistenceService -down- [ DefaultMessagePersistenceService ]
     [ DefaultMessagePersistenceService ] --> MessageRepository : use
+    [ DefaultMessagePersistenceService ] --> SingleMessageCorrelationStrategy : use
     MessageRepository -down- [ MyBatisRepository ]
   }
 }
 
+package "Application Components" {
+  [ MyCamundaCorrelationEventFactory ] <<user>>
+  [ MySingleMessageCorrelationStrategy ] <<user>>
+  [ MyCamundaCorrelationEventFactory ] --> [ MySingleMessageCorrelationStrategy ] : use
+}
+
 package "Camunda Components" {
-  [ MyBatis ] <<camunda>>
   [ Camunda Runtime Service ] <<camunda>>
+  [ MyBatis ] <<camunda>>
+  [ Camunda Runtime Service ] --down-> [ MyBatis ]
 }
 
 database "Database" {
@@ -39,7 +50,10 @@ database "Database" {
 [ MyBatisRepository ] --> [ MyBatis ] : use
 [ PersistingChannelMessageAcceptor ] --> MessagePersistenceService : use
 [ BatchCorrelationProcessor ] --> MessagePersistenceService : use
+
 [ Kafka ] --> CMA
 [ MyBatis ] <--> [ MESSAGE ]
-[ CamundaBPMBatchCorrelationService ] --> [ Camunda Runtime Service ] : use
+[ CamundaBPMBatchCorrelationService ] -left-> [ Camunda Runtime Service ] : use
+[ MyCamundaCorrelationEventFactory ] -down- CamundaCorrelationEventFactory : implement
+[ MySingleMessageCorrelationStrategy ] -down- SingleMessageCorrelationStrategy : implement
 @enduml

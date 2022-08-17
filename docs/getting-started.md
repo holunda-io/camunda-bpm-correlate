@@ -11,6 +11,12 @@ First install the extension using the corresponding ingres adapter (in this exam
 <dependencies>
   <dependency>
     <groupId>io.holunda</groupId>
+    <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
+    <version>${camunda-bpm-correlate.version}</version>
+  </dependency>
+
+  <dependency>
+    <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
     <version>${camunda-bpm-correlate.version}</version>
   </dependency>

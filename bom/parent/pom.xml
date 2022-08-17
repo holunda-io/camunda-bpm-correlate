@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-root</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -17,6 +17,7 @@
     <junit.version>5.8.2</junit.version>
     <camunda-7.version>7.17.0</camunda-7.version>
     <camunda-bpm-data.version>1.2.6</camunda-bpm-data.version>
+    <shedlock.version>4.38.0</shedlock.version>
   </properties>
 
   <dependencyManagement>
@@ -39,6 +40,16 @@
         <version>${junit.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>net.javacrumbs.shedlock</groupId>
+        <artifactId>shedlock-spring</artifactId>
+        <version>${shedlock.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.javacrumbs.shedlock</groupId>
+        <artifactId>shedlock-provider-jdbc-template</artifactId>
+        <version>${shedlock.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

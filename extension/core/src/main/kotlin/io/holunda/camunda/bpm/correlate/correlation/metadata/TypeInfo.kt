@@ -1,5 +1,7 @@
 package io.holunda.camunda.bpm.correlate.correlation.metadata
 
+import kotlin.reflect.KClass
+
 /**
  * Represents type info.
  */
@@ -17,11 +19,26 @@ data class TypeInfo(
    */
   val revision: String? = null,
   /**
-   * Indicates if the decision about the type is overridable. See [MessageMetaDataSnippet]
+   * Indicates if the decision about the type is overridable. See [MessageMetaDataSnippet].
+   * This value is set to false, if we are sure about the type info.
    */
   val overwritePossible: Boolean = true
 ) {
   companion object {
+    /**
+     * Constructs a type info from a class.
+     */
+    fun fromClass(clazz: Class<*>): TypeInfo {
+      return clazz.canonicalName?.let { fromFQCN(it) } ?: UNKNOWN
+    }
+
+    /**
+     * Constructs a type info from a Kotlin class.
+     */
+    fun fromClass(klazz: KClass<*>): TypeInfo {
+      return klazz.qualifiedName?.let { fromFQCN(it) } ?: UNKNOWN
+    }
+
     /**
      * Constructs a type info from full-qualified class name.
      */

@@ -1,12 +1,13 @@
-The library supports the following features:
+Currently, the library supports the following features:
 
 ## General
 
 * Ingres Adapters:
     * Spring Cloud Kafka
+    * Axon Framework
 * MetaData extractors:
-    * Channel based (Headers)
-    * Properties
+    * Message based (Headers)
+    * Channel based (Properties)
 * Persisting Message Accepting Adapter
 * Message Persistence
     * In-Memory

@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <relativePath>../../bom/parent/pom.xml</relativePath>
   </parent>
 
@@ -14,7 +14,7 @@
   <name>Extension / Ingres Adapter Axon Framework</name>
 
   <properties>
-    <axon-framework.version>4.5.11</axon-framework.version>
+    <axon-framework.version>4.5.12</axon-framework.version>
   </properties>
 
   <dependencyManagement>
@@ -32,19 +32,19 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>camunda-bpm-correlate-spring-starter</artifactId>
+      <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <!-- FIXME, remove as soon as Axon Fixed that in a BOM -->
-    <!-- Fixing XStream CVE https://advisory.checkmarx.net/advisory/vulnerability/CVE-2021-43859/ -->
-    <dependency>
-      <groupId>com.thoughtworks.xstream</groupId>
-      <artifactId>xstream</artifactId>
-      <version>1.4.19</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.axonframework</groupId>
       <artifactId>axon-messaging</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-spring-boot-autoconfigure</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Camunda is provided -->

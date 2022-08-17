@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.correlate.correlation.metadata.extractor
 
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
 
 /**
  * Extracts metadata from channel config.
@@ -11,7 +11,7 @@ class ChannelConfigMessageMetaDataSnippetExtractor(
   private val channelConfig: ChannelConfig
 ) : MessageMetaDataSnippetExtractor {
 
-  override fun <P> extractMetaData(message: AbstractChannelMessage<P>): MessageMetaDataSnippet? {
+  override fun <P> extractMetaData(message: ChannelMessage<P>): MessageMetaDataSnippet? {
     val snippet = MessageMetaDataSnippet(
       timeToLive = channelConfig.getMessageTimeToLiveAsString(),
       payloadEncoding = channelConfig.getMessagePayloadEncoding()
@@ -23,11 +23,8 @@ class ChannelConfigMessageMetaDataSnippetExtractor(
     }
   }
 
-  /**
-   * Property extractor is used as enricher or default provider for metadata.
-   * it can only provide some values, but never all values.
-   */
   override fun supports(headers: Map<String, Any>): Boolean {
-    return false
+    // supports everything, since it uses information from the properties.
+    return true
   }
 }

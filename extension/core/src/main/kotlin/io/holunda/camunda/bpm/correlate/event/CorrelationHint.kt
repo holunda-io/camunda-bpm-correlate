@@ -1,6 +1,5 @@
 package io.holunda.camunda.bpm.correlate.event
 
-import io.holunda.camunda.bpm.correlate.correlation.impl.CamundaBpmBatchCorrelationService
 import mu.KLogger
 
 
@@ -45,12 +44,13 @@ data class CorrelationHint(
    * @param type correlation type.
    */
   fun sanityCheck(logger: KLogger, scope: CorrelationScope, type: CorrelationType) {
-    when(type) {
+    when (type) {
       CorrelationType.MESSAGE -> {
         if (executionId != null) {
           logger.warn { "The executionId hint is ignored by correlation of messages." }
         }
       }
+
       CorrelationType.SIGNAL -> {
         if (scope == CorrelationScope.LOCAL) {
           logger.warn { "The correlation of signal with local variables is not supported." }

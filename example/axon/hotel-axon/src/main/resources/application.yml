@@ -1,0 +1,15 @@
+hotel:
+  processing-delay: ${PROCESSING_DELAY:5}
+
+server:
+  port: 8083
+
+axon:
+  axonserver:
+    servers: "${AXON_SERVER_HOST:axonserver}:8124"
+
+spring:
+  application:
+    name: Axon Hotel Example Service
+  jpa:
+    open-in-view: true

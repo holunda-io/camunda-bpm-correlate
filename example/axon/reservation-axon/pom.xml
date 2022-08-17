@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.holunda</groupId>
+    <artifactId>camunda-bpm-correlate-example-parent</artifactId>
+    <version>0.0.2</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <name>Example / Axon / Reservation</name>
+  <artifactId>camunda-bpm-correlate-example-reservation-axon</artifactId>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <!-- Core -->
+    <dependency>
+      <groupId>io.holunda</groupId>
+      <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
+    </dependency>
+    <!-- Ingres Adapter -->
+    <dependency>
+      <groupId>io.holunda</groupId>
+      <artifactId>camunda-bpm-correlate-axon-framework</artifactId>
+    </dependency>
+
+    <!-- Axon Starter -->
+    <dependency>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-spring-boot-starter</artifactId>
+    </dependency>
+
+    <!-- Example Fixtures -->
+    <dependency>
+      <groupId>io.holunda</groupId>
+      <artifactId>camunda-bpm-correlate-example-common</artifactId>
+    </dependency>
+
+    <!-- Camunda -->
+    <dependency>
+      <groupId>io.holunda</groupId>
+      <artifactId>camunda-platform-7-autologin</artifactId>
+      <version>0.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-spin</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.spin</groupId>
+      <artifactId>camunda-spin-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.spin</groupId>
+      <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

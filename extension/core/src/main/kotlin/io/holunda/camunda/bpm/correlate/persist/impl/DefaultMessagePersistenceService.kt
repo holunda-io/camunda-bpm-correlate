@@ -5,8 +5,9 @@ import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
 import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
 import io.holunda.camunda.bpm.correlate.ingres.message.ByteMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.DelegatingChannelMessage
 import io.holunda.camunda.bpm.correlate.persist.*
 import io.holunda.camunda.bpm.correlate.persist.MessageErrorHandlingResult.*
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
@@ -142,9 +143,10 @@ class DefaultMessagePersistenceService(
    * @param metaData metadata extracted from the message.
    * @param channelMessage message to store.
    */
-  override fun <P, M : AbstractChannelMessage<P>> persistMessage(metaData: MessageMetaData, channelMessage: M) {
+  override fun <P, M : ChannelMessage<P>> persistMessage(metaData: MessageMetaData, channelMessage: M) {
     val payload = when (channelMessage) {
-      is ByteMessage -> channelMessage.encodedPayload
+      is DelegatingChannelMessage<*, *> -> requireIsByteArray(channelMessage.payload) { "Unsupported payload type inside the message delegate. ByteArray was expected, but it was ${channelMessage.payload::class.qualifiedName}" }
+      is ByteMessage -> channelMessage.payload
       else -> {
         throw IllegalArgumentException("Unsupported message type for ${channelMessage.headers}")
       }
@@ -176,3 +178,12 @@ class DefaultMessagePersistenceService(
     }
   }
 }
+
+inline fun requireIsByteArray(value: Any, lazyMessage: () -> Any): ByteArray =
+  if (value is ByteArray) {
+    value
+  } else {
+    throw IllegalArgumentException(lazyMessage().toString())
+  }
+
+

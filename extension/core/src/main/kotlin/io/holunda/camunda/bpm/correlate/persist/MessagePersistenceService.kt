@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.correlate.persist
 
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatch
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
-import io.holunda.camunda.bpm.correlate.ingres.message.AbstractChannelMessage
+import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
 
 interface MessagePersistenceService {
   /**
@@ -26,6 +26,6 @@ interface MessagePersistenceService {
    * @param metaData metadata extracted from the message.
    * @param channelMessage message to store.
    */
-  fun <P, M : AbstractChannelMessage<P>> persistMessage(metaData: MessageMetaData, channelMessage: M)
+  fun <P, M : ChannelMessage<P>> persistMessage(metaData: MessageMetaData, channelMessage: M)
 
 }

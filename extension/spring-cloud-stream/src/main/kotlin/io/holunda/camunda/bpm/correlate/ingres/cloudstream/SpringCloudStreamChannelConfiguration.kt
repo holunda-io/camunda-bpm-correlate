@@ -6,7 +6,6 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelCo
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptorConfiguration
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
-import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -33,7 +32,7 @@ class SpringCloudStreamChannelConfiguration {
   fun streamByteMessageConsumer(
     channelMessageAcceptor: ChannelMessageAcceptor,
     metrics: IngresMetrics,
-    channelMessageHeaderConverter: ChannelMessageHeaderExtractor
+    channelMessageHeaderConverter: ChannelMessageHeaderConverter
   ) = StreamByteMessageConsumer(
     messageAcceptor = channelMessageAcceptor,
     metrics = metrics,
@@ -42,7 +41,7 @@ class SpringCloudStreamChannelConfiguration {
 
   @ConditionalOnMissingBean
   @Bean
-  fun channelMessageHeaderConverter(): ChannelMessageHeaderExtractor = DefaultKafkaMessageHeaderConverter()
+  fun channelMessageHeaderConverter(): ChannelMessageHeaderConverter = DefaultKafkaMessageHeaderConverter()
 
   @Bean
   @Order(10)

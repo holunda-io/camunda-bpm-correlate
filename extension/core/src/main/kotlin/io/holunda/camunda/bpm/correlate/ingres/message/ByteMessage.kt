@@ -4,6 +4,6 @@ package io.holunda.camunda.bpm.correlate.ingres.message
  * Message using binary payload.
  */
 class ByteMessage(
-  headers: Map<String, Any>,
-  payload: ByteArray
-) : AbstractChannelMessage<ByteArray>(headers, payload)
+  override val headers: Map<String, Any>,
+  override val payload: ByteArray
+) : ChannelMessage<ByteArray>

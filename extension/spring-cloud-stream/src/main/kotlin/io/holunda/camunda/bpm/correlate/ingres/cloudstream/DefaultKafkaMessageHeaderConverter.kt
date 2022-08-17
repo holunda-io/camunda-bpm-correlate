@@ -7,7 +7,7 @@ import org.springframework.messaging.Message
 import org.springframework.messaging.MessageHeaders
 import java.time.Instant
 
-class DefaultKafkaMessageHeaderConverter : ChannelMessageHeaderExtractor {
+class DefaultKafkaMessageHeaderConverter : ChannelMessageHeaderConverter {
 
   /**
    * Use byte array or string headers of Spring Messaging.

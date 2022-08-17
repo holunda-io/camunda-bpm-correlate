@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <!-- It is ok to use the extension parent, there is only Kotlin and some managed deps defined there -->
     <relativePath>../bom/parent/pom.xml</relativePath>
   </parent>
@@ -20,13 +20,18 @@
   <properties>
     <spin.version>1.13.0</spin.version>
     <spring-cloud.version>2021.0.1</spring-cloud.version>
+    <axon.framework.version>4.5.12</axon.framework.version>
   </properties>
 
   <modules>
     <module>common</module>
-    <module>flight-kafka</module>
-    <module>hotel-kafka</module>
-    <module>spring-cloud-stream-kafka</module>
+    <module>spring-cloud/flight-kafka</module>
+    <module>spring-cloud/hotel-kafka</module>
+    <module>spring-cloud/reservation-kafka</module>
+    <module>axon/flight-axon</module>
+    <module>axon/hotel-axon</module>
+    <module>axon/reservation-axon</module>
+
   </modules>
 
   <dependencyManagement>
@@ -35,15 +40,15 @@
         <groupId>io.holunda</groupId>
         <artifactId>camunda-bpm-correlate-bom</artifactId>
         <version>${project.parent.version}</version>
-        <scope>import</scope>
         <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.camunda.spin</groupId>
         <artifactId>camunda-spin-bom</artifactId>
+        <version>${spin.version}</version>
         <scope>import</scope>
         <type>pom</type>
-        <version>${spin.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
@@ -59,6 +64,16 @@
         <artifactId>spring-cloud-function-context</artifactId>
         <version>3.2.3</version>
       </dependency>
+
+      <!-- Axon Framework -->
+      <dependency>
+        <groupId>org.axonframework</groupId>
+        <artifactId>axon-bom</artifactId>
+        <version>${axon.framework.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
       <!-- Examples Common -->
       <dependency>
         <groupId>io.holunda</groupId>

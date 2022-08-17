@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <relativePath>../../bom/parent/pom.xml</relativePath>
   </parent>
 
@@ -38,11 +38,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>camunda-bpm-correlate-spring-starter</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream</artifactId>
     </dependency>
@@ -50,6 +45,14 @@
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
+    </dependency>
+
+    <!-- Starter is provided -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Camunda is provided -->

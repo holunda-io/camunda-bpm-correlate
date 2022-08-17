@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    stream:
+      function:
+        definition: directIngressMessageConsumer
+        bindings:
+          directIngressMessageConsumer-in-0: correlate-ingres-binding
+correlate:
+  enabled: false

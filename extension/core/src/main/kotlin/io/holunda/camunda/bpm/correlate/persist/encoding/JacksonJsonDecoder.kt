@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
 
 /**
- * Decoder of JSON payload encoded by Jackson.
+ * Encoder/Decoder of JSON payload using Jackson.
  */
 class JacksonJsonDecoder(
   private val objectMapper: ObjectMapper
@@ -21,5 +21,9 @@ class JacksonJsonDecoder(
       "${payloadTypeInfo.namespace}.${payloadTypeInfo.name}"
     )
     return objectMapper.readValue(payload, type)
+  }
+
+  override fun <T> encode(payload: T): ByteArray {
+    return objectMapper.writeValueAsBytes(payload)
   }
 }

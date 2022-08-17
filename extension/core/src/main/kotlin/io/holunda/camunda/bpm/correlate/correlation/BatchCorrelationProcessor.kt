@@ -21,13 +21,14 @@ class BatchCorrelationProcessor(
       .forEach { batch ->
         try {
           logger.debug { "Correlating batch ${batch.correlationHint} containing ${batch.correlationMessages.size} messages." }
-          val result = correlationService.correlateBatch(batch)
+          val result: CorrelationBatchResult = correlationService.correlateBatch(batch)
           logger.debug { "Processing result for batch ${batch.correlationHint}: $result" }
           when (result) {
             is CorrelationBatchResult.Success -> {
               persistenceService.success(successfulCorrelations = result.successfulCorrelations)
               correlationMetrics.incrementSuccess(result.successfulCorrelations.size)
             }
+
             is CorrelationBatchResult.Error -> {
               persistenceService.success(successfulCorrelations = result.successfulCorrelations)
               correlationMetrics.incrementSuccess(result.successfulCorrelations.size)
