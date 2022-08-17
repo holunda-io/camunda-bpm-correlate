@@ -145,7 +145,7 @@ class DefaultMessagePersistenceService(
    */
   override fun <P, M : ChannelMessage<P>> persistMessage(metaData: MessageMetaData, channelMessage: M) {
     val payload = when (channelMessage) {
-      is DelegatingChannelMessage<*> -> requireIsByteArray(channelMessage.payload) { "Unsupported payload type inside the message delegate. ByteArray was expected, but it was ${channelMessage.payload::class.qualifiedName}" }
+      is DelegatingChannelMessage<*, *> -> requireIsByteArray(channelMessage.payload) { "Unsupported payload type inside the message delegate. ByteArray was expected, but it was ${channelMessage.payload::class.qualifiedName}" }
       is ByteMessage -> channelMessage.payload
       else -> {
         throw IllegalArgumentException("Unsupported message type for ${channelMessage.headers}")
@@ -183,8 +183,7 @@ inline fun requireIsByteArray(value: Any, lazyMessage: () -> Any): ByteArray =
   if (value is ByteArray) {
     value
   } else {
-    val message = lazyMessage()
-    throw IllegalArgumentException(message.toString())
+    throw IllegalArgumentException(lazyMessage().toString())
   }
 
 

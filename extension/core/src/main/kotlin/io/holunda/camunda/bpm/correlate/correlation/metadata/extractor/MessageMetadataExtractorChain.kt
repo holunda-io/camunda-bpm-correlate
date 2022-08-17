@@ -4,16 +4,18 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
+import io.holunda.camunda.bpm.correlate.util.ComponentLike
 
 /**
  * Chain of extractor with the every further extractor overwriting values of previous.
  */
+@ComponentLike
 class MessageMetadataExtractorChain(
   private val extractors: List<MessageMetaDataSnippetExtractor>
 ) : MessageMetaDataSnippetExtractor {
 
   companion object {
-    operator fun invoke(vararg extractor: MessageMetaDataSnippetExtractor): MessageMetadataExtractorChain = MessageMetadataExtractorChain(*extractor)
+    operator fun invoke(vararg extractor: MessageMetaDataSnippetExtractor): MessageMetadataExtractorChain = MessageMetadataExtractorChain(extractor.asList())
   }
 
   /**

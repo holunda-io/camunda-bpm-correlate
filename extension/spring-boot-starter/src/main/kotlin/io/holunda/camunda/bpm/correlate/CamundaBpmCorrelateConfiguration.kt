@@ -1,30 +1,18 @@
 package io.holunda.camunda.bpm.correlate
 
 import io.holunda.camunda.bpm.correlate.correlation.BatchConfigurationProperties
-import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationProcessor
-import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationService
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationMetrics
-import io.holunda.camunda.bpm.correlate.correlation.impl.CamundaBpmBatchCorrelationService
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfig
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.MessageMetadataExtractorChain
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactory
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactoryRegistry
-import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
-import io.holunda.camunda.bpm.correlate.ingres.impl.PersistingChannelMessageAcceptorImpl
-import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
-import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
-import io.holunda.camunda.bpm.correlate.persist.impl.MyBatisMessageMapper
-import io.holunda.camunda.bpm.correlate.persist.impl.MyBatisMessageRepository
 import mu.KLogging
-import org.camunda.bpm.engine.RuntimeService
-import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -67,7 +55,10 @@ class CamundaBpmCorrelateConfiguration {
   @ConditionalOnMissingBean
   @Bean
   @Order(20)
-  fun headerMessageMetaDataSnippetExtractor() = HeaderMessageMetaDataSnippetExtractor()
+  fun headerMessageMetaDataSnippetExtractor() = HeaderMessageMetaDataSnippetExtractor(
+    enforceMessageId = true,
+    enforceTypeInfo = true
+  )
 
   @Bean
   fun camundaCorrelationEventFactoryRegistry(factories: List<CamundaCorrelationEventFactory>): CamundaCorrelationEventFactoryRegistry =

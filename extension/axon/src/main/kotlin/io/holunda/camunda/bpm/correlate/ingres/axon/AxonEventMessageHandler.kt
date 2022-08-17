@@ -2,7 +2,6 @@ package io.holunda.camunda.bpm.correlate.ingres.axon
 
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
-import io.holunda.camunda.bpm.correlate.ingres.message.ByteMessage
 import io.holunda.camunda.bpm.correlate.ingres.message.DelegatingChannelMessage
 import io.holunda.camunda.bpm.correlate.ingres.message.ObjectMessage
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
@@ -34,7 +33,7 @@ class AxonEventMessageHandler(
         // information only and reject messages without a need to de-serialize them.
         DelegatingChannelMessage(
           delegate = ObjectMessage(headers = headers, payload = eventMessage),
-          payloadSupplier = { payload -> encoder.encode((payload as EventMessage<*>).payload) }
+          payloadSupplier = { eventMessage -> encoder.encode(eventMessage.payload) }
         )
       )
       logger.debug { "Accepted message $headers" }

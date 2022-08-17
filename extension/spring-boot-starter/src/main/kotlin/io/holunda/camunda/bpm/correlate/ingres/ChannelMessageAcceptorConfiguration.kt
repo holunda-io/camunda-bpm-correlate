@@ -21,11 +21,13 @@ class ChannelMessageAcceptorConfiguration {
   fun persistingChannelMessageAcceptor(
     messageMetadataExtractorChain: MessageMetadataExtractorChain,
     messagePersistenceService: MessagePersistenceService,
-    messageFilter: MessageFilter
+    messageFilter: MessageFilter,
+    ingresMetrics: IngresMetrics
   ): ChannelMessageAcceptor = PersistingChannelMessageAcceptorImpl(
     messageMetadataExtractorChain = messageMetadataExtractorChain,
     messagePersistenceService = messagePersistenceService,
-    messageFilter = messageFilter
+    messageFilter = messageFilter,
+    ingresMetrics = ingresMetrics
   )
 
   @ConditionalOnMissingBean

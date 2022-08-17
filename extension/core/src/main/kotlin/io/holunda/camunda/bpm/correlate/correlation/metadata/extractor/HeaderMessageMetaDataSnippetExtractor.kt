@@ -3,6 +3,15 @@ package io.holunda.camunda.bpm.correlate.correlation.metadata.extractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
+import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.EXPIRATION
+import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.ID
+import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.PAYLOAD_ENCODING
+import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.PAYLOAD_TYPE_CLASS_NAME
+import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.PAYLOAD_TYPE_NAME
+import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.PAYLOAD_TYPE_NAMESPACE
+import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.PAYLOAD_TYPE_REVISION
+import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.TIMESTAMP
+import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.TTL
 import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
 import io.holunda.camunda.bpm.data.CamundaBpmData.reader
 import io.holunda.camunda.bpm.data.CamundaBpmData.stringVariable
@@ -13,18 +22,68 @@ import java.time.format.DateTimeParseException
 /**
  * Implementation of a metadata extractor from message headers.
  */
-class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
+open class HeaderMessageMetaDataSnippetExtractor(
+  private val enforceMessageId: Boolean,
+  private val enforceTypeInfo: Boolean
+) : MessageMetaDataSnippetExtractor {
+
+  object HeaderNames {
+    /**
+     * Header for the full-qualified class name of the payload type.
+     */
+    const val PAYLOAD_TYPE_CLASS_NAME = "X-CORRELATE-PayloadType-FQCN"
+
+    /**
+     * Header for the namespace of the payload type.
+     */
+    const val PAYLOAD_TYPE_NAMESPACE = "X-CORRELATE-PayloadType-Namespace"
+
+    /**
+     * Header for the name of the payload type.
+     */
+    const val PAYLOAD_TYPE_NAME = "X-CORRELATE-PayloadType-Name"
+
+    /**
+     * Header for the revision of the payload type.
+     */
+    const val PAYLOAD_TYPE_REVISION = "X-CORRELATE-PayloadType-Revision"
+
+    /**
+     * Header for the payload encoding.
+     */
+    const val PAYLOAD_ENCODING = "X-CORRELATE-Payload-Encoding"
+
+    /**
+     * Header for the message time-to-live.
+     */
+    const val TTL = "X-CORRELATE-TTL"
+
+    /**
+     * Header for the message expiration.
+     */
+    const val EXPIRATION = "X-CORRELATE-Expiration"
+
+    /**
+     * Header for the message id.
+     */
+    const val ID = "X-CORRELATE-ID"
+
+    /**
+     * Header for the message timestamp.
+     */
+    const val TIMESTAMP = "X-CORRELATE-Timestamp"
+  }
 
   companion object {
-    val HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME = stringVariable("X-CORRELATE-PayloadType-FQCN")
-    val HEADER_MESSAGE_PAYLOAD_TYPE_NAMESPACE = stringVariable("X-CORRELATE-PayloadType-Namespace")
-    val HEADER_MESSAGE_PAYLOAD_TYPE_NAME = stringVariable("X-CORRELATE-PayloadType-Name")
-    val HEADER_MESSAGE_PAYLOAD_TYPE_REVISION = stringVariable("X-CORRELATE-PayloadType-Revision")
-    val HEADER_MESSAGE_PAYLOAD_ENCODING = stringVariable("X-CORRELATE-Payload-Encoding")
-    val HEADER_MESSAGE_TTL = stringVariable("X-CORRELATE-TTL")
-    val HEADER_MESSAGE_EXPIRATION = stringVariable("X-CORRELATE-Expiration")
-    val HEADER_MESSAGE_ID = stringVariable("X-CORRELATE-ID")
-    val HEADER_MESSAGE_TIMESTAMP = stringVariable("X-CORRELATE-Timestamp")
+    val HEADER_MESSAGE_PAYLOAD_TYPE_CLASS_NAME = stringVariable(PAYLOAD_TYPE_CLASS_NAME)
+    val HEADER_MESSAGE_PAYLOAD_TYPE_NAMESPACE = stringVariable(PAYLOAD_TYPE_NAMESPACE)
+    val HEADER_MESSAGE_PAYLOAD_TYPE_NAME = stringVariable(PAYLOAD_TYPE_NAME)
+    val HEADER_MESSAGE_PAYLOAD_TYPE_REVISION = stringVariable(PAYLOAD_TYPE_REVISION)
+    val HEADER_MESSAGE_PAYLOAD_ENCODING = stringVariable(PAYLOAD_ENCODING)
+    val HEADER_MESSAGE_TTL = stringVariable(TTL)
+    val HEADER_MESSAGE_EXPIRATION = stringVariable(EXPIRATION)
+    val HEADER_MESSAGE_ID = stringVariable(ID)
+    val HEADER_MESSAGE_TIMESTAMP = stringVariable(TIMESTAMP)
   }
 
   override fun <P> extractMetaData(message: ChannelMessage<P>): MessageMetaDataSnippet? {
@@ -38,8 +97,17 @@ class HeaderMessageMetaDataSnippetExtractor : MessageMetaDataSnippetExtractor {
 
   override fun supports(headers: Map<String, Any>): Boolean {
     val snippet = readMetaDataSnippet(headers)
-    // supports any message with a message id and payload type info.
-    return snippet.messageId != null && snippet.payloadTypeInfo != TypeInfo.UNKNOWN
+    val messageIdCheck = if (enforceMessageId) {
+      snippet.messageId != null
+    } else {
+      true
+    }
+    val typeCheck = if (enforceTypeInfo) {
+      snippet.payloadTypeInfo != TypeInfo.UNKNOWN
+    } else {
+      true
+    }
+    return messageIdCheck && typeCheck
   }
 
   private fun readMetaDataSnippet(headers: Map<String, Any>): MessageMetaDataSnippet {

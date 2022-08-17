@@ -9,7 +9,7 @@ interface AxonEventHeaderConverter {
 
   /**
    * Extracts headers.
-   * @param event message received via Axon.
+   * @param eventMessage message received via Axon.
    * @return map of headers.
    */
   fun extractHeaders(eventMessage: EventMessage<*>): Map<String, Any>

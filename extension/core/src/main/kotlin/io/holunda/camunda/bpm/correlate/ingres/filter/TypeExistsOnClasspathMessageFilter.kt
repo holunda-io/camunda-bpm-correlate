@@ -8,10 +8,12 @@ import org.springframework.util.ClassUtils
 /**
  * Accepts all messages having payloads existing on the classpath.
  */
-class TypeExistsOnClasspathMessageFilter : MessageFilter {
+class TypeExistsOnClasspathMessageFilter(
+  private val classLoader: ClassLoader? = null
+) : MessageFilter {
   override fun <P> accepts(channelMessage: ChannelMessage<P>, metaData: MessageMetaData): Boolean {
     return try {
-      ClassUtils.resolveClassName(metaData.payloadTypeInfo.toFQCN(), null)
+      ClassUtils.resolveClassName(metaData.payloadTypeInfo.toFQCN(), classLoader)
       true
     } catch (e: IllegalArgumentException) {
       false
