@@ -729,9 +729,16 @@
 
   <h1>Message processing</h1>
 
-<p>Messages are processed in batches triggered by a scheduler. There are following options to set-up the attributes of this schduler:</p>
+<p>Messages are processed in batches triggered by a scheduler. There are following options to set-up the attributes of this scheduler:</p>
 <p>... More details will follow</p>
 <h2 id="running-in-a-cluster">Running in a cluster<a class="headerlink" href="#running-in-a-cluster" title="Permanent link">#</a></h2>
+<p>For activation of the cluster support, please add the following configuration snippet to your <code>application.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">correlate</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">batch</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cluster</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">queuePollLockMostInterval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT5M</span><span class="w"></span>
+</code></pre></div>
 <p>For a cluster operations it is important to synchronize the batch schedulers between the cluster nodes. For this purpose, the library
 <a href="https://github.com/lukas-krecan/ShedLock">Shedlock</a> is used. Shedlock synchronizes the scheduled tasks using a RDBMS table. Here are
 the required DDL snippets for some common RDBMSs.</p>
