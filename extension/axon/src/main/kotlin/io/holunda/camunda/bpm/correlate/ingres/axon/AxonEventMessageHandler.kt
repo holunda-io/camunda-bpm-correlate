@@ -33,7 +33,7 @@ class AxonEventMessageHandler(
         // information only and reject messages without a need to de-serialize them.
         DelegatingChannelMessage(
           delegate = ObjectMessage(headers = headers, payload = eventMessage),
-          payloadSupplier = { eventMessage -> encoder.encode(eventMessage.payload) }
+          payloadSupplier = { _eventMessage -> encoder.encode(_eventMessage.payload) }
         )
       )
       logger.debug { "Accepted message $headers" }

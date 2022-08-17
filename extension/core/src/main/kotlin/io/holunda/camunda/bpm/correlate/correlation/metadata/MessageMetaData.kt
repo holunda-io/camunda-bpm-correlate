@@ -4,8 +4,6 @@ import java.time.Instant
 
 /**
  * Message metadata.
- *
- * TODO: issue support expiration (business timeout, for example: I will send you an new event anyway tomorrow)
  */
 data class MessageMetaData(
   /**

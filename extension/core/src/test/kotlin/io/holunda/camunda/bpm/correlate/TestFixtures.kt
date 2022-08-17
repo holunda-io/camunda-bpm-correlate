@@ -1,7 +1,9 @@
 package io.holunda.camunda.bpm.correlate
 
+import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
+import io.holunda.camunda.bpm.correlate.event.CorrelationHint
 import io.holunda.camunda.bpm.correlate.ingres.MessageFilter
 import io.holunda.camunda.bpm.correlate.ingres.message.ByteMessage
 import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
@@ -19,10 +21,19 @@ fun emptyMessageMetadata() = MessageMetaData(
   timeToLive = null,
   expiration = null
 )
-
 fun acceptingFilter() = AcceptingMessageFilter()
 
 fun rejectingFilter() = RejectingMessageFilter()
+
+fun runningInstanceHint(processInstanceId: String) = CorrelationHint(
+  processDefinitionId = "DEF-ID",
+  processInstanceId = processInstanceId,
+)
+
+fun correlationMessage() = CorrelationMessage(
+  messageMetaData = emptyMessageMetadata(),
+  payload = UUID.randomUUID().toString()
+)
 
 /**
  * Reject all.

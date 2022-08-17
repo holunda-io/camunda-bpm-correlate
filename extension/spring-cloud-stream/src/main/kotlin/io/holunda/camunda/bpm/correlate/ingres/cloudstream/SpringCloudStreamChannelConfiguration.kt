@@ -6,7 +6,6 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelCo
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptorConfiguration
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
-import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -46,9 +45,8 @@ class SpringCloudStreamChannelConfiguration {
 
   @Bean
   @Order(10)
-  fun streamChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>, payloadDecoders: List<PayloadDecoder>): MessageMetaDataSnippetExtractor =
+  fun streamChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>): MessageMetaDataSnippetExtractor =
     ChannelConfigMessageMetaDataSnippetExtractor(
-      channelConfig = requireNotNull(channelConfigs[TYPE]) { "Configuration for channel '${TYPE}' is required." },
-      payloadDecoders = payloadDecoders
+      channelConfig = requireNotNull(channelConfigs[TYPE]) { "Configuration for channel '${TYPE}' is required." }
     )
 }
