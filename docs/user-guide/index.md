@@ -3,11 +3,10 @@ The user guide consists of several sections.
 ## Concepts
 
 * [Architecture](architecture.md)
-* Ingres Adapter
-  *  [Axon Framework](ingres-axon.md)
-  *  [Spring Cloud Stream](ingres-spring-cloud.md)
+* [Ingres Adapter](ingres.md)
 * [Message Acceptor](message-acceptor.md)
 * [Message Persistence](message-persistence.md)
+* [Message Processing](message-processing.md)
 
 ## Examples
 

@@ -92,6 +92,8 @@ correlate:
     cleanup:  # cleanup of expired messages
       pollInitialDelay: PT1M
       pollInterval: PT1M
+    cluster:
+      queuePollLockMostInterval: PT5M
   persistence:
     messageMaxRetries: 5 # default 100 -> will try to deliver 5 times at most
     messageFetchPageSize: 100 # default 100
