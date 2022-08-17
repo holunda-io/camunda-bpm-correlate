@@ -11,12 +11,13 @@ data class BatchConfigurationProperties(
   @NestedConfigurationProperty
   val cleanup: ScheduleConfigurationProperties,
   @NestedConfigurationProperty
-  val cluster: ClusterSetupProperties,
-  ) : BatchConfig {
+  val cluster: ClusterSetupProperties = ClusterSetupProperties(),
+) : BatchConfig {
   override fun getBatchMode(): BatchCorrelationMode = mode
   override fun getQueryPollInitialDelay(): String = query.pollInitialDelay
   override fun getQueryPollInterval(): String = query.pollInterval
   override fun getCleanupPollInitialDelay(): String = cleanup.pollInitialDelay
   override fun getCleanupPollInterval(): String = cleanup.pollInterval
-  override fun getQueuePollLockMostInterval(): String = cluster.queuePollLockMostInterval
+  override fun getQueuePollLockMostInterval(): String =
+    requireNotNull(cluster.queuePollLockMostInterval) { "correlate.batch.cluster.queuePollLockMostInterval must be specified if cluster mode is enabled." }
 }

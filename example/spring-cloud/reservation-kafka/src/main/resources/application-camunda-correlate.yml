@@ -23,6 +23,7 @@ correlate:
       pollInitialDelay: PT1M
       pollInterval: PT1M
     cluster:
+      enabled: true
       queuePollLockMostInterval: PT5M
   persistence:
     messageMaxRetries: 5 # default 100 -> will try to deliver 5 times at most
