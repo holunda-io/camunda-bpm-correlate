@@ -109,6 +109,7 @@ nav:
           - Message Acceptor: user-guide/message-acceptor.md
           - Message Filter: user-guide/filtering-messages.md
           - Message Persistence: user-guide/message-persistence.md
+          - Scheduled Processing: user-guide/scheduled-processing.md
       - Examples: user-guide/examples.md
   - Developer Guide:
       - Contributing: developer-guide/contribution.md

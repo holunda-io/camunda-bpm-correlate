@@ -1,12 +1,12 @@
 The user guide consists of several sections.
 
-## Concepts
+## Concepts and Components
 
 * [Architecture](architecture.md)
 * [Ingres Adapter](ingres.md)
 * [Message Acceptor](message-acceptor.md)
 * [Message Persistence](message-persistence.md)
-* [Message Processing](message-processing.md)
+* [Scheduled Processing](scheduled-processing.md)
 
 ## Examples
 
