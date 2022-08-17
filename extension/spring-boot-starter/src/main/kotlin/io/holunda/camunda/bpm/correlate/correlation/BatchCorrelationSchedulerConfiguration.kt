@@ -3,6 +3,7 @@ package io.holunda.camunda.bpm.correlate.correlation
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
 import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
 import mu.KLogging
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
@@ -33,6 +34,10 @@ class BatchCorrelationSchedulerConfiguration(
   @Scheduled(
     initialDelayString = "#{batchConfigurationProperties.queryPollInitialDelay}",
     fixedRateString = "#{batchConfigurationProperties.queryPollInterval}"
+  )
+  @SchedulerLock(
+    name = "message-correlation",
+    lockAtMostFor = "#{batchConfigurationProperties.queuePollLockMostInterval}"
   )
   fun runCorrelation() {
     batchCorrelationProcessor.correlate()

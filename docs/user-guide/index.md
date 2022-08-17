@@ -4,8 +4,8 @@ The user guide consists of several sections.
 
 * [Architecture](architecture.md)
 * Ingres Adapter
-  * [Axon Framework](ingres-axon.md)
-  * [Spring Cloud Stream](ingres-spring-cloud.md)
+  *  [Axon Framework](ingres-axon.md)
+  *  [Spring Cloud Stream](ingres-spring-cloud.md)
 * [Message Acceptor](message-acceptor.md)
 * [Message Persistence](message-persistence.md)
 
@@ -16,4 +16,4 @@ The user guide consists of several sections.
 
 ## References
 
-* [Camunda Community Summit 2022 Talk] (https://page.camunda.com/ccs2022-correlatingmessages?hsLang=en)
+* [Camunda Community Summit 2022 Talk](https://page.camunda.com/ccs2022-correlatingmessages?hsLang=en)

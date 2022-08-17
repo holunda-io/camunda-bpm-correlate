@@ -1,6 +1,5 @@
 package io.holunda.camunda.bpm.example.kafka
 
-import io.holunda.camunda.bpm.correlate.correlation.BatchConfigurationProperties
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
 import org.camunda.bpm.engine.spring.SpringProcessEnginePlugin
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication

@@ -1,14 +1,22 @@
-create table COR_MESSAGE(
-  ID varchar2(64) unique not null,
-  PAYLOAD_ENCODING varchar2(64) not null,
-  PAYLOAD_TYPE_NAMESPACE varchar2(128) not null,
-  PAYLOAD_TYPE_NAME varchar2(128) not null,
-  PAYLOAD_TYPE_REVISION varchar2(64),
-  PAYLOAD binary(1024),
-  INSERTED timestamp not null,
-  TTL_DURATION varchar2(32),
-  EXPIRATION timestamp,
-  RETRIES integer not null,
-  NEXT_RETRY timestamp,
-  ERROR clob(10000)
+CREATE TABLE COR_MESSAGE (
+    ID                     VARCHAR2(64) UNIQUE NOT NULL,
+    PAYLOAD_ENCODING       VARCHAR2(64) NOT NULL,
+    PAYLOAD_TYPE_NAMESPACE VARCHAR2(128) NOT NULL,
+    PAYLOAD_TYPE_NAME      VARCHAR2(128) NOT NULL,
+    PAYLOAD_TYPE_REVISION  VARCHAR2(64),
+    PAYLOAD                BINARY(1024),
+    INSERTED               TIMESTAMP NOT NULL,
+    TTL_DURATION           VARCHAR2(32),
+    EXPIRATION             TIMESTAMP,
+    RETRIES                INTEGER   NOT NULL,
+    NEXT_RETRY             TIMESTAMP,
+    ERROR                  CLOB(10000)
+);
+
+CREATE TABLE shedlock (
+    name       VARCHAR(64)  NOT NULL,
+    lock_until TIMESTAMP    NOT NULL,
+    locked_at  TIMESTAMP    NOT NULL,
+    locked_by  VARCHAR(255) NOT NULL,
+    PRIMARY KEY (name)
 );
