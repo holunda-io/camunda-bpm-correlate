@@ -36,6 +36,12 @@
       <artifactId>camunda-bpm-correlate-example-common</artifactId>
     </dependency>
 
+    <!-- Plugin -->
+    <dependency>
+      <groupId>io.holunda</groupId>
+      <artifactId>camunda-bpm-correlate-cockpit-plugin</artifactId>
+      <scope>runtime</scope>
+    </dependency>
 
     <!-- Camunda -->
     <dependency>

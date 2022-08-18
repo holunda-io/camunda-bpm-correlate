@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.holunda</groupId>
+    <artifactId>camunda-bpm-correlate-parent</artifactId>
+    <version>0.0.3-SNAPSHOT</version>
+    <relativePath>../../bom/parent/pom.xml</relativePath>
+  </parent>
+
+  <artifactId>camunda-bpm-correlate-cockpit-plugin</artifactId>
+  <name>Extension / Cockpit plugin</name>
+  <packaging>jar</packaging>
+
+  <properties>
+    <camunda.plugin.category>Monitoring</camunda.plugin.category>
+    <camunda.plugin.screenshot>screenshot.png</camunda.plugin.screenshot>
+    <!-- <camunda.plugin.screenshot.1>screenshot2.png</camunda.plugin.screenshot.1> -->
+    <camunda.plugin.testedOnVersion>${camunda-7.version}</camunda.plugin.testedOnVersion>
+    <!-- <camunda.plugin.exampleProcessApplicationUrl></camunda.plugin.exampleProcessApplicationUrl> -->
+    <camunda.plugin.language>EN</camunda.plugin.language>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <!-- process engine, needs to be provided -->
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <!-- Cockpit Plugin API, needs to be provided -->
+      <groupId>org.camunda.bpm.webapp</groupId>
+      <artifactId>camunda-webapp</artifactId>
+      <classifier>classes</classifier>
+      <!-- not part of camunda bom -->
+      <version>${camunda-7.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Java EE 6 APIs -->
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>6.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+  </build>
+</project>

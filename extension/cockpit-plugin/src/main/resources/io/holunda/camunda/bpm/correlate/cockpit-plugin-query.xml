@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.holunda.camunda.bpm.correlate">
+  <resultMap id="correlateMessages" type="io.holunda.camunda.bpm.correlate.db.CorrelateMessageDto">
+    <result property = "id" column = "ID" jdbcType = "VARCHAR" />
+    <result property = "payloadEncoding" column = "PAYLOAD_ENCODING" jdbcType = "VARCHAR" />
+    <result property = "payloadTypeNamespace" column = "PAYLOAD_TYPE_NAMESPACE" jdbcType = "VARCHAR" />
+    <result property = "payloadTypeName" column = "PAYLOAD_TYPE_NAME" jdbcType = "VARCHAR" />
+    <result property = "payloadTypeRevision" column = "PAYLOAD_TYPE_REVISION" jdbcType = "VARCHAR" />
+    <result property = "payload" column = "PAYLOAD" jdbcType = "BINARY" />
+    <result property = "inserted" column = "INSERTED" jdbcType = "TIMESTAMP_WITH_TIMEZONE" />
+    <result property = "timeToLiveDuration" column = "TTL_DURATION" jdbcType = "VARCHAR" />
+    <result property = "expiration" column = "EXPIRATION" jdbcType = "TIMESTAMP_WITH_TIMEZONE" />
+    <result property = "retries" column = "RETRIES" jdbcType = "INTEGER" />
+    <result property = "nextRetry" column = "NEXT_RETRY" jdbcType = "TIMESTAMP_WITH_TIMEZONE" />
+    <result property = "error" column = "ERROR" jdbcType = "VARCHAR" />
+  </resultMap>
+  <select id="selectCorrelateMessages" resultMap="correlateMessages">
+    SELECT * FROM COR_MESSAGE message
+  </select>
+
+</mapper>
