@@ -18,13 +18,13 @@ class MessageManagementService(
 
   fun cleanupExpired() {
     messageRepository.deleteAllById(
-      messageRepository.findAll(pageSize = persistenceConfig.getPageSize())
+      messageRepository.findAllLight(page = 0, pageSize = persistenceConfig.getPageSize())
         .filter { it.isExpired(clock) }
         .map { it.id }
     )
   }
 
   fun listAllMessages(): List<MessageEntity> {
-    return messageRepository.findAll(pageSize = persistenceConfig.getPageSize())
+    return messageRepository.findAll(page = 0, pageSize = persistenceConfig.getPageSize())
   }
 }

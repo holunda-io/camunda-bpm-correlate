@@ -2,9 +2,28 @@ package io.holunda.camunda.bpm.correlate.persist.impl
 
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import org.apache.ibatis.annotations.*
+import org.apache.ibatis.session.RowBounds
 import org.apache.ibatis.type.JdbcType
 
 interface MyBatisMessageMapper {
+
+  @Select("SELECT * FROM COR_MESSAGE message")
+  @Results(
+    value = [
+      Result(property = "id", column = "ID", jdbcType = JdbcType.VARCHAR),
+      Result(property = "payloadEncoding", column = "PAYLOAD_ENCODING", jdbcType = JdbcType.VARCHAR),
+      Result(property = "payloadTypeNamespace", column = "PAYLOAD_TYPE_NAMESPACE", jdbcType = JdbcType.VARCHAR),
+      Result(property = "payloadTypeName", column = "PAYLOAD_TYPE_NAME", jdbcType = JdbcType.VARCHAR),
+      Result(property = "payloadTypeRevision", column = "PAYLOAD_TYPE_REVISION", jdbcType = JdbcType.VARCHAR),
+      Result(property = "inserted", column = "INSERTED", jdbcType = JdbcType.TIMESTAMP_WITH_TIMEZONE),
+      Result(property = "timeToLiveDuration", column = "TTL_DURATION", jdbcType = JdbcType.VARCHAR),
+      Result(property = "expiration", column = "EXPIRATION", jdbcType = JdbcType.TIMESTAMP_WITH_TIMEZONE),
+      Result(property = "retries", column = "RETRIES", jdbcType = JdbcType.INTEGER),
+      Result(property = "nextRetry", column = "NEXT_RETRY", jdbcType = JdbcType.TIMESTAMP_WITH_TIMEZONE),
+      Result(property = "error", column = "ERROR", jdbcType = JdbcType.VARCHAR),
+    ]
+  )
+  fun findAllLightPaged(rowBounds: RowBounds): List<MessageEntity>
 
   @Select("SELECT * FROM COR_MESSAGE message")
   @Results(
@@ -23,7 +42,7 @@ interface MyBatisMessageMapper {
       Result(property = "error", column = "ERROR", jdbcType = JdbcType.VARCHAR),
     ]
   )
-  fun findAll(): List<MessageEntity>
+  fun findAll(rowBounds: RowBounds): List<MessageEntity>
 
   @Select("SELECT * from COR_MESSAGE WHERE ID=#{id}")
   @Results(

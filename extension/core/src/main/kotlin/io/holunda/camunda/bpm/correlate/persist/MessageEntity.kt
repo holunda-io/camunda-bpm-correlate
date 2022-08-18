@@ -9,7 +9,7 @@ class MessageEntity(
   var payloadTypeNamespace: String,
   var payloadTypeName: String,
   var payloadTypeRevision: String?,
-  var payload: ByteArray,
+  var payload: ByteArray = ByteArray(0),
   var inserted: Instant,
   var timeToLiveDuration: String?,
   var expiration: Instant?,

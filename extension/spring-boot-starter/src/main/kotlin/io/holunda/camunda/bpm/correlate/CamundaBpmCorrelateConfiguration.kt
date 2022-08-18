@@ -1,6 +1,7 @@
 package io.holunda.camunda.bpm.correlate
 
 import io.holunda.camunda.bpm.correlate.correlation.BatchConfigurationProperties
+import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationService
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationMetrics
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfig
@@ -9,6 +10,8 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.MessageMe
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactory
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactoryRegistry
 import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
+import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
+import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
 import mu.KLogging
@@ -17,6 +20,8 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationContextAware
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
@@ -31,9 +36,14 @@ import java.time.Clock
 )
 @AutoConfigureAfter(CamundaBpmAutoConfiguration::class)
 @EnableConfigurationProperties(CorrelateConfigurationProperties::class)
-class CamundaBpmCorrelateConfiguration {
+class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
 
-  companion object : KLogging()
+  companion object : KLogging() {
+    /**
+     * This is a dirty hack to access application context from cockpit plugins instantiated by the SPI.
+     */
+    lateinit var applicationContext: ApplicationContext
+  }
 
   @ConditionalOnMissingBean
   @Bean
@@ -79,5 +89,23 @@ class CamundaBpmCorrelateConfiguration {
   @Bean
   fun batchConfigurationProperties(correlateConfigurationProperties: CorrelateConfigurationProperties): BatchConfigurationProperties =
     correlateConfigurationProperties.batch
+
+  @Bean
+  fun camundaBpmCorrelateService(
+    configuration: CorrelateConfigurationProperties,
+    messagePersistenceService: MessagePersistenceService,
+    batchCorrelationService: BatchCorrelationService,
+    messageRepository: MessageRepository
+  ) = CamundaBpmCorrelateServices(
+    configuration,
+    messagePersistenceService,
+    batchCorrelationService,
+    messageRepository
+  )
+
+
+  override fun setApplicationContext(applicationContext: ApplicationContext) {
+    CamundaBpmCorrelateConfiguration.applicationContext = applicationContext
+  }
 
 }

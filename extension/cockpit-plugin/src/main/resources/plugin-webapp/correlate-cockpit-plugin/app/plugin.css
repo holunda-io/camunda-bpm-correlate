@@ -1,0 +1,14 @@
+.message-id {
+  white-space: nowrap;
+}
+
+.action-button {
+  width: 40px;
+  margin: 5px;
+}
+
+.no-content {
+  text-align: center;
+  font-style: italic;
+  margin: 5px;
+}

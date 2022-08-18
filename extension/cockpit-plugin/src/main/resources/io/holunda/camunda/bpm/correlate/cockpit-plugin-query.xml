@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="io.holunda.camunda.bpm.correlate">
-  <resultMap id="correlateMessages" type="io.holunda.camunda.bpm.correlate.db.CorrelateMessageDto">
+  <resultMap id="correlateMessages" type="io.holunda.camunda.bpm.correlate.dto.MessageDto">
     <result property = "id" column = "ID" jdbcType = "VARCHAR" />
     <result property = "payloadEncoding" column = "PAYLOAD_ENCODING" jdbcType = "VARCHAR" />
     <result property = "payloadTypeNamespace" column = "PAYLOAD_TYPE_NAMESPACE" jdbcType = "VARCHAR" />

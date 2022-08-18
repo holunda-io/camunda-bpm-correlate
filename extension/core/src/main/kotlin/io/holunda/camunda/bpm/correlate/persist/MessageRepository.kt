@@ -8,10 +8,18 @@ interface MessageRepository {
 
   /**
    * Finds all messages.
+   * @param page number start element to fetch from.
    * @param pageSize number elements to fetch.
-   * @return list of all messages with no expiration or expiration set to a future date.
+   * @return list of all messages.
    */
-  fun findAll(pageSize: Int): List<MessageEntity>
+  fun findAll(page: Int, pageSize: Int): List<MessageEntity>
+  /**
+   * Finds all messages without payload.
+   * @param page number start element to fetch from.
+   * @param pageSize number elements to fetch.
+   * @return list of all messages.
+   */
+  fun findAllLight(page: Int, pageSize: Int): List<MessageEntity>
 
   /**
    * Finds a message by id.
