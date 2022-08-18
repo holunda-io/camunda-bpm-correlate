@@ -29,11 +29,11 @@ function generateHTML(messages) {
 
 export default {
   id: "correlate-cockpit-plugin",
-  pluginPoint: "cockpit.processes.dashboard",
+  pluginPoint: "cockpit.dashboard",
   priority: 12,
   render: (container, { api }) => {
     fetch(
-      `${api.cockpitApi}/plugin/cockpit-plugin/${api.engine}/messages`
+      `${api.cockpitApi}/plugin/correlate-cockpit-plugin/${api.engine}/messages`
     ).then(async res => {
       const messages = await res.json();
       container.innerHTML = generateHTML(messages);
