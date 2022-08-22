@@ -13,6 +13,7 @@ import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
+import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
 import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
 import mu.KLogging
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
@@ -95,12 +96,14 @@ class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
     configuration: CorrelateConfigurationProperties,
     messagePersistenceService: MessagePersistenceService,
     batchCorrelationService: BatchCorrelationService,
-    messageRepository: MessageRepository
+    messageRepository: MessageRepository,
+    messageManagementService: MessageManagementService
   ) = CamundaBpmCorrelateServices(
-    configuration,
-    messagePersistenceService,
-    batchCorrelationService,
-    messageRepository
+    configuration = configuration,
+    messagePersistenceService = messagePersistenceService,
+    batchCorrelationService = batchCorrelationService,
+    messageManagementService = messageManagementService,
+    messageRepository = messageRepository
   )
 
 

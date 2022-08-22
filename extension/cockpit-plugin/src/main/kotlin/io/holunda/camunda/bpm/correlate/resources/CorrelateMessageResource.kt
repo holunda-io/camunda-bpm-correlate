@@ -2,12 +2,12 @@ package io.holunda.camunda.bpm.correlate.resources
 
 import io.holunda.camunda.bpm.correlate.CamundaBpmCorrelateServices
 import io.holunda.camunda.bpm.correlate.dto.MessageDto
+import io.holunda.camunda.bpm.correlate.dto.NextRetryDto
+import io.holunda.camunda.bpm.correlate.dto.RetriesDto
 import io.holunda.camunda.bpm.correlate.dto.toDto
 import io.holunda.camunda.bpm.correlate.getBean
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource
-import javax.ws.rs.GET
-import javax.ws.rs.Produces
-import javax.ws.rs.QueryParam
+import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 
 /**
@@ -23,4 +23,23 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
     return services.messageRepository.findAllLight(page, size).map { it.toDto() }
   }
 
+  @POST
+  @Path("{messageId}/nextRetry")
+  @Consumes(MediaType.APPLICATION_JSON)
+  fun changeMassageNextRetry(@PathParam("messageId") messageId: String, nextRetryDto: NextRetryDto) {
+    services.messageManagementService.changeMessageNextRetry(messageId, nextRetryDto.nextRetry)
+  }
+
+  @POST
+  @Path("{messageId}/retries")
+  @Consumes(MediaType.APPLICATION_JSON)
+  fun changeMassageRetries(@PathParam("messageId") messageId: String, retriesDto: RetriesDto) {
+    services.messageManagementService.changeMessageRetryAttempt(messageId, retriesDto.retries)
+  }
+
+  @DELETE
+  @Path("{messageId}")
+  fun deleteMessage(@PathParam("messageId") messageId: String) {
+    services.messageManagementService.deleteMessage(messageId)
+  }
 }
