@@ -2,6 +2,7 @@ package io.holunda.camunda.bpm.correlate.persist
 
 import java.time.Clock
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 class MessageEntity(
   var id: String,
@@ -17,6 +18,10 @@ class MessageEntity(
   var nextRetry: Instant? = null,
   var error: String? = null
 ) {
+  companion object {
+    val FAR_FUTURE: Instant = Instant.parse("4999-12-03T10:15:30Z") // taking a value that will pass into every DB.
+  }
+
   /**
    * Checks if the message is expired.
    */
@@ -27,7 +32,7 @@ class MessageEntity(
   fun status(maxRetries: Int): MessageStatus {
     return if (error == null && retries == 0) {
       // since the error is null and the retries are zero, we are good.
-      if (nextRetry == RetryInfo.FAR_FUTURE) {
+      if (nextRetry == FAR_FUTURE) {
         // paused
         MessageStatus.PAUSED
       } else {
@@ -39,7 +44,7 @@ class MessageEntity(
         // max retries are reached, no correlation will take place
         MessageStatus.MAX_RETRIES_REACHED
       } else {
-        if (nextRetry == RetryInfo.FAR_FUTURE) {
+        if (nextRetry == FAR_FUTURE) {
           // paused
           MessageStatus.PAUSED
         } else {

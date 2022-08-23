@@ -1,8 +1,8 @@
 package io.holunda.camunda.bpm.correlate.persist.impl
 
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
+import io.holunda.camunda.bpm.correlate.persist.MessageEntity.Companion.FAR_FUTURE
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
-import io.holunda.camunda.bpm.correlate.persist.RetryInfo
 import mu.KLogging
 import java.time.Clock
 import java.time.Instant
@@ -38,16 +38,28 @@ class MessageManagementService(
 
   /**
    * Pauses the message processing setting the time of processing to infinity.
+   * @param messageId message id.
+   * @return message.
    */
-  fun pauseMessageProcessing(messageId: String) {
-    changeMessageNextRetry(messageId = messageId, nextRetry = RetryInfo.FAR_FUTURE)
+  fun pauseMessageProcessing(messageId: String): MessageEntity {
+    return getMessageById(messageId)
+      .also {
+        it.nextRetry = FAR_FUTURE
+        messageRepository.save(it)
+      }
   }
 
   /**
    * Resume the message correlation.
+   * @param messageId message id.
+   * @return message.
    */
-  fun resumeMessageProcessing(messageId: String) {
-    changeMessageNextRetry(messageId = messageId, nextRetry = Instant.now())
+  fun resumeMessageProcessing(messageId: String): MessageEntity {
+    return getMessageById(messageId)
+      .also {
+        it.nextRetry = Instant.now(clock)
+        messageRepository.save(it)
+      }
   }
 
   /**

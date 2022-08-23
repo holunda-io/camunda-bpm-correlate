@@ -37,7 +37,7 @@ function MessageRow({ camundaRestPrefix, element }) {
       <td>{element.payloadTypeNamespace}<br />.{element.payloadTypeName}</td>
       <td className="date">{formatDate(element.inserted)}</td>
       <td>{element.retries}</td>
-      <td className="date">{element.nextRetry ? formatDate(element.nextRetry) : null}</td>
+      <td className="date">{element.nextRetry && element.status !== 'PAUSED' ? formatDate(element.nextRetry) : null}</td>
       <td><CorrelateMessageActions camundaRestPrefix={camundaRestPrefix} message={element} /></td>
     </tr>
   );
@@ -62,7 +62,7 @@ function statusToGlyph(state) {
       stateClass = ['glyphicon', 'glyphicon-remove-sign', 'red'];
       break;
     case 'PAUSED':
-      stateClass = ['glyphicon', 'glyphicon-remove-record', 'orange'];
+      stateClass = ['glyphicon', 'glyphicon-record', 'orange'];
       break;
     case 'RETRYING':
       stateClass = ['glyphicon', 'glyphicon-circle-arrow-right', 'blue'];

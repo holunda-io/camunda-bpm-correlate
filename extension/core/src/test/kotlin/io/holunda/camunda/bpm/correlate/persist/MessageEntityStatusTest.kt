@@ -1,6 +1,5 @@
 package io.holunda.camunda.bpm.correlate.persist
 
-import io.holunda.camunda.bpm.correlate.persist.RetryInfo.Companion.FAR_FUTURE
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,7 +34,7 @@ internal class MessageEntityStatusTest {
 
   @Test
   fun `should map status PAUSED`() {
-    message.nextRetry = FAR_FUTURE
+    message.nextRetry = MessageEntity.FAR_FUTURE
     assertThat(message.status(10)).isEqualTo(MessageStatus.PAUSED)
   }
 
@@ -53,9 +52,9 @@ internal class MessageEntityStatusTest {
   }
 
   @Test
-  fun `should map status PAUSED with error`() {
+  fun `should map status PAUSED for error`() {
     message.retries = 2
-    message.nextRetry = FAR_FUTURE
+    message.nextRetry = MessageEntity.FAR_FUTURE
     assertThat(message.status(10)).isEqualTo(MessageStatus.PAUSED)
   }
 
