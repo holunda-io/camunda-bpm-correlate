@@ -106,6 +106,20 @@ class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
     messageRepository = messageRepository
   )
 
+//  @Order(Int.MAX_VALUE)
+//  @EnableWebSecurity
+//  @ConditionalOnProperty("correlate.configure-csrf-behavior", havingValue = "true", matchIfMissing = false)
+//  class CsrfSecurityAdapter : WebSecurityConfigurerAdapter() {
+//    init {
+//      logger.info { "[Camunda CORRELATE]: Using Cookie-based CSRF repository." }
+//    }
+//    override fun configure(http: HttpSecurity) {
+//      http
+//        .csrf()
+//        .disable()
+//      // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//    }
+//  }
 
   override fun setApplicationContext(applicationContext: ApplicationContext) {
     CamundaBpmCorrelateConfiguration.applicationContext = applicationContext

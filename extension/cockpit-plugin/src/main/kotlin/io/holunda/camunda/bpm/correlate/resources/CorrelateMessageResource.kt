@@ -20,25 +20,43 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   fun getMessages(@QueryParam("faultsOnly") faults: Boolean, @QueryParam("page") page: Int, @QueryParam("size") size: Int): List<MessageDto> {
-    return services.messageRepository.findAllLight(page, size).map { it.toDto() }
+    return services
+      .messageRepository
+      .findAllLight(page, size)
+      .map { it.toDto(services.configuration.persistence.messageMaxRetries) }
   }
 
   @POST
-  @Path("{messageId}/nextRetry")
+  @Path("/{messageId}/nextRetry")
   @Consumes(MediaType.APPLICATION_JSON)
   fun changeMassageNextRetry(@PathParam("messageId") messageId: String, nextRetryDto: NextRetryDto) {
     services.messageManagementService.changeMessageNextRetry(messageId, nextRetryDto.nextRetry)
   }
 
+  @PUT
+  @Path("/{messageId}/pause")
+  @Consumes(MediaType.APPLICATION_JSON)
+  fun pauseMessage(@PathParam("messageId") messageId: String) {
+    services.messageManagementService.pauseMessageProcessing(messageId)
+  }
+
+  @DELETE
+  @Path("/{messageId}/pause")
+  @Consumes(MediaType.APPLICATION_JSON)
+  fun resumeMessage(@PathParam("messageId") messageId: String) {
+    services.messageManagementService.resumeMessageProcessing(messageId)
+  }
+
   @POST
-  @Path("{messageId}/retries")
+  @Path("/{messageId}/retries")
   @Consumes(MediaType.APPLICATION_JSON)
   fun changeMassageRetries(@PathParam("messageId") messageId: String, retriesDto: RetriesDto) {
     services.messageManagementService.changeMessageRetryAttempt(messageId, retriesDto.retries)
   }
 
   @DELETE
-  @Path("{messageId}")
+  @Path("/{messageId}")
+  @Consumes(MediaType.APPLICATION_JSON)
   fun deleteMessage(@PathParam("messageId") messageId: String) {
     services.messageManagementService.deleteMessage(messageId)
   }

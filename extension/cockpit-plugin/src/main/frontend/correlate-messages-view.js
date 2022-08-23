@@ -1,12 +1,9 @@
-import React, {useEffect, useState, useCallback} from "react";
-import CorrelateMessagesTable from "./correlate-table";
+import React, {useCallback, useEffect, useState} from 'react';
+import CorrelateMessagesTable from './correlate-table';
 
-function CorrelateMessagesView({camundaRestPrefix}) {
+function CorrelateMessagesView({ camundaRestPrefix }) {
+
   const { opLog, reload } = useOpLog(camundaRestPrefix);
-
-  if (!opLog) {
-    return <div>Loading...</div>;
-  }
 
   return (<div class="ctn-view cockpit-section-dashboard">
     <div class="dashboard-view">
@@ -14,12 +11,13 @@ function CorrelateMessagesView({camundaRestPrefix}) {
         <section class="col-xs-12 col-md-12">
           <div class="inner">
             <h1 class="section-title">Messages</h1>
-            <CorrelateMessagesTable
-                camundaRestPrefix={camundaRestPrefix}
-                maxRetries={opLog.configuration.maxRetries}
-                messages={opLog.messages}
-                reload={reload}
-            />
+            {opLog ?
+             <CorrelateMessagesTable
+               camundaRestPrefix={camundaRestPrefix}
+               messages={opLog.messages}
+               reload={reload}
+             /> : <div>Loading...</div>
+            }
           </div>
         </section>
       </div>
@@ -30,12 +28,13 @@ function CorrelateMessagesView({camundaRestPrefix}) {
 function useOpLog(camundaRestPrefix) {
   const [opLog, setOpLog] = useState();
 
-  const loadOpLog = useCallback(async () => {
-    setOpLog(await loadMessages(camundaRestPrefix));
-  }, [camundaRestPrefix])
+  const loadOpLog = useCallback(async (parameters) => {
+    setOpLog(await fetchMessagesAndConfig(camundaRestPrefix, parameters));
+  }, [camundaRestPrefix]);
 
   useEffect(() => {
-    loadOpLog();
+    const parameters = { page: 0, size: 100 };
+    loadOpLog(parameters);
   }, []);
 
   return {
@@ -44,20 +43,25 @@ function useOpLog(camundaRestPrefix) {
   };
 }
 
-async function loadMessages(camundaRestPrefix) {
+async function fetchMessagesAndConfig(camundaRestPrefix, parameters) {
+  if (!parameters) {
+    parameters = { page: 0, size: 100 };
+  }
   try {
-    const [configurationRes, messagesRes] = await Promise.all([
-                        fetch(
-                          `${camundaRestPrefix}/configuration`
-                        ),
-                        fetch(
-                          `${camundaRestPrefix}/messages?page=0&size=100`
-                        )
-                      ]);
+    const [configurationRes, messagesRes] = await Promise.all(
+      [
+        fetch(
+          `${camundaRestPrefix}/configuration`
+        ),
+        fetch(
+          `${camundaRestPrefix}/messages?page=${parameters.page}&size=${parameters.size}`
+        )
+      ]
+    );
     return {
       messages: await messagesRes.json(),
-      configuration: await configurationRes.json(),
-    }
+      configuration: await configurationRes.json()
+    };
   } catch (error) {
     console.error(error);
   }

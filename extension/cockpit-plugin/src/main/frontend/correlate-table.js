@@ -1,11 +1,13 @@
-import React from "react";
-import CorrelateMessageActions from "./correlate-message-actions";
+import React from 'react';
+import CorrelateMessageActions from './correlate-message-actions';
 
 
-function CorrelateMessagesTable({ messages, maxRetries, camundaRestPrefix }) {
+function CorrelateMessagesTable({ messages, camundaRestPrefix }) {
+
   return (<table className="cam-table">
     <thead>
     <tr>
+      <th>State</th>
       <th>ID</th>
       <th>Type</th>
       <th>Inserted</th>
@@ -17,27 +19,28 @@ function CorrelateMessagesTable({ messages, maxRetries, camundaRestPrefix }) {
     <tbody>
     {!messages || messages.length === 0 ? (
       <tr>
-        <td colSpan="6" className="no-content">No messages in the inbox</td>
+        <td colSpan="7" className="no-content">No messages to correlate in the inbox</td>
       </tr>
     ) : null}
     {messages?.map(element => (
-      <MessageRow camundaRestPrefix={camundaRestPrefix} maxRetries={maxRetries} element={element} />
+      <MessageRow camundaRestPrefix={camundaRestPrefix} element={element} />
     ))}
     </tbody>
   </table>);
 }
 
-function MessageRow({ camundaRestPrefix, maxRetries, element }) {
+function MessageRow({ camundaRestPrefix, element }) {
   return (
     <tr>
+      <td className="message-state">{statusToGlyph(element.status)}</td>
       <td className="message-id">{element.id}</td>
-      <td>{element.payloadTypeNamespace}<br/>.{element.payloadTypeName}</td>
+      <td>{element.payloadTypeNamespace}<br />.{element.payloadTypeName}</td>
       <td className="date">{formatDate(element.inserted)}</td>
       <td>{element.retries}</td>
       <td className="date">{element.nextRetry ? formatDate(element.nextRetry) : null}</td>
-      <td><CorrelateMessageActions camundaRestPrefix={camundaRestPrefix} message={element} maxRetries={maxRetries}/></td>
+      <td><CorrelateMessageActions camundaRestPrefix={camundaRestPrefix} message={element} /></td>
     </tr>
-  )
+  );
 }
 
 function formatDate(date) {
@@ -46,6 +49,29 @@ function formatDate(date) {
   }
   let split = date.split('T');
   return split[0] + ' ' + split[1].split('.')[0];
+}
+
+function statusToGlyph(state) {
+  let stateClass = [];
+  console.log('State is: ', state);
+  switch (state) {
+    case 'IN_PROGRESS':
+      stateClass = ['glyphicon', 'glyphicon-ok-sign', 'green'];
+      break;
+    case 'MAX_RETRIES_REACHED':
+      stateClass = ['glyphicon', 'glyphicon-remove-sign', 'red'];
+      break;
+    case 'PAUSED':
+      stateClass = ['glyphicon', 'glyphicon-remove-record', 'orange'];
+      break;
+    case 'RETRYING':
+      stateClass = ['glyphicon', 'glyphicon-circle-arrow-right', 'blue'];
+      break;
+    default:
+      break;
+  }
+
+  return <span className={stateClass.join(' ')}></span>;
 }
 
 export default CorrelateMessagesTable;

@@ -23,4 +23,31 @@ class MessageEntity(
   fun isExpired(clock: Clock): Boolean {
     return expiration != null && clock.instant() >= expiration
   }
+
+  fun status(maxRetries: Int): MessageStatus {
+    return if (error == null && retries == 0) {
+      // since the error is null and the retries are zero, we are good.
+      if (nextRetry == RetryInfo.FAR_FUTURE) {
+        // paused
+        MessageStatus.PAUSED
+      } else {
+        // waiting for correlation
+        MessageStatus.IN_PROGRESS
+      }
+    } else {
+      if (retries == maxRetries) {
+        // max retries are reached, no correlation will take place
+        MessageStatus.MAX_RETRIES_REACHED
+      } else {
+        if (nextRetry == RetryInfo.FAR_FUTURE) {
+          // paused
+          MessageStatus.PAUSED
+        } else {
+          // waiting for correlation
+          MessageStatus.RETRYING
+        }
+      }
+    }
+  }
+
 }

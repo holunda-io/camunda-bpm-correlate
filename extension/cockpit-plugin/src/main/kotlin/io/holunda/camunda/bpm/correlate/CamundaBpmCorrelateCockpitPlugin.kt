@@ -16,7 +16,7 @@ class CamundaBpmCorrelateCockpitPlugin : AbstractCockpitPlugin() {
   }
 
   init {
-    logger.warn { "[Camunda CORRELATE] Cockpit plugin activated." }
+    logger.info { "[Camunda CORRELATE] Cockpit plugin activated." }
   }
 
   override fun getId(): String = ID

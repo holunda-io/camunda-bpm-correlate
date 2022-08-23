@@ -10,7 +10,8 @@
   "license": "APACHE 2.0",
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-cookie": "^4.1.1"
   },
   "devDependencies": {
     "@babel/core": "~7.18.10",

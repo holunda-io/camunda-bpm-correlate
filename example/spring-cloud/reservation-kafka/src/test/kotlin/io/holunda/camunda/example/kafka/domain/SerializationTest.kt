@@ -1,4 +1,4 @@
-package io.holunda.camunda.bpm.example.kafka.domain
+package io.holunda.camunda.example.kafka.domain
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
