@@ -62,7 +62,7 @@ function statusToGlyph(state) {
       stateClass = ['glyphicon', 'glyphicon-remove-sign', 'red'];
       break;
     case 'PAUSED':
-      stateClass = ['glyphicon', 'glyphicon-record', 'orange'];
+      stateClass = ['glyphicon', 'glyphicon-hourglass', 'orange'];
       break;
     case 'RETRYING':
       stateClass = ['glyphicon', 'glyphicon-circle-arrow-right', 'blue'];

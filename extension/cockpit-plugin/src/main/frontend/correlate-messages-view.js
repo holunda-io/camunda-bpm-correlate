@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import CorrelateMessagesTable from './correlate-table';
 
-function CorrelateMessagesView({ camundaRestPrefix }) {
+function CorrelateMessagesView({camundaRestPrefix}) {
 
-  const { opLog, reload } = useOpLog(camundaRestPrefix);
+  const {opLog, reload} = useOpLog(camundaRestPrefix);
 
   return (<div class="ctn-view cockpit-section-dashboard">
     <div class="dashboard-view">
@@ -12,11 +12,11 @@ function CorrelateMessagesView({ camundaRestPrefix }) {
           <div class="inner">
             <h1 class="section-title">Messages</h1>
             {opLog ?
-             <CorrelateMessagesTable
-               camundaRestPrefix={camundaRestPrefix}
-               messages={opLog.messages}
-               reload={reload}
-             /> : <div>Loading...</div>
+              <CorrelateMessagesTable
+                camundaRestPrefix={camundaRestPrefix}
+                messages={opLog.messages}
+                reload={reload}
+              /> : <div>Loading...</div>
             }
           </div>
         </section>
@@ -33,7 +33,7 @@ function useOpLog(camundaRestPrefix) {
   }, [camundaRestPrefix]);
 
   useEffect(() => {
-    const parameters = { page: 0, size: 100 };
+    const parameters = {page: 0, size: 100};
     loadOpLog(parameters);
   }, []);
 
@@ -45,7 +45,7 @@ function useOpLog(camundaRestPrefix) {
 
 async function fetchMessagesAndConfig(camundaRestPrefix, parameters) {
   if (!parameters) {
-    parameters = { page: 0, size: 100 };
+    parameters = {page: 0, size: 100};
   }
   try {
     const [configurationRes, messagesRes] = await Promise.all(

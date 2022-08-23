@@ -32,23 +32,20 @@ function CorrelateMessageActions({camundaRestPrefix, message, reload}) {
 
   return (<span>
     {message.error ? (<button class="btn btn-default action-button" title="Show stacktrace" onClick={() => showStacktrace()}>
-      <span class="glyphicon glyphicon-warning-sign"></span>
+      <span class="glyphicon glyphicon-align-left"></span>
     </button>) : null}
-    {message.nextRetry ? (<button className="btn btn-default action-button" title="Modify next retry" onClick={() => modifyNextRetry()}>
-      <span className="glyphicon glyphicon-repeat"></span>
-    </button>) : null}
-    {message.status === 'MAX_RETRIES_REACHED' ? (
-      <button className="btn btn-default action-button" title="Decrease retry count" onClick={() => decreaseRetries()}>
+    {message.status === 'MAX_RETRIES_REACHED' || message.nextRetry ? (
+      <button className="btn btn-default action-button" title="Edit retry details" onClick={() => decreaseRetries()}>
         <span className="glyphicon glyphicon-pencil"></span>
       </button>) : null}
-    <button className="btn btn-default action-button" title="Delete message" onClick={() => handleDelete()}>
-      <span className="glyphicon glyphicon-trash"></span>
-    </button>
     {message.status === 'PAUSED' ? (<button className="btn btn-default action-button" title="Resume correlation" onClick={() => handleResume()}>
       <span className="glyphicon glyphicon-play"></span>
     </button>) : (<button className="btn btn-default action-button" title="Pause correlation" onClick={() => handlePause()}>
       <span className="glyphicon glyphicon-pause"></span>
     </button>)}
+    <button className="btn btn-default action-button" title="Delete message" onClick={() => handleDelete()}>
+      <span className="glyphicon glyphicon-trash"></span>
+    </button>
 
 
   </span>);
