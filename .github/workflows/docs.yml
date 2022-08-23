@@ -1,6 +1,19 @@
 name: Build the docs
 
-on:
+on:### Steps to reproduce
+
+* Library version:
+* JDK version:  
+* Operating system:
+* Complete executable reproducer: (e.g. GitHub Repo)
+* Steps: (what exactly are you doing with the above reproducer?)
+
+### Expected behaviour
+
+### Actual behaviour
+
+(In case of exceptions provide full stack trace)
+
   push:
     branches:
       - develop
@@ -70,4 +83,4 @@ jobs:
       # This is for develop
       - name: Deploy latest develop snapshot docs to GH pages.
         if: github.ref == 'refs/heads/develop'
-        run: mike deploy snapshot --push --rebase
+        run: mike deploy snapshot --push --rebase --update-aliases
