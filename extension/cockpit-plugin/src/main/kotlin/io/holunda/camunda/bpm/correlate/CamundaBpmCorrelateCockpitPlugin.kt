@@ -16,7 +16,7 @@ class CamundaBpmCorrelateCockpitPlugin : AbstractCockpitPlugin() {
   }
 
   init {
-    logger.info { "[Camunda CORRELATE] Cockpit plugin activated." }
+    logger.warn { "[Camunda CORRELATE] Cockpit plugin activated." }
   }
 
   override fun getId(): String = ID
@@ -26,7 +26,7 @@ class CamundaBpmCorrelateCockpitPlugin : AbstractCockpitPlugin() {
   )
 
   override fun getMappingFiles(): List<String> {
-    return listOf("${PREFIX.replace(".", "/")}/cockpit-plugin-query.xml")
+    return listOf()
   }
 }
 
@@ -38,10 +38,10 @@ fun getApplicationContext(): ApplicationContext {
   return requireNotNull(CamundaBpmCorrelateConfiguration.applicationContext) { "Spring application context could not be found." }
 }
 
-inline fun <reified T: Any> AbstractCockpitPluginResource.getBean(clazz: KClass<T>): T {
+inline fun <reified T : Any> AbstractCockpitPluginResource.getBean(clazz: KClass<T>): T {
   return getApplicationContext().getBean(clazz.java)
 }
 
-inline fun <reified T: Any> AbstractCockpitPluginRootResource.getBean(clazz: KClass<T>): T {
+inline fun <reified T : Any> AbstractCockpitPluginRootResource.getBean(clazz: KClass<T>): T {
   return getApplicationContext().getBean(clazz.java)
 }

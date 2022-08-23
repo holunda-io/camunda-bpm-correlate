@@ -113,7 +113,7 @@
         <directory>src/main/frontend/</directory>
         <targetPath>plugin-webapp/correlate-cockpit-plugin/app</targetPath>
         <includes>
-          <include>*.*</include>
+          <include>**/*.*</include>
         </includes>
         <excludes>
           <exclude>*.js</exclude>

@@ -1,35 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useCallback} from "react";
 import CorrelateMessagesTable from "./correlate-table";
-import CorrelateMessageActions from "./correlate-message-actions";
-
-function formatDate(date) {
-  if (!date) {
-    return null;
-  }
-  let split = date.split('T');
-  return split[0] + ' ' + split[1].split('.')[0];
-}
 
 function CorrelateMessagesView({camundaRestPrefix}) {
-
-  const [opLog, setOpLog] = useState();
-
-  useEffect(() => {
-    fetch(
-      `${camundaRestPrefix}/configuration`
-    ).then(async res => {
-      const configuration = await res.json();
-      fetch(
-        `${camundaRestPrefix}/messages?page=0&size=100`
-      ).then(async res => {
-        setOpLog({messages: await res.json(), configuration: configuration});
-      }).catch(err => {
-        console.error(err);
-      });
-    }).catch(err => {
-      console.error(err);
-    });
-  });
+  const { opLog, reload } = useOpLog(camundaRestPrefix);
 
   if (!opLog) {
     return <div>Loading...</div>;
@@ -41,29 +14,53 @@ function CorrelateMessagesView({camundaRestPrefix}) {
         <section class="col-xs-12 col-md-12">
           <div class="inner">
             <h1 class="section-title">Messages</h1>
-            <CorrelateMessagesTable children={
-              opLog.messages
-                .map(element => {
-                  const insertedDate = formatDate(element.inserted);
-                  let nextRetry = '';
-                  if (element.nextRetry) {
-                    nextRetry = formatDate(element.nextRetry);
-                  }
-                  return (<tr>
-                    <td class="message-id">{element.id}</td>
-                    <td>{element.payloadTypeNamespace}<br/>.{element.payloadTypeName}</td>
-                    <td class="date">{insertedDate}</td>
-                    <td>{element.retries}</td>
-                    <td class="date">{nextRetry}</td>
-                    <td><CorrelateMessageActions camundaRestPrefix={camundaRestPrefix} message={element} maxRetries={opLog.configuration.maxRetries}/></td>
-                  </tr>);
-                })
-            }/>
+            <CorrelateMessagesTable
+                camundaRestPrefix={camundaRestPrefix}
+                maxRetries={opLog.configuration.maxRetries}
+                messages={opLog.messages}
+                reload={reload}
+            />
           </div>
         </section>
       </div>
     </div>
   </div>);
+}
+
+function useOpLog(camundaRestPrefix) {
+  const [opLog, setOpLog] = useState();
+
+  const loadOpLog = useCallback(async () => {
+    setOpLog(await loadMessages(camundaRestPrefix));
+  }, [camundaRestPrefix])
+
+  useEffect(() => {
+    loadOpLog();
+  }, []);
+
+  return {
+    opLog,
+    reload: loadOpLog
+  };
+}
+
+async function loadMessages(camundaRestPrefix) {
+  try {
+    const [configurationRes, messagesRes] = await Promise.all([
+                        fetch(
+                          `${camundaRestPrefix}/configuration`
+                        ),
+                        fetch(
+                          `${camundaRestPrefix}/messages?page=0&size=100`
+                        )
+                      ]);
+    return {
+      messages: await messagesRes.json(),
+      configuration: await configurationRes.json(),
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export default CorrelateMessagesView;
