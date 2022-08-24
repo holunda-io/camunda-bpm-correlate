@@ -1,5 +1,6 @@
 import React from "react";
 import { Message } from "../lib/message";
+import { Button } from "./button";
 
 type CorrelateMessageActionsProps = {
   message: Message;
@@ -23,27 +24,20 @@ function CorrelateMessageActions({ message, onDeleteMessage, onPauseCorrelation,
 
   return (<>
     {message.error ? (
-      <button className="btn btn-default action-button" title="Show stacktrace" onClick={() => showStacktrace()}>
-        <span className="glyphicon glyphicon-align-left"></span>
-      </button>
+      <Button label="Show stacktrace" icon="align-left" onClick={() => showStacktrace()} />
     ) : null}
+
     {message.status === 'MAX_RETRIES_REACHED' || message.nextRetry ? (
-      <button className="btn btn-default action-button" title="Edit retry details" onClick={() => decreaseRetries()}>
-        <span className="glyphicon glyphicon-pencil"></span>
-      </button>
+      <Button label="Edit retry details" icon="pencil" onClick={() => decreaseRetries()} />
     ) : null}
+
     {message.status === 'PAUSED' ? (
-      <button className="btn btn-default action-button" title="Resume correlation" onClick={() => onResumeCorrelation(message.id)}>
-        <span className="glyphicon glyphicon-play"></span>
-      </button>
+      <Button label="Resume correlation" icon="play" onClick={() => onResumeCorrelation(message.id)} />
     ) : (
-      <button className="btn btn-default action-button" title="Pause correlation" onClick={() => onPauseCorrelation(message.id)}>
-        <span className="glyphicon glyphicon-pause"></span>
-      </button>
+      <Button label="Pause correlation" icon="pause" onClick={() => onPauseCorrelation(message.id)} />
     )}
-    <button className="btn btn-default action-button" title="Delete message" onClick={() => onDeleteMessage(message.id)}>
-      <span className="glyphicon glyphicon-trash"></span>
-    </button>
+
+    <Button label="Delete message" icon="trash" onClick={() => onDeleteMessage(message.id)} />
   </>);
 }
 
