@@ -5,12 +5,12 @@ function CorrelateMessagesView({camundaRestPrefix}) {
 
   const {opLog, reload} = useOpLog(camundaRestPrefix);
 
-  return (<div class="ctn-view cockpit-section-dashboard">
-    <div class="dashboard-view">
-      <div class="dashboard-row">
-        <section class="col-xs-12 col-md-12">
-          <div class="inner">
-            <h1 class="section-title">Messages</h1>
+  return (<div className="ctn-view cockpit-section-dashboard">
+    <div className="dashboard-view">
+      <div className="dashboard-row">
+        <section className="col-xs-12 col-md-12">
+          <div className="inner">
+            <h1 className="section-title">Messages</h1>
             {opLog ?
               <CorrelateMessagesTable
                 camundaRestPrefix={camundaRestPrefix}
