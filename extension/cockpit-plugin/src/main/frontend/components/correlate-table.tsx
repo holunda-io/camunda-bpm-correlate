@@ -84,13 +84,16 @@ type StatusProps = {
   status: MessageStatus;
 };
 
-const MessageStatus = ({ status }: StatusProps) => (
+const MessageStatus = ({ status }: StatusProps) => (<>
   <span className={classNames({
     'glyphicon glyphicon-ok-sign green': status === 'IN_PROGRESS',
     'glyphicon glyphicon-remove-sign red': status === 'MAX_RETRIES_REACHED',
     'glyphicon glyphicon-hourglass orange': status === 'PAUSED',
     'glyphicon glyphicon-circle-arrow-right blue': status === 'RETRYING'
   })} />
-);
+  <span className="sr-only">
+    {status.toLowerCase().replace('_', ' ')}
+  </span>
+</>);
 
 export default CorrelateMessagesTable;
