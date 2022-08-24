@@ -1,28 +1,14 @@
 import React from "react";
-import { useCookies } from 'react-cookie';
-import { Message } from "./lib/message";
+import { Message } from "../lib/message";
 
 type CorrelateMessageActionsProps = {
-  camundaRestPrefix: string;
   message: Message;
-  reload: () => void;
+  onDeleteMessage: (messageId: Message['id']) => Promise<void>;
+  onPauseCorrelation: (messageId: Message['id']) => Promise<void>;
+  onResumeCorrelation: (messageId: Message['id']) => Promise<void>;
 };
 
-function CorrelateMessageActions({ camundaRestPrefix, message, reload }: CorrelateMessageActionsProps) {
-  const [cookies] = useCookies(['XSRF-TOKEN']);
-
-  const handleDelete = async () => {
-    await fetch(`${camundaRestPrefix}/messages/${message.id}`, { method: 'DELETE', headers: { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] } });
-  }
-
-  const handlePause = async () => {
-    await fetch(`${camundaRestPrefix}/messages/${message.id}/pause`, { method: 'PUT', headers: { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] } });
-  }
-
-  const handleResume = async () => {
-    await fetch(`${camundaRestPrefix}/messages/${message.id}/pause`, { method: 'DELETE', headers: { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] } });
-  }
-
+function CorrelateMessageActions({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation }: CorrelateMessageActionsProps) {
   const showStacktrace = () => {
     console.log('stacktrace', message.error);
   }
@@ -34,7 +20,6 @@ function CorrelateMessageActions({ camundaRestPrefix, message, reload }: Correla
   const decreaseRetries = () => {
     console.log('decrease', message.id);
   }
-
 
   return (<>
     {message.error ? (
@@ -48,15 +33,15 @@ function CorrelateMessageActions({ camundaRestPrefix, message, reload }: Correla
       </button>
     ) : null}
     {message.status === 'PAUSED' ? (
-      <button className="btn btn-default action-button" title="Resume correlation" onClick={() => handleResume()}>
+      <button className="btn btn-default action-button" title="Resume correlation" onClick={() => onResumeCorrelation(message.id)}>
         <span className="glyphicon glyphicon-play"></span>
       </button>
     ) : (
-      <button className="btn btn-default action-button" title="Pause correlation" onClick={() => handlePause()}>
+      <button className="btn btn-default action-button" title="Pause correlation" onClick={() => onPauseCorrelation(message.id)}>
         <span className="glyphicon glyphicon-pause"></span>
       </button>
     )}
-    <button className="btn btn-default action-button" title="Delete message" onClick={() => handleDelete()}>
+    <button className="btn btn-default action-button" title="Delete message" onClick={() => onDeleteMessage(message.id)}>
       <span className="glyphicon glyphicon-trash"></span>
     </button>
   </>);

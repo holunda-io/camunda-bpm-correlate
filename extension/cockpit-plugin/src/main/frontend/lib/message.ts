@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 export type MessageStatus = 'IN_PROGRESS' | 'MAX_RETRIES_REACHED' | 'PAUSED' | 'RETRYING';
 
@@ -20,11 +21,26 @@ export type Message = {
 };
 
 export function useMessages(camundaRestPrefix: string) {
+  const [cookies] = useCookies(['XSRF-TOKEN']);
+  const headers = { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] };
+
   const [messages, setMessages] = useState<Message[]>([]);
 
   const loadMessages = useCallback(async (parameters?: MessageParams) => {
     setMessages(await fetchMessages(camundaRestPrefix, parameters) ?? []);
   }, [camundaRestPrefix]);
+
+  const deleteMessage = useCallback(async (messageId: Message['id']) => {
+    await fetch(`${camundaRestPrefix}/messages/${messageId}`, { method: 'DELETE', headers });
+  }, [camundaRestPrefix, headers]);
+
+  const pauseCorrelation = useCallback(async (messageId: Message['id']) => {
+    await fetch(`${camundaRestPrefix}/messages/${messageId}/pause`, { method: 'PUT', headers });
+  }, [camundaRestPrefix, headers]);
+
+  const resumeCorrelation = useCallback(async (messageId: Message['id']) => {
+    await fetch(`${camundaRestPrefix}/messages/${messageId}/pause`, { method: 'DELETE', headers });
+  }, [camundaRestPrefix, headers]);
 
   useEffect(() => {
     loadMessages();
@@ -32,7 +48,9 @@ export function useMessages(camundaRestPrefix: string) {
 
   return {
     messages,
-    reload: loadMessages
+    deleteMessage,
+    pauseCorrelation,
+    resumeCorrelation
   };
 }
 

@@ -4,12 +4,13 @@ import { LocalDateTimeString, Message, MessageStatus } from '../lib/message';
 import CorrelateMessageActions from './correlate-message-actions';
 
 type CorrelateMessagesTableProps = {
-  camundaRestPrefix: string;
   messages: Message[];
-  reload: () => void;
+  onDeleteMessage: (messageId: Message['id']) => Promise<void>;
+  onPauseCorrelation: (messageId: Message['id']) => Promise<void>;
+  onResumeCorrelation: (messageId: Message['id']) => Promise<void>;
 };
 
-function CorrelateMessagesTable({ messages, camundaRestPrefix, reload }: CorrelateMessagesTableProps) {
+function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation, onResumeCorrelation }: CorrelateMessagesTableProps) {
   return (
     <table className="cam-table">
       <thead>
@@ -30,7 +31,12 @@ function CorrelateMessagesTable({ messages, camundaRestPrefix, reload }: Correla
           </tr>
         ) : null}
         {messages?.map(message => (
-          <MessageRow key={message.id} reload={reload} camundaRestPrefix={camundaRestPrefix} message={message} />
+          <MessageRow
+            key={message.id}
+            onDeleteMessage={onDeleteMessage}
+            onPauseCorrelation={onPauseCorrelation}
+            onResumeCorrelation={onResumeCorrelation}
+            message={message} />
         ))}
       </tbody>
     </table>
@@ -38,12 +44,13 @@ function CorrelateMessagesTable({ messages, camundaRestPrefix, reload }: Correla
 }
 
 type MessageRowProps = {
-  camundaRestPrefix: string;
   message: Message;
-  reload: () => void;
+  onDeleteMessage: (messageId: Message['id']) => Promise<void>;
+  onPauseCorrelation: (messageId: Message['id']) => Promise<void>;
+  onResumeCorrelation: (messageId: Message['id']) => Promise<void>;
 };
 
-function MessageRow({ camundaRestPrefix, message, reload }: MessageRowProps) {
+function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation }: MessageRowProps) {
   return (
     <tr>
       <td className="message-state">
@@ -60,7 +67,14 @@ function MessageRow({ camundaRestPrefix, message, reload }: MessageRowProps) {
           <DateTime value={message.nextRetry} />
         ) : null}
       </td>
-      <td><CorrelateMessageActions reload={reload} camundaRestPrefix={camundaRestPrefix} message={message} /></td>
+      <td>
+        <CorrelateMessageActions
+          message={message}
+          onDeleteMessage={onDeleteMessage}
+          onPauseCorrelation={onPauseCorrelation}
+          onResumeCorrelation={onResumeCorrelation}
+        />
+      </td>
     </tr>
   );
 }

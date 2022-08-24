@@ -7,7 +7,7 @@ type CorrelateMessagesViewProps = {
 }
 
 function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps) {
-  const { messages, reload } = useMessages(camundaRestPrefix);
+  const { messages, deleteMessage, pauseCorrelation, resumeCorrelation } = useMessages(camundaRestPrefix);
   // const { configuration } = useConfiguration(camundaRestPrefix);
 
   return (
@@ -21,7 +21,9 @@ function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps
                 <CorrelateMessagesTable
                   camundaRestPrefix={camundaRestPrefix}
                   messages={messages}
-                  reload={reload}
+                  onDeleteMessage={deleteMessage}
+                  onPauseCorrelation={pauseCorrelation}
+                  onResumeCorrelation={resumeCorrelation}
                 />
               ) : (
                 <div>Loading...</div>
