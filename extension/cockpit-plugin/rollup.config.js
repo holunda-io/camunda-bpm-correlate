@@ -5,7 +5,7 @@ import replace from "@rollup/plugin-replace";
 import typescript from '@rollup/plugin-typescript';
 
 export default {
-  input: "src/main/frontend/plugin.ts",
+  input: "src/main/frontend/plugin.tsx",
   output: {
     file: "target/classes/plugin-webapp/correlate-cockpit-plugin/app/plugin.js"
   },
