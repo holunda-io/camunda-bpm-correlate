@@ -20,14 +20,22 @@ export type Message = {
   error: string | null;
 };
 
-export function useMessages(camundaRestPrefix: string) {
+type MessageParams = {
+  page: number;
+  size: number;
+};
+
+export function useMessages(
+  camundaRestPrefix: string,
+  params: MessageParams = { page: 0, size: 100 }
+) {
   const [cookies] = useCookies(['XSRF-TOKEN']);
   const headers = { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] };
 
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const loadMessages = useCallback(async (parameters?: MessageParams) => {
-    setMessages(await fetchMessages(camundaRestPrefix, parameters) ?? []);
+  const loadMessages = useCallback(async () => {
+    setMessages(await fetchMessages(camundaRestPrefix, params) ?? []);
   }, [camundaRestPrefix]);
 
   const deleteMessage = useCallback(async (messageId: Message['id']) => {
@@ -57,15 +65,7 @@ export function useMessages(camundaRestPrefix: string) {
   };
 }
 
-type MessageParams = {
-  page: number;
-  size: number;
-};
-
-async function fetchMessages(
-  camundaRestPrefix: string,
-  parameters: MessageParams = { page: 0, size: 100 }
-): Promise<Message[] | null> {
+async function fetchMessages(camundaRestPrefix: string, parameters: MessageParams): Promise<Message[] | null> {
   try {
     const response = await fetch(`${camundaRestPrefix}/messages?page=${parameters.page}&size=${parameters.size}`);
     return response.json();
