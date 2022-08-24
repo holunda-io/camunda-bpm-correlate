@@ -18,7 +18,6 @@ function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps
             <div className="inner">
               <h1 className="section-title">Messages</h1>
               <CorrelateMessagesTable
-                camundaRestPrefix={camundaRestPrefix}
                 messages={messages}
                 onDeleteMessage={deleteMessage}
                 onPauseCorrelation={pauseCorrelation}
