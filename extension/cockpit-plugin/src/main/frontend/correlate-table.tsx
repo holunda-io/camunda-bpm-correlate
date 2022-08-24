@@ -18,27 +18,28 @@ function CorrelateMessagesTable({ messages, camundaRestPrefix }) {
     </thead>
     <tbody>
     {!messages || messages.length === 0 ? (
-      <tr>
-        <td colSpan="7" className="no-content">No messages to correlate in the inbox</td>
-      </tr>
+          <tr>
+            <td colSpan={7} className="no-content">No messages to correlate in the inbox</td>
+          </tr>
     ) : null}
-    {messages?.map(element => (
-      <MessageRow camundaRestPrefix={camundaRestPrefix} element={element} />
-    ))}
+        {messages?.map(message => (
+          <MessageRow key={message.id} reload={reload} camundaRestPrefix={camundaRestPrefix} message={message} />
+        ))}
     </tbody>
   </table>);
 }
 
-function MessageRow({ camundaRestPrefix, element }) {
+
+function MessageRow({ camundaRestPrefix, message, reload }) {
   return (
     <tr>
-      <td className="message-state">{statusToGlyph(element.status)}</td>
-      <td className="message-id">{element.id}</td>
-      <td>{element.payloadTypeNamespace}<br />.{element.payloadTypeName}</td>
-      <td className="date">{formatDate(element.inserted)}</td>
-      <td>{element.retries}</td>
-      <td className="date">{element.nextRetry && element.status !== 'PAUSED' ? formatDate(element.nextRetry) : null}</td>
-      <td><CorrelateMessageActions camundaRestPrefix={camundaRestPrefix} message={element} /></td>
+      <td className="message-state">{statusToGlyph(message.status)}</td>
+      <td className="message-id">{message.id}</td>
+      <td>{message.payloadTypeNamespace}<br />.{message.payloadTypeName}</td>
+      <td className="date">{formatDate(message.inserted)}</td>
+      <td>{message.retries}</td>
+      <td className="date">{message.nextRetry && message.status !== 'PAUSED' ? formatDate(message.nextRetry) : null}</td>
+      <td><CorrelateMessageActions reload={reload} camundaRestPrefix={camundaRestPrefix} message={message} /></td>
     </tr>
   );
 }
