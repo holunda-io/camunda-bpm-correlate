@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Configuration } from './configuration';
-import CorrelateMessagesTable from './correlate-table';
-import { Message } from './message';
+import { default as React, useCallback, useEffect, useState } from 'react';
+import CorrelateMessagesTable from './components/correlate-table';
+import { Configuration } from './lib/configuration';
+import { Message } from './lib/message';
 
 type CorrelateMessagesViewProps = {
   camundaRestPrefix: string;
@@ -10,27 +10,28 @@ type CorrelateMessagesViewProps = {
 function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps) {
   const { opLog, reload } = useOpLog(camundaRestPrefix);
 
-  return (<div className="ctn-view cockpit-section-dashboard">
-    <div className="dashboard-view">
-      <div className="dashboard-row">
-        <section className="col-xs-12 col-md-12">
-          <div className="inner">
-            <h1 className="section-title">Messages</h1>
-            {opLog ? (
-              <CorrelateMessagesTable
-                camundaRestPrefix={camundaRestPrefix}
-                messages={opLog.messages}
-                reload={reload}
-              />
-            ) : (
-              <div>Loading...</div>
-            )
-            }
-          </div>
-        </section>
+  return (
+    <div className="ctn-view cockpit-section-dashboard">
+      <div className="dashboard-view">
+        <div className="dashboard-row">
+          <section className="col-xs-12 col-md-12">
+            <div className="inner">
+              <h1 className="section-title">Messages</h1>
+              {opLog ? (
+                <CorrelateMessagesTable
+                  camundaRestPrefix={camundaRestPrefix}
+                  messages={opLog.messages}
+                  reload={reload}
+                />
+              ) : (
+                <div>Loading...</div>
+              )}
+            </div>
+          </section>
+        </div>
       </div>
     </div>
-  </div>);
+  );
 }
 
 type OpLog = {

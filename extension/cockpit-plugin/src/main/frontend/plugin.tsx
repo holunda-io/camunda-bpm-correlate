@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Plugin } from './camunda-plugin';
 import CorrelateMessagesView from "./correlate-messages-view";
+import { Plugin } from './lib/camunda-plugin';
 
 let container: HTMLElement;
 

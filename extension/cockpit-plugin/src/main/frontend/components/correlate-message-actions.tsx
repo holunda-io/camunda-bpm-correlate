@@ -1,6 +1,6 @@
 import React from "react";
 import { useCookies } from 'react-cookie';
-import { Message } from "./message";
+import { Message } from "./lib/message";
 
 type CorrelateMessageActionsProps = {
   camundaRestPrefix: string;

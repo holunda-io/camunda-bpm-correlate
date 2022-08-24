@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
+import { LocalDateTimeString, Message, MessageStatus } from '../lib/message';
 import CorrelateMessageActions from './correlate-message-actions';
-import { LocalDateTimeString, Message, MessageStatus } from './message';
 
 type CorrelateMessagesTableProps = {
   camundaRestPrefix: string;
