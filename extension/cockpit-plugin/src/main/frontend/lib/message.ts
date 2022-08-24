@@ -32,14 +32,17 @@ export function useMessages(camundaRestPrefix: string) {
 
   const deleteMessage = useCallback(async (messageId: Message['id']) => {
     await fetch(`${camundaRestPrefix}/messages/${messageId}`, { method: 'DELETE', headers });
+    loadMessages();
   }, [camundaRestPrefix, headers]);
 
   const pauseCorrelation = useCallback(async (messageId: Message['id']) => {
     await fetch(`${camundaRestPrefix}/messages/${messageId}/pause`, { method: 'PUT', headers });
+    loadMessages();
   }, [camundaRestPrefix, headers]);
 
   const resumeCorrelation = useCallback(async (messageId: Message['id']) => {
     await fetch(`${camundaRestPrefix}/messages/${messageId}/pause`, { method: 'DELETE', headers });
+    loadMessages();
   }, [camundaRestPrefix, headers]);
 
   useEffect(() => {
