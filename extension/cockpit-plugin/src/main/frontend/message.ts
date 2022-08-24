@@ -1,6 +1,6 @@
 export type MessageStatus = 'IN_PROGRESS' | 'MAX_RETRIES_REACHED' | 'PAUSED' | 'RETRYING';
 
-type LocalDateTimeString = string;
+export type LocalDateTimeString = string;
 
 export type Message = {
   id: string;

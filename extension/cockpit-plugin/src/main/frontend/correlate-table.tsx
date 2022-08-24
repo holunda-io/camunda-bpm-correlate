@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import CorrelateMessageActions from './correlate-message-actions';
-import { Message, MessageStatus } from './message';
+import { LocalDateTimeString, Message, MessageStatus } from './message';
 
 type CorrelateMessagesTableProps = {
   camundaRestPrefix: string;
@@ -51,21 +51,35 @@ function MessageRow({ camundaRestPrefix, message, reload }: MessageRowProps) {
       </td>
       <td className="message-id">{message.id}</td>
       <td>{message.payloadTypeNamespace}<br />.{message.payloadTypeName}</td>
-      <td className="date">{formatDate(message.inserted)}</td>
+      <td className="date">
+        <DateTime value={message.inserted} />
+      </td>
       <td>{message.retries}</td>
-      <td className="date">{message.nextRetry && message.status !== 'PAUSED' ? formatDate(message.nextRetry) : null}</td>
+      <td className="date">
+        {(message.nextRetry && message.status !== 'PAUSED') ? (
+          <DateTime value={message.nextRetry} />
+        ) : null}
+      </td>
       <td><CorrelateMessageActions reload={reload} camundaRestPrefix={camundaRestPrefix} message={message} /></td>
     </tr>
   );
 }
 
-function formatDate(date: string | null) {
-  if (!date) {
-    return null;
-  }
-  const split = date.split('T');
-  return split[0] + ' ' + split[1].split('.')[0];
-}
+type DateTimeProps = {
+  value: LocalDateTimeString | null;
+};
+
+const DateTime = ({ value }: DateTimeProps) => value ? (
+  <time dateTime={value}>{formatDate(value)} {formatTime(value)}</time>
+) : null;
+
+const formatDate = (dateString: string | null) => dateString ?
+  new Date(dateString).toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' }) :
+  null;
+
+const formatTime = (dateString: string | null) => dateString ?
+  new Date(dateString).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' }) :
+  null;
 
 type StatusProps = {
   status: MessageStatus;
