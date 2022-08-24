@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { LocalDateTimeString, Message, MessageStatus } from '../lib/message';
+import { Message, MessageStatus } from '../lib/message';
 import CorrelateMessageActions from './correlate-message-actions';
+import { DateTime } from './date-time';
 
 type CorrelateMessagesTableProps = {
   messages: Message[];
@@ -78,22 +79,6 @@ function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorr
     </tr>
   );
 }
-
-type DateTimeProps = {
-  value: LocalDateTimeString | null;
-};
-
-const DateTime = ({ value }: DateTimeProps) => value ? (
-  <time dateTime={value}>{formatDate(value)} {formatTime(value)}</time>
-) : null;
-
-const formatDate = (dateString: string | null) => dateString ?
-  new Date(dateString).toLocaleDateString(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' }) :
-  null;
-
-const formatTime = (dateString: string | null) => dateString ?
-  new Date(dateString).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' }) :
-  null;
 
 type StatusProps = {
   status: MessageStatus;

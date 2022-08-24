@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import type { LocalDateTimeString } from "./date";
 
 export type MessageStatus = 'IN_PROGRESS' | 'MAX_RETRIES_REACHED' | 'PAUSED' | 'RETRYING';
-
-export type LocalDateTimeString = string;
 
 export type Message = {
   id: string;
