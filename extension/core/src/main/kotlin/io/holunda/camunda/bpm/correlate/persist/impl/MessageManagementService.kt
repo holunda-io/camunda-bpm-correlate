@@ -57,7 +57,13 @@ class MessageManagementService(
   fun resumeMessageProcessing(messageId: String): MessageEntity {
     return getMessageById(messageId)
       .also {
-        it.nextRetry = Instant.now(clock)
+        if (it.retries == 0) {
+          // there are no retries, clear the next retry
+          it.nextRetry = null
+        } else {
+          // if there are retries, set the next retry to now
+          it.nextRetry = Instant.now(clock)
+        }
         messageRepository.save(it)
       }
   }
