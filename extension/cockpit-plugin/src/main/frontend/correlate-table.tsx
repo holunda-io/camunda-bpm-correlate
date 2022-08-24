@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import CorrelateMessageActions from './correlate-message-actions';
 import { Message, MessageStatus } from './message';
@@ -45,7 +46,9 @@ type MessageRowProps = {
 function MessageRow({ camundaRestPrefix, message, reload }: MessageRowProps) {
   return (
     <tr>
-      <td className="message-state">{statusToGlyph(message.status)}</td>
+      <td className="message-state">
+        <MessageStatus status={message.status} />
+      </td>
       <td className="message-id">{message.id}</td>
       <td>{message.payloadTypeNamespace}<br />.{message.payloadTypeName}</td>
       <td className="date">{formatDate(message.inserted)}</td>
@@ -64,27 +67,17 @@ function formatDate(date: string | null) {
   return split[0] + ' ' + split[1].split('.')[0];
 }
 
-function statusToGlyph(state: MessageStatus) {
-  let stateClass: string[] = [];
-  console.log('State is: ', state);
-  switch (state) {
-    case 'IN_PROGRESS':
-      stateClass = ['glyphicon', 'glyphicon-ok-sign', 'green'];
-      break;
-    case 'MAX_RETRIES_REACHED':
-      stateClass = ['glyphicon', 'glyphicon-remove-sign', 'red'];
-      break;
-    case 'PAUSED':
-      stateClass = ['glyphicon', 'glyphicon-hourglass', 'orange'];
-      break;
-    case 'RETRYING':
-      stateClass = ['glyphicon', 'glyphicon-circle-arrow-right', 'blue'];
-      break;
-    default:
-      break;
-  }
+type StatusProps = {
+  status: MessageStatus;
+};
 
-  return <span className={stateClass.join(' ')}></span>;
-}
+const MessageStatus = ({ status }: StatusProps) => (
+  <span className={classNames({
+    'glyphicon glyphicon-ok-sign green': status === 'IN_PROGRESS',
+    'glyphicon glyphicon-remove-sign red': status === 'MAX_RETRIES_REACHED',
+    'glyphicon glyphicon-hourglass orange': status === 'PAUSED',
+    'glyphicon glyphicon-circle-arrow-right blue': status === 'RETRYING'
+  })} />
+);
 
 export default CorrelateMessagesTable;
