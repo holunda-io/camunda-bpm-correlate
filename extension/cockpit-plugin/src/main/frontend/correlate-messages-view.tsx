@@ -1,9 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Configuration } from './configuration';
 import CorrelateMessagesTable from './correlate-table';
+import { Message } from './message';
 
-function CorrelateMessagesView({camundaRestPrefix}) {
+type CorrelateMessagesViewProps = {
+  camundaRestPrefix: string;
+}
 
-  const {opLog, reload} = useOpLog(camundaRestPrefix);
+function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps) {
+  const { opLog, reload } = useOpLog(camundaRestPrefix);
 
   return (<div className="ctn-view cockpit-section-dashboard">
     <div className="dashboard-view">
@@ -11,12 +16,15 @@ function CorrelateMessagesView({camundaRestPrefix}) {
         <section className="col-xs-12 col-md-12">
           <div className="inner">
             <h1 className="section-title">Messages</h1>
-            {opLog ?
+            {opLog ? (
               <CorrelateMessagesTable
                 camundaRestPrefix={camundaRestPrefix}
                 messages={opLog.messages}
                 reload={reload}
-              /> : <div>Loading...</div>
+              />
+            ) : (
+              <div>Loading...</div>
+            )
             }
           </div>
         </section>
@@ -25,15 +33,20 @@ function CorrelateMessagesView({camundaRestPrefix}) {
   </div>);
 }
 
-function useOpLog(camundaRestPrefix) {
-  const [opLog, setOpLog] = useState();
+type OpLog = {
+  messages: Message[];
+  configuration: Configuration;
+};
 
-  const loadOpLog = useCallback(async (parameters) => {
+function useOpLog(camundaRestPrefix: string) {
+  const [opLog, setOpLog] = useState<OpLog | null>(null);
+
+  const loadOpLog = useCallback(async (parameters?: MessageParams) => {
     setOpLog(await fetchMessagesAndConfig(camundaRestPrefix, parameters));
   }, [camundaRestPrefix]);
 
   useEffect(() => {
-    const parameters = {page: 0, size: 100};
+    const parameters = { page: 0, size: 100 };
     loadOpLog(parameters);
   }, []);
 
@@ -43,9 +56,14 @@ function useOpLog(camundaRestPrefix) {
   };
 }
 
-async function fetchMessagesAndConfig(camundaRestPrefix, parameters) {
+type MessageParams = {
+  page: number;
+  size: number;
+};
+
+async function fetchMessagesAndConfig(camundaRestPrefix: string, parameters?: MessageParams): Promise<OpLog | null> {
   if (!parameters) {
-    parameters = {page: 0, size: 100};
+    parameters = { page: 0, size: 100 };
   }
   try {
     const [configurationRes, messagesRes] = await Promise.all(
@@ -64,6 +82,7 @@ async function fetchMessagesAndConfig(camundaRestPrefix, parameters) {
     };
   } catch (error) {
     console.error(error);
+    return null;
   }
 }
 

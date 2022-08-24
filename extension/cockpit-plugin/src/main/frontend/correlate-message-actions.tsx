@@ -1,20 +1,26 @@
 import React from "react";
-import {useCookies} from 'react-cookie';
+import { useCookies } from 'react-cookie';
+import { Message } from "./message";
 
-function CorrelateMessageActions({camundaRestPrefix, message, reload}) {
+type CorrelateMessageActionsProps = {
+  camundaRestPrefix: string;
+  message: Message;
+  reload: () => void;
+};
 
+function CorrelateMessageActions({ camundaRestPrefix, message, reload }: CorrelateMessageActionsProps) {
   const [cookies] = useCookies(['XSRF-TOKEN']);
 
   const handleDelete = async () => {
-    await fetch(`${camundaRestPrefix}/messages/${message.id}`, {method: 'DELETE', headers: {'X-XSRF-TOKEN': cookies['XSRF-TOKEN']}});
+    await fetch(`${camundaRestPrefix}/messages/${message.id}`, { method: 'DELETE', headers: { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] } });
   }
 
   const handlePause = async () => {
-    await fetch(`${camundaRestPrefix}/messages/${message.id}/pause`, {method: 'PUT', headers: {'X-XSRF-TOKEN': cookies['XSRF-TOKEN']}});
+    await fetch(`${camundaRestPrefix}/messages/${message.id}/pause`, { method: 'PUT', headers: { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] } });
   }
 
   const handleResume = async () => {
-    await fetch(`${camundaRestPrefix}/messages/${message.id}/pause`, {method: 'DELETE', headers: {'X-XSRF-TOKEN': cookies['XSRF-TOKEN']}});
+    await fetch(`${camundaRestPrefix}/messages/${message.id}/pause`, { method: 'DELETE', headers: { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] } });
   }
 
   const showStacktrace = () => {
