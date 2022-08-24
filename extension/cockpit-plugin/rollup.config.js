@@ -24,5 +24,10 @@ export default {
               "process.env.NODE_ENV": JSON.stringify("production"),
               preventAssignment: true
             })
-  ]
+  ],
+  onwarn: (warning) => {
+    // see https://stackoverflow.com/a/43556986/7189991
+    if ( warning.code === 'THIS_IS_UNDEFINED' ) { return; }
+    console.warn( warning.message );
+}
 };
