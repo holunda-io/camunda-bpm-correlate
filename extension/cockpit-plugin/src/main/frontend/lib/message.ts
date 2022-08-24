@@ -32,10 +32,10 @@ export function useMessages(
   const [cookies] = useCookies(['XSRF-TOKEN']);
   const headers = { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] };
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[] | null>(null);
 
   const loadMessages = useCallback(async () => {
-    setMessages(await fetchMessages(camundaRestPrefix, params) ?? []);
+    setMessages(await fetchMessages(camundaRestPrefix, params));
   }, [camundaRestPrefix]);
 
   const deleteMessage = useCallback(async (messageId: Message['id']) => {

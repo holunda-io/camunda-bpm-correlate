@@ -17,12 +17,16 @@ function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps
           <section className="col-xs-12 col-md-12">
             <div className="inner">
               <h1 className="section-title">Messages</h1>
-              <CorrelateMessagesTable
-                messages={messages}
-                onDeleteMessage={deleteMessage}
-                onPauseCorrelation={pauseCorrelation}
-                onResumeCorrelation={resumeCorrelation}
-              />
+              {messages ? (
+                <CorrelateMessagesTable
+                  messages={messages}
+                  onDeleteMessage={deleteMessage}
+                  onPauseCorrelation={pauseCorrelation}
+                  onResumeCorrelation={resumeCorrelation}
+                />
+              ) : (
+                <div>Loading...</div>
+              )}
             </div>
           </section>
         </div>
