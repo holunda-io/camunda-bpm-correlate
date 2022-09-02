@@ -36,7 +36,7 @@ class DefaultMessagePersistenceService(
   override fun fetchMessageBatches(): List<CorrelationBatch> {
 
     // retrieve messages.
-    val allMessages: List<MessageEntity> = messageRepository.findAll(messagePersistenceConfig.getPageSize())
+    val allMessages: List<MessageEntity> = messageRepository.findAll(0, messagePersistenceConfig.getPageSize())
 
     logger.debug { "Found ${allMessages.size} messages, building batches." }
 

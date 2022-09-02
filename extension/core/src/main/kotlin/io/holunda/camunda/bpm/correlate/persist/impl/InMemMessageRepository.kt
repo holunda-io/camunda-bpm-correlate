@@ -13,8 +13,12 @@ class InMemMessageRepository() : MessageRepository {
 
   private val store: MutableMap<String, MessageEntity> = mutableMapOf()
 
-  override fun findAll(pageSize: Int): List<MessageEntity> {
-    return store.values.take(pageSize)
+  override fun findAll(page: Int, pageSize: Int): List<MessageEntity> {
+    return store.values.toList().subList(page * pageSize, pageSize)
+  }
+  
+  override fun findAllLight(page: Int, pageSize: Int): List<MessageEntity> {
+    return store.values.toList().subList(page * pageSize, pageSize)
   }
 
   override fun findByIdOrNull(id: String): MessageEntity? {

@@ -3,23 +3,18 @@ package io.holunda.camunda.bpm.correlate.correlation
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
 import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
 import mu.KLogging
-import net.javacrumbs.shedlock.core.LockProvider
-import net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.scheduling.annotation.SchedulingConfigurer
 import org.springframework.scheduling.config.ScheduledTaskRegistrar
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
-import javax.sql.DataSource
 
 
 @Configuration
@@ -28,7 +23,7 @@ import javax.sql.DataSource
 @ConditionalOnBean(name = ["batchConfigurationProperties"])
 class BatchCorrelationSchedulerConfiguration(
   private val batchCorrelationProcessor: BatchCorrelationProcessor,
-  private val messageCleanupService: MessageManagementService,
+  private val messageManagementService: MessageManagementService,
   private val batchConfigurationProperties: BatchConfigurationProperties
 ) : SchedulingConfigurer {
 
@@ -47,7 +42,7 @@ class BatchCorrelationSchedulerConfiguration(
   fun runCorrelation() {
     batchCorrelationProcessor.correlate()
 
-    val remaining = messageCleanupService.listAllMessages()
+    val remaining = messageManagementService.listAllMessages()
     if (remaining.isNotEmpty()) {
       logger.debug { "There are ${remaining.size} messages in the message inbox." }
     }
@@ -61,7 +56,7 @@ class BatchCorrelationSchedulerConfiguration(
     fixedRateString = "#{batchConfigurationProperties.cleanupPollInterval}"
   )
   fun cleanupExpired() {
-    messageCleanupService.cleanupExpired()
+    messageManagementService.cleanupExpired()
   }
 
   @Bean(destroyMethod = "shutdown")

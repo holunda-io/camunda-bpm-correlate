@@ -15,7 +15,7 @@ correlate:
 #        timeToLiveAsString: PT10S # errors during TTL seconds after receiving are ignored
         payloadEncoding: jackson  # our bytes are actually JSON written by Jackson.
   batch:
-    mode: all # default fail_first -> 'all' will correlate one message after another, resulting in ignoring the order of receiving
+    mode: fail_first # default fail_first -> 'all' will correlate one message after another, resulting in ignoring the order of receiving
     query:    # query scheduler
       pollInitialDelay: PT10S
       pollInterval: PT6S
@@ -30,6 +30,6 @@ correlate:
     messageFetchPageSize: 100 # default 100
   retry:
     retryMaxBackoffMinutes: 5 # default 180 -> maximum 5 minutes between retries
-    retryBackoffBase: 2.0 # value in minutes default 2.0 -> base in the power of retry to calculate the next retry
+    retryBackoffBase: 5.0 # value in minutes default 2.0 -> base in the power of retry to calculate the next retry
 
 

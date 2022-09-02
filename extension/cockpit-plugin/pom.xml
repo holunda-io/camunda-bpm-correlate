@@ -1,0 +1,189 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.holunda</groupId>
+    <artifactId>camunda-bpm-correlate-parent</artifactId>
+    <version>0.0.3-SNAPSHOT</version>
+    <relativePath>../../bom/parent/pom.xml</relativePath>
+  </parent>
+
+  <artifactId>camunda-bpm-correlate-cockpit-plugin</artifactId>
+  <name>Extension / Cockpit plugin</name>
+  <packaging>jar</packaging>
+
+  <properties>
+    <npm.version>8.1.2</npm.version>
+    <node.version>v16.13.2</node.version>
+
+    <camunda.plugin.category>Monitoring</camunda.plugin.category>
+    <camunda.plugin.screenshot>screenshot.png</camunda.plugin.screenshot>
+    <!-- <camunda.plugin.screenshot.1>screenshot2.png</camunda.plugin.screenshot.1> -->
+    <camunda.plugin.testedOnVersion>${camunda-7.version}</camunda.plugin.testedOnVersion>
+    <!-- <camunda.plugin.exampleProcessApplicationUrl></camunda.plugin.exampleProcessApplicationUrl> -->
+    <camunda.plugin.language>EN</camunda.plugin.language>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <!-- process engine, needs to be provided -->
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <!-- process engine, needs to be provided -->
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <!-- Cockpit Plugin API, needs to be provided -->
+      <groupId>org.camunda.bpm.webapp</groupId>
+      <artifactId>camunda-webapp</artifactId>
+      <classifier>classes</classifier>
+      <!-- not part of camunda bom -->
+      <version>${camunda-7.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Java EE 6 APIs -->
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>6.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Bridge to extension -->
+    <dependency>
+      <groupId>io.holunda</groupId>
+      <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
+      <version>${project.version}</version>
+      <!-- find out how to test it?! should be provided -->
+      <scope>compile</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <defaultGoal>clean install</defaultGoal>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.2.0</version>
+          <executions>
+            <execution>
+              <id>copy-assets</id>
+              <phase>process-resources</phase>
+              <goals>
+                <goal>copy-resources</goal>
+              </goals>
+              <configuration>
+                <outputDirectory>${project.build.directory}/classes/plugin-webapp/correlate-cockpit-plugin/app</outputDirectory>
+                <resources>
+                  <resource>
+                    <directory>src/main/assets</directory>
+                    <filtering>false</filtering>
+                  </resource>
+                </resources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.github.eirslett</groupId>
+          <artifactId>frontend-maven-plugin</artifactId>
+          <version>1.12.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>npm build</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run build</arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>node-and-npm</id>
+      <activation>
+        <file>
+          <missing>node</missing>
+        </file>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>install node and npm</id>
+                <goals>
+                  <goal>install-node-and-npm</goal>
+                </goals>
+                <phase>initialize</phase>
+                <configuration>
+                  <npmVersion>${npm.version}</npmVersion>
+                  <nodeVersion>${node.version}</nodeVersion>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>npm-install</id>
+      <activation>
+        <file>
+          <missing>node_modules</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>npm install</id>
+                <goals>
+                  <goal>npm</goal>
+                </goals>
+                <phase>initialize</phase>
+                <configuration>
+                  <arguments>install</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+</project>

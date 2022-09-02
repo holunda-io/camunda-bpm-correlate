@@ -21,6 +21,7 @@
     <module>bom/parent</module>
     <module>bom/bom</module>
     <module>extension/core</module>
+    <module>extension/cockpit-plugin</module>
     <module>extension/spring-boot-starter</module>
     <module>extension/spring-cloud-stream</module>
     <module>extension/axon</module>
