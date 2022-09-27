@@ -16,13 +16,14 @@ class AxonEventMessageHandler(
   private val messageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngressMetrics,
   private val axonEventHeaderConverter: AxonEventHeaderConverter,
-  private val encoder: PayloadDecoder
+  private val encoder: PayloadDecoder,
+  private val channel: String,
 ) : EventMessageHandler {
 
   companion object : KLogging()
 
   override fun handle(eventMessage: EventMessage<*>) {
-    metrics.incrementReceived()
+    metrics.incrementReceived(channel)
     val headers = axonEventHeaderConverter.extractHeaders(eventMessage)
     logger.debug { "Received message $headers" }
     // The message acceptor will only get supported messages.
@@ -38,10 +39,10 @@ class AxonEventMessageHandler(
         )
       )
       logger.debug { "Accepted message $headers" }
-      metrics.incrementAccepted()
+      metrics.incrementAccepted(channel)
     } else {
       logger.debug { "Ignored message $headers, it is not supported by client." }
-      metrics.incrementIgnored()
+      metrics.incrementIgnored(channel)
     }
 
   }

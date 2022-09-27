@@ -15,6 +15,7 @@ import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
 import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
+import io.prometheus.client.CollectorRegistry
 import mu.KLogging
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
@@ -52,11 +53,11 @@ class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
 
   @ConditionalOnMissingBean
   @Bean
-  fun ingresMetrics() = IngressMetrics()
+  fun ingressMetrics(registry: CollectorRegistry) = IngressMetrics(registry = registry)
 
   @ConditionalOnMissingBean
   @Bean
-  fun correlationMetrics(): CorrelationMetrics = CorrelationMetrics()
+  fun correlationMetrics(registry: CollectorRegistry): CorrelationMetrics = CorrelationMetrics(registry = registry)
 
   @ConditionalOnMissingBean
   @Bean

@@ -44,13 +44,13 @@ spring:
         bindings:
           streamByteMessageConsumer-in-0: correlate-ingress-binding      
       bindings:
-        correlate-ingres-binding:
+        correlate-ingress-binding:
           content-type: application/json
           destination: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingress}
           binder: correlate-ingress-binder
           group: ${KAFKA_GROUP_ID}
       binders:
-        correlate-ingres-binder:
+        correlate-ingress-binder:
           type: kafka
           defaultCandidate: false
           inheritEnvironment: false

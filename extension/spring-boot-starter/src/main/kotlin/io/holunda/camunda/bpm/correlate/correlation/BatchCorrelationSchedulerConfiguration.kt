@@ -24,7 +24,8 @@ import java.util.concurrent.Executors
 class BatchCorrelationSchedulerConfiguration(
   private val batchCorrelationProcessor: BatchCorrelationProcessor,
   private val messageManagementService: MessageManagementService,
-  private val batchConfigurationProperties: BatchConfigurationProperties
+  private val batchConfigurationProperties: BatchConfigurationProperties,
+  private val correlationMetrics: CorrelationMetrics
 ) : SchedulingConfigurer {
 
   companion object : KLogging()
@@ -42,12 +43,17 @@ class BatchCorrelationSchedulerConfiguration(
   fun runCorrelation() {
     batchCorrelationProcessor.correlate()
 
-    val remaining = messageManagementService.listAllMessages()
-    if (remaining.isNotEmpty()) {
-      logger.debug { "There are ${remaining.size} messages in the message inbox." }
-    }
-    remaining.forEach {
-      logger.debug { "Message with payload type ${it.payloadTypeNamespace}.${it.payloadTypeName} received at ${it.inserted}, attempts: ${it.retries}, next due at: ${it.nextRetry}." }
+    val count = messageManagementService.countMessagesByStatus()
+    correlationMetrics.reportMessageCounts(count)
+
+    if (logger.isDebugEnabled) {
+      val remaining = messageManagementService.listAllMessages()
+      if (remaining.isNotEmpty()) {
+        logger.debug { "There are ${remaining.size} messages in the message inbox." }
+      }
+      remaining.forEach {
+        logger.debug { "Message with payload type ${it.payloadTypeNamespace}.${it.payloadTypeName} received at ${it.inserted}, attempts: ${it.retries}, next due at: ${it.nextRetry}." }
+      }
     }
   }
 

@@ -13,13 +13,13 @@ spring:
   cloud:
     stream:
       bindings:
-        correlate-ingres-binding:
+        correlate-ingress-binding:
           content-type: application/json
           destination: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingress}
           binder: correlate-ingress-binder
           group: ${KAFKA_GROUP_ID}
       binders:
-        correlate-ingres-binder:
+        correlate-ingress-binder:
           type: kafka
           defaultCandidate: false
           inheritEnvironment: false
@@ -54,3 +54,24 @@ camunda:
     metrics:
       enabled: false
       db-reporter-activate: false
+
+management:
+  server:
+    port: ${MANAGEMENT_PORT:9005}
+  endpoint:
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: 'prometheus,health,info,loggers'
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    enable:
+      jvm: false
+      tomcat: false
+      cache: false
+      logback: false
+      process: false

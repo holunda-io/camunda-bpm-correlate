@@ -36,7 +36,8 @@ class SpringCloudStreamChannelConfiguration {
   ) = StreamByteMessageConsumer(
     messageAcceptor = channelMessageAcceptor,
     metrics = metrics,
-    channelMessageHeaderConverter = channelMessageHeaderConverter
+    channelMessageHeaderConverter = channelMessageHeaderConverter,
+    channel = TYPE // currently based on type, later based on name
   )
 
   @ConditionalOnMissingBean

@@ -25,6 +25,10 @@ import org.springframework.core.annotation.Order
 @AutoConfigureAfter(AxonAutoConfiguration::class, ChannelMessageAcceptorConfiguration::class)
 class AxonChannelConfiguration {
 
+  companion object {
+    const val TYPE = "axon"
+  }
+
   @ConditionalOnMissingBean
   @Bean
   fun axonEventMessageHandler(
@@ -35,14 +39,15 @@ class AxonChannelConfiguration {
     channelConfigs: Map<String, ChannelConfig>
   ): AxonEventMessageHandler {
 
-    val config = requireNotNull(channelConfigs["axon"]) { "Configuration for channel 'axon' is required." }
+    val config = requireNotNull(channelConfigs[TYPE]) { "Configuration for channel 'axon' is required." }
     val encoding = requireNotNull(config.getMessagePayloadEncoding()) { "Channel encoding is required, please set message-payload-encoding." }
     val encoder = requireNotNull(payloadDecoders.find { it.supports(encoding) }) { "Could not find decoder for configured message encoding '$encoding'." }
     return AxonEventMessageHandler(
       messageAcceptor = channelMessageAcceptor,
       metrics = metrics,
       axonEventHeaderConverter = axonEventHeaderConverter,
-      encoder = encoder
+      encoder = encoder,
+      channel = TYPE
     )
   }
 
@@ -54,6 +59,6 @@ class AxonChannelConfiguration {
   @Order(10)
   fun axonChannelConfigMessageMetaDataSnippetExtractor(channelConfigs: Map<String, ChannelConfig>): MessageMetaDataSnippetExtractor =
     ChannelConfigMessageMetaDataSnippetExtractor(
-      channelConfig = requireNotNull(channelConfigs["axon"]) { "Configuration for channel 'axon' is required." }
+      channelConfig = requireNotNull(channelConfigs[TYPE]) { "Configuration for channel 'axon' is required." }
     )
 }

@@ -13,22 +13,23 @@ import java.util.function.Consumer
 class StreamByteMessageConsumer(
   private val messageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngressMetrics,
-  private val channelMessageHeaderConverter: ChannelMessageHeaderConverter
+  private val channelMessageHeaderConverter: ChannelMessageHeaderConverter,
+  private val channel: String
 ) : Consumer<Message<ByteArray>> {
 
   companion object : KLogging()
 
   override fun accept(message: Message<ByteArray>) {
-    metrics.incrementReceived()
+    metrics.incrementReceived(channel)
     val headers = channelMessageHeaderConverter.extractMessageHeaders(message)
     logger.debug { "Received message $headers" }
     if (messageAcceptor.supports(headers)) {
       messageAcceptor.accept(ByteMessage(headers = headers, payload = message.payload))
       logger.debug { "Accepted message $headers" }
-      metrics.incrementAccepted()
+      metrics.incrementAccepted(channel)
     } else {
       logger.debug { "Ignored message $headers, it is not supported by client." }
-      metrics.incrementIgnored()
+      metrics.incrementIgnored(channel)
     }
   }
 

@@ -26,8 +26,16 @@ class MessageEntity(
    * Checks if the message is expired.
    */
   fun isExpired(clock: Clock): Boolean {
-    return expiration != null && clock.instant() >= expiration
+    return isExpired(clock.instant())
   }
+
+  /**
+   * Checks if the message is expired.
+   */
+  fun isExpired(now: Instant): Boolean {
+    return expiration != null && now >= expiration
+  }
+
 
   fun status(maxRetries: Int): MessageStatus {
     return if (error == null && retries == 0) {

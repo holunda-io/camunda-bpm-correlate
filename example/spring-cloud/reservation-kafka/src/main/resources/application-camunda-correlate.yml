@@ -4,7 +4,7 @@ spring:
       function:
         definition: streamByteMessageConsumer
         bindings:
-          streamByteMessageConsumer-in-0: correlate-ingres-binding
+          streamByteMessageConsumer-in-0: correlate-ingress-binding
 
 correlate:
   enabled: true

@@ -1,10 +1,12 @@
 package io.holunda.camunda.bpm.correlate.persist.impl
 
+import io.holunda.camunda.bpm.correlate.persist.CountByStatus
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import mu.KLogging
 import org.apache.ibatis.session.RowBounds
 import org.apache.ibatis.session.SqlSessionFactory
+import java.time.Instant
 
 /**
  * MyBatis implementation of the message repository.
@@ -16,9 +18,13 @@ class MyBatisMessageRepository(
 
   companion object : KLogging()
 
-  override fun findAllLight(page: Int, pageSize: Int): List<MessageEntity> {
+  override fun findAllLight(page: Int, pageSize: Int, faultsOnly: Boolean): List<MessageEntity> {
     return sqlSessionFactory.openSession().use {
-      it.getMapper(MyBatisMessageMapper::class.java).findAllLightPaged(RowBounds(pageSize * page, pageSize))
+      if (faultsOnly) {
+        it.getMapper(MyBatisMessageMapper::class.java).findAllFaultsLightPaged(RowBounds(pageSize * page, pageSize))
+      } else {
+        it.getMapper(MyBatisMessageMapper::class.java).findAllLightPaged(RowBounds(pageSize * page, pageSize))
+      }
     }
   }
 
@@ -33,6 +39,13 @@ class MyBatisMessageRepository(
       it.getMapper(MyBatisMessageMapper::class.java).findById(id)
     }
   }
+
+  override fun countByStatus(maxRetries: Int, now: Instant, farFuture: Instant): CountByStatus {
+    return sqlSessionFactory.openSession().use {
+      it.getMapper(MyBatisMessageMapper::class.java).countByStatus(maxRetries, now, farFuture)
+    }
+  }
+
 
   override fun insert(message: MessageEntity) {
     return sqlSessionFactory.openSession().use {
