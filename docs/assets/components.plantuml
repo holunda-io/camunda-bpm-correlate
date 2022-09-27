@@ -9,7 +9,7 @@ skinparam component {
 
 interface "Channel Message Acceptor" as CMA
 
-package "Ingres Adapter" {
+package "Ingress Adapter" {
   [ Kafka ]
 }
 

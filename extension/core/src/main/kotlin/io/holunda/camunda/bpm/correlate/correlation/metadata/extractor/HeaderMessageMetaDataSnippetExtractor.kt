@@ -12,7 +12,7 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMes
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.PAYLOAD_TYPE_REVISION
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.TIMESTAMP
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMessageMetaDataSnippetExtractor.HeaderNames.TTL
-import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
+import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
 import io.holunda.camunda.bpm.data.CamundaBpmData.reader
 import io.holunda.camunda.bpm.data.CamundaBpmData.stringVariable
 import org.camunda.bpm.engine.variable.Variables.createVariables

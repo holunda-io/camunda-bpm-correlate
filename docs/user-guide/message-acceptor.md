@@ -1,4 +1,4 @@
-The message acceptor is a component responsible to receive the message from the Ingres adapter and store it into the database. 
+The message acceptor is a component responsible to receive the message from the Ingress adapter and store it into the database. 
 
 ## Message Metadata
 Along with the payload the message must contain metadata represented by the `MessageMetadata`. This metadata is extracted from the channel settings, 
@@ -16,13 +16,13 @@ like message encoding are extracted that way.
 ### HeaderMessageMessageMetaDataSnippetExtractor
 
 The `HeaderMessageMessageMetaDataSnippetExtractor` is responsible for reading metadata from message headers. Most communication technologies support some concept
-of message headers and the corresponding [Ingres Adapter](./ingres-axon.md) is mapping those headers to message headers used in the library. By doing so, 
-you can influence message attributes on a message level. For example, if you are receiving different types of messages by the same ingres adapter, this is 
+of message headers and the corresponding [Ingress Adapter](./ingress-axon.md) is mapping those headers to message headers used in the library. By doing so, 
+you can influence message attributes on a message level. For example, if you are receiving different types of messages by the same ingress adapter, this is 
 the easiest way to detect the type of the message.
 
 ## Message filtering
 
-Sometimes, more messages are sent through the channel as needed to be received by the Ingres Adapter and needs to be accepted and stored by the library. 
+Sometimes, more messages are sent through the channel as needed to be received by the Ingress Adapter and needs to be accepted and stored by the library. 
 For this purpose, a special filtering component `MessageFilter` is configured in the `MessageAcceptor`. For more details, how to use the filter please check the [Filtering messages](filtering-messages.md) section. 
 
 You can

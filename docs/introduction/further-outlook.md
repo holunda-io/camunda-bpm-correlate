@@ -2,7 +2,7 @@
 
 * Plugin for Camunda Cockpit
 * More metrics for Prometheus
-* More ingres adapters:
+* More ingress adapters:
     * Apache Camel
     * REST implementing Camunda API
 

@@ -9,7 +9,7 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMes
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.MessageMetadataExtractorChain
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactory
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactoryRegistry
-import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
+import io.holunda.camunda.bpm.correlate.ingress.IngressMetrics
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
@@ -52,7 +52,7 @@ class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
 
   @ConditionalOnMissingBean
   @Bean
-  fun ingresMetrics() = IngresMetrics()
+  fun ingresMetrics() = IngressMetrics()
 
   @ConditionalOnMissingBean
   @Bean

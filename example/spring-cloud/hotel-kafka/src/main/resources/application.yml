@@ -20,7 +20,7 @@ spring:
           binder: hotels
           group: ${KAFKA_GROUP_ID:hotel}
         hotels-result-binding:
-          destination: ${KAFKA_TOPIC_HOTEL_RESULT:correlate-ingres}
+          destination: ${KAFKA_TOPIC_HOTEL_RESULT:correlate-ingress}
           binder: hotels
           group: ${KAFKA_GROUP_ID:hotel}
       binders:

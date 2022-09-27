@@ -19,7 +19,7 @@
       <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
     </dependency>
-    <!-- Ingres Adapter -->
+    <!-- Ingress Adapter -->
     <dependency>
       <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-axon-framework</artifactId>

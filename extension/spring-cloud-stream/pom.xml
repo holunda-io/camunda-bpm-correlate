@@ -11,7 +11,7 @@
 
   <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
   <packaging>jar</packaging>
-  <name>Extension / Ingres Adapter Spring Cloud Stream</name>
+  <name>Extension / Ingress Adapter Spring Cloud Stream</name>
 
   <properties>
     <spring-cloud.version>2021.0.1</spring-cloud.version>

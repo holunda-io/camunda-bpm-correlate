@@ -4,10 +4,9 @@ import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
 import io.holunda.camunda.bpm.correlate.event.CorrelationHint
-import io.holunda.camunda.bpm.correlate.ingres.MessageFilter
-import io.holunda.camunda.bpm.correlate.ingres.message.ByteMessage
-import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
-import io.holunda.camunda.bpm.correlate.ingres.message.ObjectMessage
+import io.holunda.camunda.bpm.correlate.ingress.MessageFilter
+import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
+import io.holunda.camunda.bpm.correlate.ingress.message.ObjectMessage
 import java.util.*
 
 fun messageId() = UUID.randomUUID().toString()

@@ -15,8 +15,8 @@ spring:
       bindings:
         correlate-ingres-binding:
           content-type: application/json
-          destination: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingres}
-          binder: correlate-ingres-binder
+          destination: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingress}
+          binder: correlate-ingress-binder
           group: ${KAFKA_GROUP_ID}
       binders:
         correlate-ingres-binder:

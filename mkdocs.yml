@@ -103,9 +103,9 @@ nav:
       - Overview: user-guide/index.md
       - Architecture: user-guide/architecture.md
       - Components:
-          - Ingres Adapter: user-guide/ingres.md
-          - Spring Cloud Ingres Adapter: user-guide/ingres-spring-cloud.md
-          - Axon Framework Ingres Adapter: user-guide/ingres-axon.md
+          - Ingress Adapter: user-guide/ingress.md
+          - Spring Cloud Ingress Adapter: user-guide/ingress-spring-cloud.md
+          - Axon Framework Ingress Adapter: user-guide/ingress-axon.md
           - Message Acceptor: user-guide/message-acceptor.md
           - Message Filter: user-guide/filtering-messages.md
           - Message Persistence: user-guide/message-persistence.md

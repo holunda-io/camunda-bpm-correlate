@@ -3,7 +3,7 @@ package io.holunda.camunda.bpm.correlate.correlation.metadata.extractor
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippet
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
-import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
+import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
 import io.holunda.camunda.bpm.correlate.util.ComponentLike
 
 /**
