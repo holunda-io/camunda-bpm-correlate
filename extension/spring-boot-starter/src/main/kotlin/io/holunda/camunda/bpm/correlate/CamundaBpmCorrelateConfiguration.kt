@@ -9,12 +9,13 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.HeaderMes
 import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.MessageMetadataExtractorChain
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactory
 import io.holunda.camunda.bpm.correlate.event.CamundaCorrelationEventFactoryRegistry
-import io.holunda.camunda.bpm.correlate.ingres.IngresMetrics
+import io.holunda.camunda.bpm.correlate.ingress.IngressMetrics
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
 import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
+import io.micrometer.core.instrument.MeterRegistry
 import mu.KLogging
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
@@ -52,11 +53,11 @@ class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
 
   @ConditionalOnMissingBean
   @Bean
-  fun ingresMetrics() = IngresMetrics()
+  fun ingressMetrics(registry: MeterRegistry) = IngressMetrics(registry = registry)
 
   @ConditionalOnMissingBean
   @Bean
-  fun correlationMetrics(): CorrelationMetrics = CorrelationMetrics()
+  fun correlationMetrics(registry: MeterRegistry): CorrelationMetrics = CorrelationMetrics(registry = registry)
 
   @ConditionalOnMissingBean
   @Bean

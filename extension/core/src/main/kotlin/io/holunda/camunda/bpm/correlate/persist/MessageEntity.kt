@@ -19,15 +19,23 @@ class MessageEntity(
   var error: String? = null
 ) {
   companion object {
-    val FAR_FUTURE: Instant = Instant.parse("4999-12-03T10:15:30Z") // taking a value that will pass into every DB.
+    val FAR_FUTURE: Instant = Instant.parse("4999-12-03T10:15:30Z") // taking a value that will match into every DB.
   }
 
   /**
    * Checks if the message is expired.
    */
   fun isExpired(clock: Clock): Boolean {
-    return expiration != null && clock.instant() >= expiration
+    return isExpired(clock.instant())
   }
+
+  /**
+   * Checks if the message is expired.
+   */
+  fun isExpired(now: Instant): Boolean {
+    return expiration != null && now >= expiration
+  }
+
 
   fun status(maxRetries: Int): MessageStatus {
     return if (error == null && retries == 0) {

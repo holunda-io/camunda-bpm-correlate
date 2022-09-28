@@ -20,7 +20,7 @@ spring:
           binder: flights
           group: ${KAFKA_GROUP_ID:flight}
         flights-result-binding:
-          destination: ${KAFKA_TOPIC_FLIGHTS_RESULT:correlate-ingres}
+          destination: ${KAFKA_TOPIC_FLIGHTS_RESULT:correlate-ingress}
           binder: flights
           group: ${KAFKA_GROUP_ID:flight}
       binders:

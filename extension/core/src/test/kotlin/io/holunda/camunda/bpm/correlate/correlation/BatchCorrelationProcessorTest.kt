@@ -5,7 +5,6 @@ import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
 import io.holunda.camunda.bpm.correlate.runningInstanceHint
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.*
-import java.lang.IllegalArgumentException
 
 internal class BatchCorrelationProcessorTest {
 
@@ -94,7 +93,7 @@ internal class BatchCorrelationProcessorTest {
     verifyNoMoreInteractions(persistenceService)
 
     verify(correlationMetrics).incrementSuccess(batches[0].correlationMessages.size)
-    verify(correlationMetrics).incrementError(1)
+    verify(correlationMetrics).incrementError()
     verifyNoMoreInteractions(correlationMetrics)
 
   }

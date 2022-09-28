@@ -1,6 +1,6 @@
 package io.holunda.camunda.bpm.correlate.correlation.metadata
 
-import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
+import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
 
 /**
  * Extractor for the metadata.

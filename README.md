@@ -18,8 +18,9 @@ you to solve integration problems around correlation of messages with processes.
 
 ## Main Features
 
-* Ingres adapters for:
+* Ingress adapters for:
     * Spring Cloud Streams (e.g. Kafka Streams, Rabbit MQ, Azure Event Hubs, AWS SQS, AWS SNS, Solace PubSub+, Google PubSub)
+    * Axon Framework (Axon Event Bus)
 * Inbox pattern on message receiving
 * Message storage in the Camunda Platform 7 database
     * MyBatis repository 

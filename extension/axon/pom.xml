@@ -11,7 +11,7 @@
 
   <artifactId>camunda-bpm-correlate-axon-framework</artifactId>
   <packaging>jar</packaging>
-  <name>Extension / Ingres Adapter Axon Framework</name>
+  <name>Extension / Ingress Adapter Axon Framework</name>
 
   <properties>
     <axon-framework.version>4.5.12</axon-framework.version>

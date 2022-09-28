@@ -4,4 +4,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationSchedulerConfiguration,\
   io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationConfiguration,\
   io.holunda.camunda.bpm.correlate.correlation.ClusterSetupConfiguration,\
-  io.holunda.camunda.bpm.correlate.ingres.ChannelMessageAcceptorConfiguration
+  io.holunda.camunda.bpm.correlate.ingress.ChannelMessageAcceptorConfiguration

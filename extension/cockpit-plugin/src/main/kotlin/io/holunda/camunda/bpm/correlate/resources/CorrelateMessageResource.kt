@@ -22,7 +22,7 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
   fun getMessages(@QueryParam("faultsOnly") faults: Boolean, @QueryParam("page") page: Int, @QueryParam("size") size: Int): List<MessageDto> {
     return services
       .messageRepository
-      .findAllLight(page, size)
+      .findAllLight(page, size, faults)
       .map { it.toDto(services.configuration.persistence.messageMaxRetries) }
   }
 

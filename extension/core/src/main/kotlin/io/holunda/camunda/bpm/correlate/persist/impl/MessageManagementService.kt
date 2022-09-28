@@ -1,5 +1,6 @@
 package io.holunda.camunda.bpm.correlate.persist.impl
 
+import io.holunda.camunda.bpm.correlate.persist.CountByStatus
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity.Companion.FAR_FUTURE
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
@@ -23,7 +24,7 @@ class MessageManagementService(
    */
   fun cleanupExpired() {
     messageRepository.deleteAllById(
-      messageRepository.findAllLight(page = 0, pageSize = persistenceConfig.getPageSize())
+      messageRepository.findAllLight(page = 0, pageSize = persistenceConfig.getPageSize(), faultsOnly = true)
         .filter { it.isExpired(clock) }
         .map { it.id }
     )
@@ -100,7 +101,19 @@ class MessageManagementService(
       }
   }
 
-  fun getMessageById(messageId: String): MessageEntity {
+  /**
+   * Count messages by status.
+   */
+  fun countMessagesByStatus(): CountByStatus {
+    return messageRepository.countByStatus(persistenceConfig.getMaxRetries(), clock.instant(), MessageEntity.FAR_FUTURE)
+  }
+
+  /**
+   * Retrieves a message by id.
+   * @param messageId message id.
+   * @return message.
+   */
+  internal fun getMessageById(messageId: String): MessageEntity {
     return requireNotNull(messageRepository.findByIdOrNull(messageId)) { "Could not find message with id $messageId" }
   }
 

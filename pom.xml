@@ -13,8 +13,8 @@
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>11</java.version>
-    <kotlin.version>1.6.21</kotlin.version>
-    <spring-boot.version>2.6.6</spring-boot.version>
+    <kotlin.version>1.7.10</kotlin.version>
+    <spring-boot.version>2.7.4</spring-boot.version>
   </properties>
 
   <modules>
@@ -284,9 +284,6 @@
             <shutdown>kill</shutdown>
             <runOrder>random</runOrder>
             <argLine>--illegal-access=permit ${surefireArgLine} -Djava.awt.headless=true -XX:+StartAttachListener</argLine>
-            <excludes>
-              <exclude>**/*ITest.*</exclude>
-            </excludes>
             <systemPropertyVariables>
               <jgiven.report.dir>${project.build.directory}/jgiven-reports</jgiven.report.dir>
             </systemPropertyVariables>
@@ -307,9 +304,6 @@
           </executions>
           <configuration>
             <argLine>--illegal-access=permit ${failsafeArgLine}</argLine>
-            <includes>
-              <include>**/*ITest.*</include>
-            </includes>
             <systemPropertyVariables>
               <jgiven.report.dir>${project.build.directory}/jgiven-reports</jgiven.report.dir>
             </systemPropertyVariables>
