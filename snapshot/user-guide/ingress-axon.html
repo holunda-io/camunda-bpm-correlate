@@ -12,14 +12,14 @@
         <meta name="author" content="Holisticon BPM Craftsman">
       
       
-        <link rel="canonical" href="https://www.holunda.io/camunda-bpm-correlate/snapshot/developer-guide/contribution.html">
+        <link rel="canonical" href="https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/ingress-axon.html">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.3">
     
     
       
-        <title>Contributing - Camunda Platform Correlate</title>
+        <title>Axon Framework Ingress Adapter - Camunda Platform Correlate</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#found-a-bug-or-missing-feature" class="md-skip">
+        <a href="#message" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Contributing
+              Axon Framework Ingress Adapter
             
           </span>
         </div>
@@ -240,13 +240,15 @@
         
   
   
+    
+  
 
 
   
   
   
     <li class="md-tabs__item">
-      <a href="../user-guide/index.html" class="md-tabs__link">
+      <a href="index.html" class="md-tabs__link md-tabs__link--active">
         User Guide
       </a>
     </li>
@@ -256,15 +258,13 @@
         
   
   
-    
-  
 
 
   
   
   
     <li class="md-tabs__item">
-      <a href="contribution.html" class="md-tabs__link md-tabs__link--active">
+      <a href="../developer-guide/contribution.html" class="md-tabs__link">
         Developer Guide
       </a>
     </li>
@@ -462,12 +462,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       
       
@@ -490,7 +492,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/index.html" class="md-nav__link">
+      <a href="index.html" class="md-nav__link">
         Overview
       </a>
     </li>
@@ -504,7 +506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/architecture.html" class="md-nav__link">
+      <a href="architecture.html" class="md-nav__link">
         Architecture
       </a>
     </li>
@@ -516,14 +518,16 @@
               
   
   
+    
+  
   
     
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" checked>
       
       
       
@@ -546,7 +550,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/ingress.html" class="md-nav__link">
+      <a href="ingress.html" class="md-nav__link">
         Ingress Adapter
       </a>
     </li>
@@ -560,7 +564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/ingress-spring-cloud.html" class="md-nav__link">
+      <a href="ingress-spring-cloud.html" class="md-nav__link">
         Spring Cloud Ingress Adapter
       </a>
     </li>
@@ -572,11 +576,48 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../user-guide/ingress-axon.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Axon Framework Ingress Adapter
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ingress-axon.html" class="md-nav__link md-nav__link--active">
         Axon Framework Ingress Adapter
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#message" class="md-nav__link">
+    Message
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -588,7 +629,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/message-acceptor.html" class="md-nav__link">
+      <a href="message-acceptor.html" class="md-nav__link">
         Message Acceptor
       </a>
     </li>
@@ -602,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/filtering-messages.html" class="md-nav__link">
+      <a href="filtering-messages.html" class="md-nav__link">
         Message Filter
       </a>
     </li>
@@ -616,7 +657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/message-persistence.html" class="md-nav__link">
+      <a href="message-persistence.html" class="md-nav__link">
         Message Persistence
       </a>
     </li>
@@ -630,7 +671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/scheduled-processing.html" class="md-nav__link">
+      <a href="scheduled-processing.html" class="md-nav__link">
         Scheduled Processing
       </a>
     </li>
@@ -651,7 +692,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/examples.html" class="md-nav__link">
+      <a href="examples.html" class="md-nav__link">
         Examples
       </a>
     </li>
@@ -671,14 +712,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
       
@@ -699,55 +738,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Contributing
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="contribution.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../developer-guide/contribution.html" class="md-nav__link">
         Contributing
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#found-a-bug-or-missing-feature" class="md-nav__link">
-    Found a bug or missing feature?
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#submit-a-pull-request" class="md-nav__link">
-    Submit a Pull Request
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -759,7 +754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="project-setup.html" class="md-nav__link">
+      <a href="../developer-guide/project-setup.html" class="md-nav__link">
         Project Setup
       </a>
     </li>
@@ -787,33 +782,19 @@
                 
                   
 
-  <a href="https://github.com/holunda-io/camunda-bpm-correlate/edit/develop/docs/developer-guide/contribution.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/holunda-io/camunda-bpm-correlate/edit/develop/docs/user-guide/ingress-axon.md" title="Edit this page" class="md-content__button md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
-  <h1>Contributing</h1>
+  <h1>Axon Framework Ingress Adapter</h1>
 
-<p>There are several ways in which you may contribute to this project.</p>
-<ul>
-<li><a href="https://github.com/holunda-io/camunda-bpm-correlate/issues">File issues</a></li>
-<li>Submit a pull requests</li>
-</ul>
-<h2 id="found-a-bug-or-missing-feature">Found a bug or missing feature?<a class="headerlink" href="#found-a-bug-or-missing-feature" title="Permanent link">#</a></h2>
-<p>Please <a href="https://github.com/holunda-io/camunda-bpm-correlate/issues">file an issue</a> in our
-issue tracking system.</p>
-<h2 id="submit-a-pull-request">Submit a Pull Request<a class="headerlink" href="#submit-a-pull-request" title="Permanent link">#</a></h2>
-<p>If you found a solution to an <a href="https://github.com/holunda-io/camunda-bpm-correlate">open issue</a>
-and implemented it, we would be happy to add your contribution in the code base. For doing so,
-please create a pull request. Prior to that, please make sure you</p>
-<ul>
-<li>rebased against the <code>develop</code> branch</li>
-<li>stick to project coding conventions</li>
-<li>added test cases for the problem you are solving</li>
-<li>added docs, describing the change</li>
-<li>generally comply with codeacy report</li>
-</ul>
+<p>The Axon Framework Ingress Adapter is responsible for receiving events on Axon Event bus and sending them for the correlation to the library. </p>
+<h3 id="message">Message<a class="headerlink" href="#message" title="Permanent link">#</a></h3>
+<p>Axon Event Message is received and deserialized by Axon Framework, using the configured message de-serializer and passed to the ingress adapter.
+The adapter is reading headers from message <code>MetaData</code> and converts them into message headers. The payload is encoded into serializable payload using 
+the configured encoder (currently Jackson).</p>
 
   <hr>
 <div class="md-source-file">
@@ -850,7 +831,7 @@ please create a pull request. Prior to that, please make sure you</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
-        <a href="../user-guide/examples.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Examples" rel="prev">
+        <a href="ingress-spring-cloud.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Spring Cloud Ingress Adapter" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -859,20 +840,20 @@ please create a pull request. Prior to that, please make sure you</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Examples
+              Spring Cloud Ingress Adapter
             </div>
           </div>
         </a>
       
       
         
-        <a href="project-setup.html" class="md-footer__link md-footer__link--next" aria-label="Next: Project Setup" rel="next">
+        <a href="message-acceptor.html" class="md-footer__link md-footer__link--next" aria-label="Next: Message Acceptor" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Project Setup
+              Message Acceptor
             </div>
           </div>
           <div class="md-footer__button md-icon">
