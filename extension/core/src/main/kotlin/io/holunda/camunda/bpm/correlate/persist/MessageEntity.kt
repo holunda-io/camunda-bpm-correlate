@@ -19,7 +19,7 @@ class MessageEntity(
   var error: String? = null
 ) {
   companion object {
-    val FAR_FUTURE: Instant = Instant.parse("4999-12-03T10:15:30Z") // taking a value that will pass into every DB.
+    val FAR_FUTURE: Instant = Instant.parse("4999-12-03T10:15:30Z") // taking a value that will match into every DB.
   }
 
   /**

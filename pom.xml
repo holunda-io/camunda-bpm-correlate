@@ -284,9 +284,6 @@
             <shutdown>kill</shutdown>
             <runOrder>random</runOrder>
             <argLine>--illegal-access=permit ${surefireArgLine} -Djava.awt.headless=true -XX:+StartAttachListener</argLine>
-            <excludes>
-              <exclude>**/*ITest.*</exclude>
-            </excludes>
             <systemPropertyVariables>
               <jgiven.report.dir>${project.build.directory}/jgiven-reports</jgiven.report.dir>
             </systemPropertyVariables>
@@ -307,9 +304,6 @@
           </executions>
           <configuration>
             <argLine>--illegal-access=permit ${failsafeArgLine}</argLine>
-            <includes>
-              <include>**/*ITest.*</include>
-            </includes>
             <systemPropertyVariables>
               <jgiven.report.dir>${project.build.directory}/jgiven-reports</jgiven.report.dir>
             </systemPropertyVariables>

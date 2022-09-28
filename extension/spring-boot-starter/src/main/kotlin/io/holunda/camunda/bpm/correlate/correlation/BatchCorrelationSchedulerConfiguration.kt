@@ -43,16 +43,15 @@ class BatchCorrelationSchedulerConfiguration(
   fun runCorrelation() {
     batchCorrelationProcessor.correlate()
 
-    val count = messageManagementService.countMessagesByStatus()
-    correlationMetrics.reportMessageCounts(count)
+    correlationMetrics.reportMessageCounts(messageManagementService.countMessagesByStatus())
 
-    if (logger.isDebugEnabled) {
+    if (logger.isTraceEnabled) {
       val remaining = messageManagementService.listAllMessages()
       if (remaining.isNotEmpty()) {
-        logger.debug { "There are ${remaining.size} messages in the message inbox." }
+        logger.trace { "There are ${remaining.size} messages in the message inbox." }
       }
       remaining.forEach {
-        logger.debug { "Message with payload type ${it.payloadTypeNamespace}.${it.payloadTypeName} received at ${it.inserted}, attempts: ${it.retries}, next due at: ${it.nextRetry}." }
+        logger.trace { "Message with payload type ${it.payloadTypeNamespace}.${it.payloadTypeName} received at ${it.inserted}, attempts: ${it.retries}, next due at: ${it.nextRetry}." }
       }
     }
   }

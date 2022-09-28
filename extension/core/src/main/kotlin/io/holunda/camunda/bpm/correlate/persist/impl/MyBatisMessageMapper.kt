@@ -84,12 +84,12 @@ interface MyBatisMessageMapper {
   fun findById(@Param("id") id: String): MessageEntity?
 
   @Select("""
-SELECT COUNT(ID)                                                                                         TOTAL,
-       COUNT(CASE WHEN M.ERROR IS NOT NULL THEN 1 END)                                                   ERROR,
-       COUNT(CASE WHEN M.ERROR IS NULL AND NEXT_RETRY IS NULL THEN 1 END)                                IN_PROGRESS,
-       COUNT(CASE WHEN M.RETRIES = #{maxRetries} THEN 1 END)                                             MAX_RETRIES_REACHED,
-       COUNT(CASE WHEN M.RETRIES > 0 AND M.RETRIES < #{maxRetries} AND M.NEXT_RETRY < #{now} THEN 1 END) RETRYING,
-       COUNT(CASE WHEN M.NEXT_RETRY = #{farFuture} THEN 1 END)                                          PAUSED
+SELECT COUNT(ID)                                                                                                    TOTAL,
+       COUNT(CASE WHEN M.ERROR IS NOT NULL THEN 1 END)                                                              ERROR,
+       COUNT(CASE WHEN M.ERROR IS NULL AND M.NEXT_RETRY IS NULL THEN 1 END)                                         IN_PROGRESS,
+       COUNT(CASE WHEN M.RETRIES = #{maxRetries} THEN 1 END)                                                        MAX_RETRIES_REACHED,
+       COUNT(CASE WHEN M.RETRIES > 0 AND M.RETRIES < #{maxRetries} AND M.NEXT_RETRY < #{farFuture} THEN 1 END)      RETRYING,
+       COUNT(CASE WHEN M.NEXT_RETRY = #{farFuture} THEN 1 END)                                                      PAUSED
 FROM COR_MESSAGE M
 """)
   @Results(

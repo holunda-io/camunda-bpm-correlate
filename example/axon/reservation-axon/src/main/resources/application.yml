@@ -30,8 +30,6 @@ correlate:
     retryMaxBackoffMinutes: 5 # default 180 -> maximum 5 minutes between retries
     retryBackoffBase: 2.0 # value in minutes default 2.0 -> base in the power of retry to calculate the next retry
 
-
-
 camunda:
   bpm:
     login:
@@ -53,3 +51,7 @@ axon:
     events: xstream
     general: xstream
     messages: xstream
+
+logging:
+  level:
+    io.holunda.camunda.bpm.correlate.correlation: DEBUG
