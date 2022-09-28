@@ -7,6 +7,7 @@ The user guide consists of several sections.
 * [Message Acceptor](message-acceptor.md)
 * [Message Persistence](message-persistence.md)
 * [Scheduled Processing](scheduled-processing.md)
+* [Metrics](metrics.md)
 
 ## Examples
 

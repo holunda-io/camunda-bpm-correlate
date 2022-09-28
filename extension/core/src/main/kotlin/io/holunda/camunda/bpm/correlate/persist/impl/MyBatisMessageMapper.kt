@@ -9,7 +9,7 @@ import java.time.Instant
 
 interface MyBatisMessageMapper {
 
-  @Select("SELECT * FROM COR_MESSAGE message")
+  @Select("SELECT * FROM COR_MESSAGE")
   @Results(
     value = [
       Result(property = "id", column = "ID", jdbcType = JdbcType.VARCHAR),
@@ -27,7 +27,7 @@ interface MyBatisMessageMapper {
   )
   fun findAllLightPaged(rowBounds: RowBounds): List<MessageEntity>
 
-  @Select("SELECT * FROM COR_MESSAGE message M WHERE M.ERROR IS NOT NULL")
+  @Select("SELECT * FROM COR_MESSAGE M WHERE M.ERROR IS NOT NULL")
   @Results(
     value = [
       Result(property = "id", column = "ID", jdbcType = JdbcType.VARCHAR),
@@ -45,7 +45,7 @@ interface MyBatisMessageMapper {
   )
   fun findAllFaultsLightPaged(rowBounds: RowBounds): List<MessageEntity>
 
-  @Select("SELECT * FROM COR_MESSAGE message")
+  @Select("SELECT * FROM COR_MESSAGE")
   @Results(
     value = [
       Result(property = "id", column = "ID", jdbcType = JdbcType.VARCHAR),
@@ -64,7 +64,7 @@ interface MyBatisMessageMapper {
   )
   fun findAll(rowBounds: RowBounds): List<MessageEntity>
 
-  @Select("SELECT * from COR_MESSAGE WHERE ID=#{id}")
+  @Select("SELECT * from COR_MESSAGE M WHERE M.ID=#{id}")
   @Results(
     value = [
       Result(property = "id", column = "ID"),
@@ -81,16 +81,16 @@ interface MyBatisMessageMapper {
       Result(property = "error", column = "ERROR", jdbcType = JdbcType.VARCHAR),
     ]
   )
-  fun findById(id: String): MessageEntity?
+  fun findById(@Param("id") id: String): MessageEntity?
 
   @Select("""
-SELECT COUNT(ID)                                                                                   TOTAL,
-       COUNT(CASE WHEN ERROR IS NOT NULL THEN 1 END)                                               ERROR,
-       COUNT(CASE WHEN ERROR IS NULL AND NEXT_RETRY IS NULL THEN 1 END)                            IN_PROGRESS,
-       COUNT(CASE WHEN RETRIES = #{maxRetries} THEN 1 END)                                         MAX_RETRIES_REACHED,
-       COUNT(CASE WHEN RETRIES > 0 AND RETRIES < #{maxRetries} AND NEXT_RETRY < #{now} THEN 1 END) RETRYING,
-       COUNT(CASE WHEN NEXT_RETRY = #{farFuture}) THEN 1 END)                                      PAUSED
-FROM COR_MESSAGE
+SELECT COUNT(ID)                                                                                         TOTAL,
+       COUNT(CASE WHEN M.ERROR IS NOT NULL THEN 1 END)                                                   ERROR,
+       COUNT(CASE WHEN M.ERROR IS NULL AND NEXT_RETRY IS NULL THEN 1 END)                                IN_PROGRESS,
+       COUNT(CASE WHEN M.RETRIES = #{maxRetries} THEN 1 END)                                             MAX_RETRIES_REACHED,
+       COUNT(CASE WHEN M.RETRIES > 0 AND M.RETRIES < #{maxRetries} AND M.NEXT_RETRY < #{now} THEN 1 END) RETRYING,
+       COUNT(CASE WHEN M.NEXT_RETRY = #{farFuture} THEN 1 END)                                          PAUSED
+FROM COR_MESSAGE M
 """)
   @Results(
     value = [
@@ -108,7 +108,7 @@ FROM COR_MESSAGE
   ): CountByStatus
 
   @Delete("DELETE FROM COR_MESSAGE WHERE ID=#{id}")
-  fun deleteById(id: String)
+  fun deleteById(@Param("id") id: String)
 
   @Insert("INSERT INTO COR_MESSAGE(ID, PAYLOAD_ENCODING, PAYLOAD_TYPE_NAMESPACE, PAYLOAD_TYPE_NAME, PAYLOAD_TYPE_REVISION, PAYLOAD, INSERTED, TTL_DURATION, EXPIRATION, RETRIES, NEXT_RETRY, ERROR) VALUES (#{id, jdbcType=VARCHAR}, #{payloadEncoding, jdbcType=VARCHAR}, #{payloadTypeNamespace, jdbcType=VARCHAR}, #{payloadTypeName, jdbcType=VARCHAR}, #{payloadTypeRevision, jdbcType=VARCHAR}, #{payload, jdbcType=BINARY}, #{inserted, jdbcType=TIMESTAMP_WITH_TIMEZONE}, #{timeToLiveDuration, jdbcType=VARCHAR}, #{expiration, jdbcType=TIMESTAMP_WITH_TIMEZONE}, #{retries, jdbcType=INTEGER}, #{nextRetry, jdbcType=TIMESTAMP_WITH_TIMEZONE}, #{error, jdbcType=VARCHAR})")
   fun insert(message: MessageEntity)

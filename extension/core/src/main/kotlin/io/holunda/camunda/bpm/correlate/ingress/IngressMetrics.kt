@@ -1,82 +1,63 @@
 package io.holunda.camunda.bpm.correlate.ingress
 
 import io.holunda.camunda.bpm.correlate.util.ComponentLike
-import io.prometheus.client.CollectorRegistry
-import io.prometheus.client.Counter
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 
 /**
  * Metrics for ingress.
  */
 @ComponentLike
 class IngressMetrics(
-  registry: CollectorRegistry
+  private val registry: MeterRegistry
 ) {
 
-  private val acceptedCounter = Counter
-    .build()
-    .name("camunda_bpm_correlate_ingress_accepted_total")
-    .labelNames("channel")
-    .help("Messages accepted by the ingress adapter")
-    .register(registry)
+  companion object {
+    const val PREFIX_INGRESS = "camunda.bpm.correlate.ingress"
+    const val PREFIX_ACCEPTOR = "camunda.bpm.correlate.acceptor"
 
-  private val receivedCounter = Counter
-    .build()
-    .name("camunda_bpm_correlate_ingress_received_total")
-    .labelNames("channel")
-    .help("Messages received by the ingress adapter")
-    .register(registry)
+    const val COUNTER_RECEIVED = "$PREFIX_INGRESS.received"
+    const val COUNTER_ACCEPTED = "$PREFIX_INGRESS.accepted"
+    const val COUNTER_IGNORED = "$PREFIX_INGRESS.ignored"
 
-  private val ignoredCounter = Counter
-    .build()
-    .name("camunda_bpm_correlate_ingress_ignored_total")
-    .labelNames("channel")
-    .help("Messages ignored by the ingress adapter")
-    .register(registry)
+    const val COUNTER_PERSISTED = "$PREFIX_ACCEPTOR.persisted"
+    const val COUNTER_DROPPED = "$PREFIX_ACCEPTOR.dropped"
 
-  private val persistedCounter = Counter
-    .build()
-    .name("camunda_bpm_correlate_acceptor_persisted_total")
-    .help("Messages persisted by the acceptor")
-    .register(registry)
-
-  private val droppedCounter = Counter
-    .build()
-    .name("camunda_bpm_correlate_acceptor_dropped_total")
-    .help("Messages dropped by the acceptor")
-    .register(registry)
+    const val TAG_CHANNEL = "channel"
+  }
 
   /**
    * Received by the ingress adapter.
    */
   fun incrementReceived(channel: String) {
-    receivedCounter.labels(channel).inc()
+    registry.counter(COUNTER_RECEIVED, listOf(Tag.of(TAG_CHANNEL, channel))).increment()
   }
 
   /**
    * Accepted by acceptor.
    */
   fun incrementAccepted(channel: String) {
-    acceptedCounter.labels(channel).inc()
+    registry.counter(COUNTER_ACCEPTED, listOf(Tag.of(TAG_CHANNEL, channel))).increment()
   }
 
   /**
    * Ignored by acceptor.
    */
   fun incrementIgnored(channel: String) {
-    ignoredCounter.labels(channel).inc()
+    registry.counter(COUNTER_IGNORED, listOf(Tag.of(TAG_CHANNEL, channel))).increment()
   }
 
   /**
    * Passed through message filter and persisted in inbox.
    */
   fun incrementPersisted() {
-    persistedCounter.inc()
+    registry.counter(COUNTER_PERSISTED).increment()
   }
 
   /**
    * Ignored by message filter (instead of persisted).
    */
   fun incrementDropped() {
-    droppedCounter.inc()
+    registry.counter(COUNTER_DROPPED).increment()
   }
 }

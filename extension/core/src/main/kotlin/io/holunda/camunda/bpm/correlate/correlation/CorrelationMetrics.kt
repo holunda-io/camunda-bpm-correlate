@@ -2,36 +2,22 @@ package io.holunda.camunda.bpm.correlate.correlation
 
 import io.holunda.camunda.bpm.correlate.persist.CountByStatus
 import io.holunda.camunda.bpm.correlate.util.ComponentLike
-import io.prometheus.client.CollectorRegistry
-import io.prometheus.client.Counter
-import io.prometheus.client.Gauge
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import mu.KLogging
 
 @ComponentLike
 class CorrelationMetrics(
-  registry: CollectorRegistry
+  private val registry: MeterRegistry
 ) {
 
-  companion object : KLogging()
+  companion object : KLogging() {
+    const val PREFIX = "camunda.bpm.correlate"
 
-  private val correlatedMessagesCounter: Counter = Counter.build()
-    .name("camunda_bpm_correlate_correlation_success_total")
-    .labelNames()
-    .help("Messages successfully correlated")
-    .register(registry)
-
-  private val errorsMessagesCounter: Counter = Counter.build()
-    .name("camunda_bpm_correlate_correlation_error_total")
-    .labelNames()
-    .help("Messages producing an error during correlation")
-    .register(registry)
-
-  private val totalMessages: Gauge = Gauge.build()
-    .name("camunda_bpm_correlate_messages")
-    .labelNames("status")
-    .help("Handling messages currently waiting to be processed. Label: status - total, retrying, error, paused, inProgress or maxRetriesReached")
-    .register(registry)
-
+    const val COUNTER_CORRELATED = "$PREFIX.correlation.success"
+    const val COUNTER_ERROR = "$PREFIX.correlation.error"
+    const val GAUGE_MESSAGES = "$PREFIX.inbox.messages"
+  }
 
   fun reportMessageCounts(countByStatus: CountByStatus) {
     if (countByStatus.total == 0L) {
@@ -39,25 +25,24 @@ class CorrelationMetrics(
     } else {
       logger.debug { "Message counts: Total ${countByStatus.total}, eligible for processing ${countByStatus.retrying}, error ${countByStatus.error}, retries exhausted ${countByStatus.maxRetriesReached}" }
     }
-    totalMessages.labels("total").set(countByStatus.total.toDouble())
-    totalMessages.labels("retrying").set(countByStatus.retrying.toDouble())
-    totalMessages.labels("error").set(countByStatus.error.toDouble())
-    totalMessages.labels("maxRetriesReached").set(countByStatus.maxRetriesReached.toDouble())
-    totalMessages.labels("paused").set(countByStatus.paused.toDouble())
-    totalMessages.labels("inProgress").set(countByStatus.inProgress.toDouble())
+
+    registry.gauge(GAUGE_MESSAGES, listOf(Tag.of("status", "total")), countByStatus.total.toDouble())
+    registry.gauge(GAUGE_MESSAGES, listOf(Tag.of("status", "retrying")), countByStatus.retrying.toDouble())
+    registry.gauge(GAUGE_MESSAGES, listOf(Tag.of("status", "error")), countByStatus.error.toDouble())
+    registry.gauge(GAUGE_MESSAGES, listOf(Tag.of("status", "maxRetriesReached")), countByStatus.maxRetriesReached.toDouble())
+    registry.gauge(GAUGE_MESSAGES, listOf(Tag.of("status", "paused")), countByStatus.paused.toDouble())
+    registry.gauge(GAUGE_MESSAGES, listOf(Tag.of("status", "inProgress")), countByStatus.inProgress.toDouble())
   }
 
   fun incrementSuccess(size: Int) {
-    correlatedMessagesCounter.inc(size.toDouble())
+    registry.counter(COUNTER_CORRELATED).increment(size.toDouble())
   }
 
   fun incrementError(size: Int) {
-    errorsMessagesCounter.inc(size.toDouble())
+    registry.counter(COUNTER_ERROR).increment(size.toDouble())
   }
 
   fun incrementError() {
     incrementError(1)
   }
-
-
 }

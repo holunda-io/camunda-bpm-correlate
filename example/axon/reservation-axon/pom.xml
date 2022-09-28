@@ -37,6 +37,7 @@
       <artifactId>camunda-bpm-correlate-example-common</artifactId>
     </dependency>
 
+
     <!-- Camunda -->
     <dependency>
       <groupId>io.holunda</groupId>
@@ -70,6 +71,10 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
     </dependency>
   </dependencies>
 
