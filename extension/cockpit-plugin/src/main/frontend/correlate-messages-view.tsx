@@ -1,6 +1,8 @@
 import { default as React } from 'react';
 import CorrelateMessagesTable from './components/correlate-table';
+import { StacktraceModal } from './components/stacktrace-modal';
 import { useMessages } from './lib/message';
+import { useQueryParam } from './lib/query-params';
 
 type CorrelateMessagesViewProps = {
   camundaRestPrefix: string;
@@ -9,6 +11,9 @@ type CorrelateMessagesViewProps = {
 function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps) {
   const { messages, deleteMessage, pauseCorrelation, resumeCorrelation } = useMessages(camundaRestPrefix);
   // const { configuration } = useConfiguration(camundaRestPrefix);
+
+  const [stacktraceModalMessageId, setStacktraceModalMessageId] = useQueryParam('stacktrace');
+  const stacktraceMessage = messages?.find(({ id }) => stacktraceModalMessageId === id) ?? null;
 
   return (
     <div className="ctn-view cockpit-section-dashboard">
@@ -23,11 +28,13 @@ function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps
                   onDeleteMessage={deleteMessage}
                   onPauseCorrelation={pauseCorrelation}
                   onResumeCorrelation={resumeCorrelation}
+                  onShowStacktrace={setStacktraceModalMessageId}
                 />
               ) : (
                 <div>Loading...</div>
               )}
             </div>
+            <StacktraceModal message={stacktraceMessage} onClose={() => setStacktraceModalMessageId(null)} />
           </section>
         </div>
       </div>

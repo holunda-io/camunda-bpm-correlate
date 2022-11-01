@@ -4,16 +4,13 @@ import { Button } from "./button";
 
 type CorrelateMessageActionsProps = {
   message: Message;
-  onDeleteMessage: (messageId: Message['id']) => Promise<void>;
-  onPauseCorrelation: (messageId: Message['id']) => Promise<void>;
-  onResumeCorrelation: (messageId: Message['id']) => Promise<void>;
+  onDeleteMessage: (messageId: Message['id']) => unknown;
+  onPauseCorrelation: (messageId: Message['id']) => unknown;
+  onResumeCorrelation: (messageId: Message['id']) => unknown;
+  onShowStacktrace: (messageId: Message['id']) => unknown;
 };
 
-function CorrelateMessageActions({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation }: CorrelateMessageActionsProps) {
-  const showStacktrace = () => {
-    console.log('stacktrace', message.error);
-  }
-
+function CorrelateMessageActions({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace }: CorrelateMessageActionsProps) {
   const modifyNextRetry = () => {
     console.log('nextRetry', message.id);
   }
@@ -24,7 +21,7 @@ function CorrelateMessageActions({ message, onDeleteMessage, onPauseCorrelation,
 
   return (<>
     {message.error ? (
-      <Button label="Show stacktrace" icon="align-left" onClick={() => showStacktrace()} />
+      <Button label="Show stacktrace" icon="align-left" onClick={() => onShowStacktrace(message.id)} />
     ) : null}
 
     {message.status === 'MAX_RETRIES_REACHED' || message.nextRetry ? (

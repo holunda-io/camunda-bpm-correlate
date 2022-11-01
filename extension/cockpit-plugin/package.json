@@ -9,7 +9,9 @@
   "author": "Holunda.io",
   "license": "APACHE 2.0",
   "dependencies": {
+    "@radix-ui/react-dialog": "1.0.2",
     "classnames": "2.3.1",
+    "lodash-es": "4.17.21",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0"
@@ -24,6 +26,7 @@
     "@rollup/plugin-node-resolve": "~13.3.0",
     "@rollup/plugin-replace": "~4.0.0",
     "@rollup/plugin-typescript": "8.4.0",
+    "@types/lodash-es": "4.17.6",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "5.34.0",

@@ -6,12 +6,13 @@ import { DateTime } from './date-time';
 
 type CorrelateMessagesTableProps = {
   messages: Message[];
-  onDeleteMessage: (messageId: Message['id']) => Promise<void>;
-  onPauseCorrelation: (messageId: Message['id']) => Promise<void>;
-  onResumeCorrelation: (messageId: Message['id']) => Promise<void>;
+  onDeleteMessage: (messageId: Message['id']) => unknown;
+  onPauseCorrelation: (messageId: Message['id']) => unknown;
+  onResumeCorrelation: (messageId: Message['id']) => unknown;
+  onShowStacktrace: (message: Message['id']) => unknown;
 };
 
-function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation, onResumeCorrelation }: CorrelateMessagesTableProps) {
+function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace }: CorrelateMessagesTableProps) {
   return (
     <table className="cam-table">
       <thead>
@@ -37,6 +38,7 @@ function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation,
             onDeleteMessage={onDeleteMessage}
             onPauseCorrelation={onPauseCorrelation}
             onResumeCorrelation={onResumeCorrelation}
+            onShowStacktrace={onShowStacktrace}
             message={message} />
         ))}
       </tbody>
@@ -46,12 +48,13 @@ function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation,
 
 type MessageRowProps = {
   message: Message;
-  onDeleteMessage: (messageId: Message['id']) => Promise<void>;
-  onPauseCorrelation: (messageId: Message['id']) => Promise<void>;
-  onResumeCorrelation: (messageId: Message['id']) => Promise<void>;
+  onDeleteMessage: (messageId: Message['id']) => unknown;
+  onPauseCorrelation: (messageId: Message['id']) => unknown;
+  onResumeCorrelation: (messageId: Message['id']) => unknown;
+  onShowStacktrace: (message: Message['id']) => unknown;
 };
 
-function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation }: MessageRowProps) {
+function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace }: MessageRowProps) {
   return (
     <tr>
       <td className="message-state">
@@ -74,6 +77,7 @@ function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorr
           onDeleteMessage={onDeleteMessage}
           onPauseCorrelation={onPauseCorrelation}
           onResumeCorrelation={onResumeCorrelation}
+          onShowStacktrace={onShowStacktrace}
         />
       </td>
     </tr>
