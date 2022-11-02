@@ -8,24 +8,17 @@ type CorrelateMessageActionsProps = {
   onPauseCorrelation: (messageId: Message['id']) => unknown;
   onResumeCorrelation: (messageId: Message['id']) => unknown;
   onShowStacktrace: (messageId: Message['id']) => unknown;
+  onEditRetries: (messageId: Message['id']) => unknown;
 };
 
-function CorrelateMessageActions({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace }: CorrelateMessageActionsProps) {
-  const modifyNextRetry = () => {
-    console.log('nextRetry', message.id);
-  }
-
-  const decreaseRetries = () => {
-    console.log('decrease', message.id);
-  }
-
+function CorrelateMessageActions({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace, onEditRetries }: CorrelateMessageActionsProps) {
   return (<>
     {message.error ? (
       <Button label="Show stacktrace" icon="align-left" onClick={() => onShowStacktrace(message.id)} />
     ) : null}
 
     {message.status === 'MAX_RETRIES_REACHED' || message.nextRetry ? (
-      <Button label="Edit retry details" icon="pencil" onClick={() => decreaseRetries()} />
+      <Button label="Edit retry details" icon="pencil" onClick={() => onEditRetries(message.id)} />
     ) : null}
 
     {message.status === 'PAUSED' ? (

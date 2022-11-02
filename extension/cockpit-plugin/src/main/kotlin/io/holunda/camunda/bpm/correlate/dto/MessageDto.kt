@@ -4,6 +4,9 @@ import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.util.TimeZone
 
 /**
  * Message DTO.
@@ -15,11 +18,11 @@ data class MessageDto(
   val payloadTypeNamespace: String,
   val payloadTypeName: String,
   val payloadTypeRevision: String?,
-  val inserted: LocalDateTime,
+  val inserted: ZonedDateTime,
   val timeToLiveDuration: String?,
-  val expiration: LocalDateTime?,
+  val expiration: ZonedDateTime?,
   val retries: Int = 0,
-  val nextRetry: LocalDateTime? = null,
+  val nextRetry: ZonedDateTime? = null,
   val error: String? = null
 )
 
@@ -33,15 +36,10 @@ fun MessageEntity.toDto(maxRetries: Int) = MessageDto(
   payloadTypeNamespace = payloadTypeNamespace,
   payloadTypeName = payloadTypeName,
   payloadTypeRevision = payloadTypeRevision,
-  inserted = inserted.atLocalTimeZone(),
+  inserted = inserted.atZone(ZoneOffset.UTC),
   timeToLiveDuration = timeToLiveDuration,
-  expiration = expiration?.atLocalTimeZone(),
+  expiration = expiration?.atZone(ZoneOffset.UTC),
   retries = retries,
-  nextRetry = nextRetry?.atLocalTimeZone(),
+  nextRetry = nextRetry?.atZone(ZoneOffset.UTC),
   error = error
 )
-
-/**
- * Format date to local dates, as Camunda does it in cockpit.
- */
-fun Instant.atLocalTimeZone(): LocalDateTime = this.atZone(ZoneId.systemDefault()).toLocalDateTime()

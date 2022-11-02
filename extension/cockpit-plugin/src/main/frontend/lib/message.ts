@@ -4,6 +4,11 @@ import type { LocalDateTimeString } from "./date";
 
 export type MessageStatus = 'IN_PROGRESS' | 'MAX_RETRIES_REACHED' | 'PAUSED' | 'RETRYING';
 
+export type MessageRetry = {
+  retries: number;
+  nextRetry: LocalDateTimeString;
+}
+
 export type Message = {
   id: string;
   status: MessageStatus;
@@ -30,6 +35,7 @@ export function useMessages(
 ) {
   const [cookies] = useCookies(['XSRF-TOKEN']);
   const headers = { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'] };
+  const postHeaders = { 'X-XSRF-TOKEN': cookies['XSRF-TOKEN'], 'Content-Type': 'application/json' };
 
   const [messages, setMessages] = useState<Message[] | null>(null);
 
@@ -52,6 +58,17 @@ export function useMessages(
     loadMessages();
   }, [camundaRestPrefix, headers]);
 
+  const changeRetries = useCallback(async (messageId: Message['id'], messageRetry: MessageRetry) => {
+    console.log('Change retries', messageRetry);
+
+    await fetch(`${camundaRestPrefix}/messages/${messageId}/retries`, {
+      method: 'POST',
+      headers: postHeaders,
+      body: `{ "retries": ${messageRetry.retries}, "nextRetry": "${messageRetry.nextRetry}" }`
+    });
+    loadMessages();
+  }, [camundaRestPrefix, headers]);
+
   useEffect(() => {
     loadMessages();
   }, []);
@@ -60,7 +77,8 @@ export function useMessages(
     messages,
     deleteMessage,
     pauseCorrelation,
-    resumeCorrelation
+    resumeCorrelation,
+    changeRetries
   };
 }
 

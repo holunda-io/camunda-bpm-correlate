@@ -10,9 +10,10 @@ type CorrelateMessagesTableProps = {
   onPauseCorrelation: (messageId: Message['id']) => unknown;
   onResumeCorrelation: (messageId: Message['id']) => unknown;
   onShowStacktrace: (message: Message['id']) => unknown;
+  onEditRetries: (message: Message['id']) => unknown;
 };
 
-function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace }: CorrelateMessagesTableProps) {
+function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace, onEditRetries }: CorrelateMessagesTableProps) {
   return (
     <table className="cam-table">
       <thead>
@@ -39,6 +40,7 @@ function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation,
             onPauseCorrelation={onPauseCorrelation}
             onResumeCorrelation={onResumeCorrelation}
             onShowStacktrace={onShowStacktrace}
+            onEditRetries={onEditRetries}
             message={message} />
         ))}
       </tbody>
@@ -52,16 +54,21 @@ type MessageRowProps = {
   onPauseCorrelation: (messageId: Message['id']) => unknown;
   onResumeCorrelation: (messageId: Message['id']) => unknown;
   onShowStacktrace: (message: Message['id']) => unknown;
+  onEditRetries: (message: Message['id']) => unknown;
 };
 
-function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace }: MessageRowProps) {
+function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace, onEditRetries }: MessageRowProps) {
   return (
     <tr>
       <td className="message-state">
         <MessageStatus status={message.status} />
       </td>
       <td className="message-id">{message.id}</td>
-      <td>{message.payloadTypeNamespace}<br />.{message.payloadTypeName}</td>
+      <td><span title={message.payloadTypeNamespace}>{message.payloadTypeName}</span>
+        {(message.payloadTypeRevision) ? (
+          <span>:{message.payloadTypeRevision}</span>
+        ) : null}
+      </td>
       <td className="date">
         <DateTime value={message.inserted} />
       </td>
@@ -78,6 +85,7 @@ function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorr
           onPauseCorrelation={onPauseCorrelation}
           onResumeCorrelation={onResumeCorrelation}
           onShowStacktrace={onShowStacktrace}
+          onEditRetries={onEditRetries}
         />
       </td>
     </tr>
