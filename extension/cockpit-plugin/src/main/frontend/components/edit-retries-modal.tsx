@@ -1,8 +1,8 @@
-import { isNull } from "lodash-es";
+import { isNull } from 'lodash-es';
 import React, { FormEvent, useId, useState } from 'react';
-import { formatLocalIsoDateTime, formatUtcIsoDateTime } from "../lib/date";
-import { Message, MessageRetry } from "../lib/message";
-import { Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "./modal";
+import { formatLocalIsoDateTime, formatUtcIsoDateTime } from '../lib/date';
+import { Message, MessageRetry } from '../lib/message';
+import { Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from './modal';
 
 type EditRetriesModalProps = {
   message: Message;
@@ -22,6 +22,9 @@ export const EditRetriesModal = ({ message, onClose, onSubmit, maxRetries }: Edi
   }
 
   const handleSubmit = (event: FormEvent) => {
+
+    console.log('Handle Submit clicked');
+
     event.preventDefault();
 
     if (isNaN(retries) || isNull(nextRetry)) {
@@ -32,49 +35,46 @@ export const EditRetriesModal = ({ message, onClose, onSubmit, maxRetries }: Edi
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Modal isOpen={true}>
-        <ModalHeader>
-          <ModalTitle>Message retry</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-          {/* <span>
-          Message could not be correlated from the first attempt. It started the retrying
-          and already has used {messageRetry.retries} out of {maxRetries}.
-        </span> */}
-
-          {/* Message next due: {messageRetry.nextRetry} */}
-
-          <form>
-            <div className="form-group">
-              <label htmlFor={retriesInputId}>Retries</label>
-              <input
-                type="number"
-                className="form-control"
-                id={retriesInputId}
-                value={retries}
-                onChange={event => setRetries(event.target.valueAsNumber)}
-                min={0}
-                max={maxRetries}
-                required />
-            </div>
-            <div className="form-group">
-              <label htmlFor={nextRetryInputId}>Next Retry</label>
-              <input
-                type="datetime-local"
-                className="form-control"
-                id={nextRetryInputId}
-                value={formatLocalIsoDateTime(nextRetry) ?? undefined}
-                onChange={event => setNextRetry(formatUtcIsoDateTime(event.target.value))}
-                required />
-            </div>
-          </form>
-        </ModalBody>
-        <ModalFooter>
-          <button className={'btn btn-default'} onClick={onClose}>Close</button>
-          <button type="submit" className={'btn btn-primary'}>Submit</button>
-        </ModalFooter>
-      </Modal>
-    </form>
+    <Modal isOpen={true}>
+      <ModalHeader>
+        <ModalTitle>Message retry</ModalTitle>
+      </ModalHeader>
+      <ModalBody>
+        <form>
+          <span>Message could not be correlated from the first attempt.</span><br />
+          {retries == maxRetries ?
+              <div className="form-group">
+                <span>All ${maxRetries} are exhausted. To continue retries please decrease the number of retries below:</span>
+                <label htmlFor={retriesInputId}>Retries</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id={retriesInputId}
+                  value={retries}
+                  onChange={event => setRetries(event.target.valueAsNumber)}
+                  min={0}
+                  max={maxRetries}
+                  required />
+              </div>
+            : <div>There are still {maxRetries - retries} / {maxRetries} retries available.</div>
+          }
+          <span>Next correlation will take place at {formatLocalIsoDateTime(nextRetry)}. You can change it by changing the value below:</span>
+          <div className="form-group">
+            <label htmlFor={nextRetryInputId}>Next Retry</label>
+            <input
+              type="datetime-local"
+              className="form-control"
+              id={nextRetryInputId}
+              value={formatLocalIsoDateTime(nextRetry) ?? undefined}
+              onChange={event => setNextRetry(formatUtcIsoDateTime(event.target.value))}
+              required />
+          </div>
+        </form>
+      </ModalBody>
+      <ModalFooter>
+        <button className={'btn btn-default'} onClick={onClose}>Close</button>
+        <button className={'btn btn-primary'} onClick={handleSubmit} type="submit">Submit</button>
+      </ModalFooter>
+    </Modal>
   )
 }
