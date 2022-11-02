@@ -1,10 +1,11 @@
+import { isNull } from 'lodash-es';
 import { default as React } from 'react';
 import CorrelateMessagesTable from './components/correlate-table';
-import { StacktraceModal } from './components/stacktrace-modal';
-import { useMessages } from './lib/message';
-import { useQueryParam } from './lib/query-params';
 import { EditRetriesModal } from './components/edit-retries-modal';
+import { StacktraceModal } from './components/stacktrace-modal';
 import { useConfiguration } from './lib/configuration';
+import { Message, MessageRetry, useMessages } from './lib/message';
+import { useQueryParam } from './lib/query-params';
 
 type CorrelateMessagesViewProps = {
   camundaRestPrefix: string;
@@ -17,7 +18,16 @@ function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps
   const [stacktraceModalMessageId, setStacktraceModalMessageId] = useQueryParam('stacktrace');
   const [editRetriesModalMessageId, setEditRetriesModalMessageId] = useQueryParam('edit-retries');
   const stacktraceMessage = messages?.find(({ id }) => stacktraceModalMessageId === id) ?? null;
-  const editMessage = messages?.find(({ id }) => editRetriesModalMessageId === id);
+  const editMessage = messages?.find(({ id }) => editRetriesModalMessageId === id) ?? null;
+
+  const handleSubmit = async (messageId: Message['id'], messageRetry: MessageRetry) => {
+    try {
+      await changeRetries(messageId, messageRetry);
+      setEditRetriesModalMessageId(null);
+    } catch (error) {
+      console.error('Error setting retries', error);
+    }
+  }
 
   return (
     <div className="ctn-view cockpit-section-dashboard">
@@ -39,17 +49,22 @@ function CorrelateMessagesView({ camundaRestPrefix }: CorrelateMessagesViewProps
                 <div>Loading...</div>
               )}
             </div>
-            <StacktraceModal message={stacktraceMessage}
-                             onClose={() => setStacktraceModalMessageId(null)}
-            />
-            <EditRetriesModal message={editMessage}
-                              maxRetries={ configuration?.maxRetries ?? -1 } // FIXME? how to default here
-                              onSubmit={(messageId, messageRetry) => changeRetries(messageId, messageRetry)
-                                .then(() => setEditRetriesModalMessageId(null))
-                                .catch((error) => console.log('Error setting retries', error))
-                              }
-                              onClose={() => setEditRetriesModalMessageId(null)}
-            />
+
+            {isNull(stacktraceMessage) ? null : (
+              <StacktraceModal
+                message={stacktraceMessage}
+                onClose={() => setStacktraceModalMessageId(null)}
+              />
+            )}
+
+            {isNull(configuration) || isNull(editMessage) ? null : (
+              <EditRetriesModal
+                message={editMessage}
+                maxRetries={configuration.maxRetries}
+                onSubmit={handleSubmit}
+                onClose={() => setEditRetriesModalMessageId(null)}
+              />
+            )}
           </section>
         </div>
       </div>
