@@ -28,7 +28,7 @@ class RetriesDtoDeserializationTest {
 
     val json = objectMapper.writeValueAsString(original)
     println(json)
-    assertThat(json).isEqualTo("{\"retries\":${original.retries},\"nextRetries\":\"${now}\"}")
+    assertThat(json).isEqualTo("{\"retries\":${original.retries},\"nextRetry\":\"${now}\"}")
 
 
     val dto = objectMapper.readValue(json, RetriesDto::class.java)
@@ -40,7 +40,7 @@ class RetriesDtoDeserializationTest {
   fun `should deserialize if timezone is not set`() {
 
     val now = "2022-11-02T13:09:13.391234Z"
-    val dto = objectMapper.readValue("{\"retries\":42,\"nextRetries\":\"${now}\"}", RetriesDto::class.java)
+    val dto = objectMapper.readValue("{\"retries\":42,\"nextRetry\":\"${now}\"}", RetriesDto::class.java)
     assertThat(dto.nextRetry).isEqualTo(ZonedDateTime.parse(now))
     assertThat(dto.retries).isEqualTo(42)
 
