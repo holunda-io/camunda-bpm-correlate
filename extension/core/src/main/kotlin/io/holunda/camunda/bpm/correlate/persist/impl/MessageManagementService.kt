@@ -102,6 +102,19 @@ class MessageManagementService(
   }
 
   /**
+   * Changes retry attempt count and next retry instant of a message.
+   */
+  fun changeMessageRetries(messageId: String, retries: Int, nextRetry: Instant): MessageEntity {
+      return getMessageById(messageId)
+          .also {
+              requireNotNull(it.nextRetry) { "Message with id $messageId has is not due for retry. Ignoring the change." }
+              it.retries = retries
+              it.nextRetry = nextRetry
+              messageRepository.save(it)
+          }
+  }
+
+  /**
    * Count messages by status.
    */
   fun countMessagesByStatus(): CountByStatus {

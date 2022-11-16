@@ -2,7 +2,6 @@ package io.holunda.camunda.bpm.correlate.resources
 
 import io.holunda.camunda.bpm.correlate.CamundaBpmCorrelateServices
 import io.holunda.camunda.bpm.correlate.dto.MessageDto
-import io.holunda.camunda.bpm.correlate.dto.NextRetryDto
 import io.holunda.camunda.bpm.correlate.dto.RetriesDto
 import io.holunda.camunda.bpm.correlate.dto.toDto
 import io.holunda.camunda.bpm.correlate.getBean
@@ -27,10 +26,10 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
   }
 
   @POST
-  @Path("/{messageId}/nextRetry")
+  @Path("/{messageId}/retries")
   @Consumes(MediaType.APPLICATION_JSON)
-  fun changeMassageNextRetry(@PathParam("messageId") messageId: String, nextRetryDto: NextRetryDto) {
-    services.messageManagementService.changeMessageNextRetry(messageId, nextRetryDto.nextRetry)
+  fun changeMassageRetries(@PathParam("messageId") messageId: String, retriesDto: RetriesDto) {
+    services.messageManagementService.changeMessageRetries(messageId, retriesDto.retries, nextRetry = retriesDto.nextRetry.toInstant())
   }
 
   @PUT
@@ -45,13 +44,6 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
   @Consumes(MediaType.APPLICATION_JSON)
   fun resumeMessage(@PathParam("messageId") messageId: String) {
     services.messageManagementService.resumeMessageProcessing(messageId)
-  }
-
-  @POST
-  @Path("/{messageId}/retries")
-  @Consumes(MediaType.APPLICATION_JSON)
-  fun changeMassageRetries(@PathParam("messageId") messageId: String, retriesDto: RetriesDto) {
-    services.messageManagementService.changeMessageRetryAttempt(messageId, retriesDto.retries)
   }
 
   @DELETE

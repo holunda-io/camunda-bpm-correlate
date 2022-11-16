@@ -6,6 +6,8 @@ import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import java.util.*
+import javax.annotation.PostConstruct
 
 fun main(args: Array<String>) = runApplication<TravelAgencyKafkaCorrelationApplication>(*args).let { Unit }
 
@@ -19,6 +21,12 @@ class TravelAgencyKafkaCorrelationApplication{
       processEngineConfiguration.isTelemetryReporterActivate = false
       processEngineConfiguration.isInitializeTelemetry = false
     }
+  }
+
+  @PostConstruct
+  fun init() {
+    // Setting Spring Boot SetTimeZone
+    TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
   }
 
 }

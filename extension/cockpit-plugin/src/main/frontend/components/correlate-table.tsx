@@ -6,12 +6,14 @@ import { DateTime } from './date-time';
 
 type CorrelateMessagesTableProps = {
   messages: Message[];
-  onDeleteMessage: (messageId: Message['id']) => Promise<void>;
-  onPauseCorrelation: (messageId: Message['id']) => Promise<void>;
-  onResumeCorrelation: (messageId: Message['id']) => Promise<void>;
+  onDeleteMessage: (messageId: Message['id']) => unknown;
+  onPauseCorrelation: (messageId: Message['id']) => unknown;
+  onResumeCorrelation: (messageId: Message['id']) => unknown;
+  onShowStacktrace: (message: Message['id']) => unknown;
+  onEditRetries: (message: Message['id']) => unknown;
 };
 
-function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation, onResumeCorrelation }: CorrelateMessagesTableProps) {
+function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace, onEditRetries }: CorrelateMessagesTableProps) {
   return (
     <table className="cam-table">
       <thead>
@@ -37,6 +39,8 @@ function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation,
             onDeleteMessage={onDeleteMessage}
             onPauseCorrelation={onPauseCorrelation}
             onResumeCorrelation={onResumeCorrelation}
+            onShowStacktrace={onShowStacktrace}
+            onEditRetries={onEditRetries}
             message={message} />
         ))}
       </tbody>
@@ -46,19 +50,25 @@ function CorrelateMessagesTable({ messages, onDeleteMessage, onPauseCorrelation,
 
 type MessageRowProps = {
   message: Message;
-  onDeleteMessage: (messageId: Message['id']) => Promise<void>;
-  onPauseCorrelation: (messageId: Message['id']) => Promise<void>;
-  onResumeCorrelation: (messageId: Message['id']) => Promise<void>;
+  onDeleteMessage: (messageId: Message['id']) => unknown;
+  onPauseCorrelation: (messageId: Message['id']) => unknown;
+  onResumeCorrelation: (messageId: Message['id']) => unknown;
+  onShowStacktrace: (message: Message['id']) => unknown;
+  onEditRetries: (message: Message['id']) => unknown;
 };
 
-function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation }: MessageRowProps) {
+function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorrelation, onShowStacktrace, onEditRetries }: MessageRowProps) {
   return (
     <tr>
       <td className="message-state">
         <MessageStatus status={message.status} />
       </td>
       <td className="message-id">{message.id}</td>
-      <td>{message.payloadTypeNamespace}<br />.{message.payloadTypeName}</td>
+      <td><span title={message.payloadTypeNamespace}>{message.payloadTypeName}</span>
+        {(message.payloadTypeRevision) ? (
+          <span>:{message.payloadTypeRevision}</span>
+        ) : null}
+      </td>
       <td className="date">
         <DateTime value={message.inserted} />
       </td>
@@ -74,6 +84,8 @@ function MessageRow({ message, onDeleteMessage, onPauseCorrelation, onResumeCorr
           onDeleteMessage={onDeleteMessage}
           onPauseCorrelation={onPauseCorrelation}
           onResumeCorrelation={onResumeCorrelation}
+          onShowStacktrace={onShowStacktrace}
+          onEditRetries={onEditRetries}
         />
       </td>
     </tr>

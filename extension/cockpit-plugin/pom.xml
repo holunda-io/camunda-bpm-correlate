@@ -63,7 +63,13 @@
       <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
       <version>${project.version}</version>
       <!-- find out how to test it?! should be provided -->
-      <scope>compile</scope>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- we need jackson kotlin to be able to use the REST endpoints from the cokpit-plugin -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
 
   </dependencies>
