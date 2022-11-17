@@ -13,15 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Restore the cache first
-      - name: Cache .m2
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven
-
       # Get GPG private key into GPG
       - name: Import GPG Owner Trust
         run: echo ${{ secrets.GPG_OWNERTRUST }} | base64 --decode | gpg --import-ownertrust
@@ -34,6 +25,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: zulu
+          cache: maven
           java-version: 11
           server-id: ossrh
           server-username: OSS_CENTRAL_USERNAME # env variable for Maven Central

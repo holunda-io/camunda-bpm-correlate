@@ -1,26 +1,19 @@
 spring:
-  cloud:
-    stream:
-      function:
-        definition: reservation-consumer;flight-consumer;hotel-consumer
-        bindings:
-          reservation-consumer-in-0: correlate-ingress-binding
-          flight-consumer-in-0: correlate-ingress-binding
-          hotel-consumer-in-0: correlate-ingress-binding
+  application:
+    name: I-TEST
+  jpa:
+    open-in-view: true
+    show-sql: false
+
+camunda:
+  bpm:
+    default-serialization-format: application/json
+    metrics:
+      enabled: false
+      db-reporter-activate: false
 
 correlate:
   enabled: true
-  channels:
-    reservation:
-      type: stream
-      enabled: true
-    flight:
-      type: stream
-      enabled: true
-    hotel:
-      type: stream
-      enabled: true
-
   batch:
     mode: fail_first # default fail_first -> 'all' will correlate one message after another, resulting in ignoring the order of receiving
     query:    # query scheduler

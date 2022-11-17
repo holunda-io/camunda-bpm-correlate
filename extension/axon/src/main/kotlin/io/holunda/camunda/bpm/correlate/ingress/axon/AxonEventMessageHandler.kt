@@ -2,6 +2,7 @@ package io.holunda.camunda.bpm.correlate.ingress.axon
 
 import io.holunda.camunda.bpm.correlate.ingress.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingress.IngressMetrics
+import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Companion.CHANNEL_TYPE
 import io.holunda.camunda.bpm.correlate.ingress.message.DelegatingChannelMessage
 import io.holunda.camunda.bpm.correlate.ingress.message.ObjectMessage
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
@@ -15,16 +16,16 @@ import org.axonframework.eventhandling.EventMessageHandler
 class AxonEventMessageHandler(
   private val messageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngressMetrics,
-  private val axonEventHeaderConverter: AxonEventHeaderConverter,
+  private val axonEventMessageHeaderConverter: AxonEventMessageHeaderConverter,
   private val encoder: PayloadDecoder,
-  private val channel: String,
+  private val channelName: String,
 ) : EventMessageHandler {
 
   companion object : KLogging()
 
   override fun handle(eventMessage: EventMessage<*>) {
-    metrics.incrementReceived(channel)
-    val headers = axonEventHeaderConverter.extractHeaders(eventMessage)
+    metrics.incrementReceived(channelName, CHANNEL_TYPE)
+    val headers = axonEventMessageHeaderConverter.extractHeaders(eventMessage)
     logger.debug { "Received message $headers" }
     // The message acceptor will only get supported messages.
     // This question is answered  by the [MessageMetadataExtractorChain] - a message is supported if all message metadata snippet extractors support them.
@@ -39,10 +40,10 @@ class AxonEventMessageHandler(
         )
       )
       logger.debug { "Accepted message $headers" }
-      metrics.incrementAccepted(channel)
+      metrics.incrementAccepted(channelName, CHANNEL_TYPE)
     } else {
       logger.debug { "Ignored message $headers, it is not supported by client." }
-      metrics.incrementIgnored(channel)
+      metrics.incrementIgnored(channelName, CHANNEL_TYPE)
     }
 
   }

@@ -1,7 +1,8 @@
 package io.holunda.camunda.bpm.correlate
 
 import io.holunda.camunda.bpm.correlate.correlation.BatchConfigurationProperties
-import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.ChannelConfigurationProperties
+import io.holunda.camunda.bpm.correlate.correlation.GlobalMessageMetaDataConfigurationProperties
+import io.holunda.camunda.bpm.correlate.ingress.ChannelConfigurationProperties
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -21,9 +22,16 @@ data class CorrelateConfigurationProperties(
   val enabled: Boolean = true,
   /**
    * Channel configuration.
+   * The key in this map is the name of the channel, the value is the configuration for it.
    */
   @NestedConfigurationProperty
   val channels: Map<String, ChannelConfigurationProperties> = mapOf(),
+
+  /**
+   * Global message configuration.
+   */
+  @NestedConfigurationProperty
+  val message: GlobalMessageMetaDataConfigurationProperties,
 
   /**
    * Retry error handling configuration.

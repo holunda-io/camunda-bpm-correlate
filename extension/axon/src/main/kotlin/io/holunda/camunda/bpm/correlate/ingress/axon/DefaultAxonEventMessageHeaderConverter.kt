@@ -15,7 +15,7 @@ import org.axonframework.eventhandling.EventMessage
  * These headers will make the [HeaderMessageMetaDataSnippetExtractor] happy.
  * In addition, it adds all metadata headers as message headers.
  */
-class DefaultAxonEventHeaderConverter : AxonEventHeaderConverter {
+class DefaultAxonEventMessageHeaderConverter : AxonEventMessageHeaderConverter {
 
   override fun extractHeaders(eventMessage: EventMessage<*>): Map<String, Any> {
     return builder()
