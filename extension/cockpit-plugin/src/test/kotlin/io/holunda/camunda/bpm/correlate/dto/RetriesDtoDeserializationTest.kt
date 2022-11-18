@@ -19,7 +19,7 @@ class RetriesDtoDeserializationTest {
 
   @Test
   fun `should serialize and deserialize`() {
-    val now = ZonedDateTime.now(ZoneOffset.UTC)
+    val now = ZonedDateTime.parse("2022-11-18T08:18:51.112712Z")
     val original = RetriesDto(
       nextRetry = now,
       retries = 42
