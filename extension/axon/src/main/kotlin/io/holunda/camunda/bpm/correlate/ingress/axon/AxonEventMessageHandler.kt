@@ -16,9 +16,9 @@ import org.axonframework.eventhandling.EventMessageHandler
 class AxonEventMessageHandler(
   private val messageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngressMetrics,
-  private val axonEventMessageHeaderConverter: AxonEventMessageHeaderConverter,
-  private val encoder: PayloadDecoder,
-  private val channelName: String,
+  val axonEventMessageHeaderConverter: AxonEventMessageHeaderConverter,
+  val encoder: PayloadDecoder,
+  val channelName: String,
 ) : EventMessageHandler {
 
   companion object : KLogging()

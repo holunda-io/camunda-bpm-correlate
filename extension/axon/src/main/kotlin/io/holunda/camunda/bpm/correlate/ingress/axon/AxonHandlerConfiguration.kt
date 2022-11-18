@@ -1,17 +1,30 @@
 package io.holunda.camunda.bpm.correlate.ingress.axon
 
+import mu.KLogging
 import org.axonframework.config.EventProcessingConfigurer
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.AutoConfigureAfter
 
 
+@AutoConfigureAfter(AxonChannelConfiguration::class)
 class AxonHandlerConfiguration {
-  @Autowired
+
+  companion object : KLogging()
+
   fun configureProcessingGroupErrorHandling(
+    @Autowired
     processingConfigurer: EventProcessingConfigurer,
-    axonEventMessageHandler: AxonEventMessageHandler
+    @Autowired(required = false)
+    axonEventMessageHandlers: List<AxonEventMessageHandler>?
   ) {
-    processingConfigurer.registerEventHandler {
-      axonEventMessageHandler
+    axonEventMessageHandlers?.forEach { handler ->
+
+      logger.info { "[Camunda CORRELATE]: Configuring axon event handler for channel ${handler.channelName}." }
+
+      processingConfigurer.registerEventHandler {
+        handler
+      }
     }
+
   }
 }

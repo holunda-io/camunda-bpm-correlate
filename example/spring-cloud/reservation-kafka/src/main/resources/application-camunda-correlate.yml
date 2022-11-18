@@ -2,22 +2,14 @@ spring:
   cloud:
     stream:
       function:
-        definition: reservation-consumer;flight-consumer;hotel-consumer
+        definition: ingress-consumer
         bindings:
-          reservation-consumer-in-0: correlate-ingress-binding
-          flight-consumer-in-0: correlate-ingress-binding
-          hotel-consumer-in-0: correlate-ingress-binding
+          ingress-consumer-in-0: correlate-ingress-binding
 
 correlate:
   enabled: true
   channels:
-    reservation:
-      type: stream
-      enabled: true
-    flight:
-      type: stream
-      enabled: true
-    hotel:
+    ingress:
       type: stream
       enabled: true
 

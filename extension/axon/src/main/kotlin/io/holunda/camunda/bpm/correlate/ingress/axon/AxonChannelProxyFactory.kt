@@ -26,7 +26,7 @@ class AxonChannelProxyFactory(
   companion object : KLogging()
 
   private lateinit var applicationContext: GenericApplicationContext
-  private val springCloudConfigurations: Map<String, ChannelConfigurationProperties> by lazy {
+  private val axonEventConfigurations: Map<String, ChannelConfigurationProperties> by lazy {
     channelConfigurations.filter { it.value.type == CHANNEL_TYPE && it.value.enabled }
   }
 
@@ -36,24 +36,24 @@ class AxonChannelProxyFactory(
 
   override fun afterPropertiesSet() {
     if (this::applicationContext.isInitialized) {
-      logger.debug { "[Camunda CORRELATE] Creating channel consumers for Axon Event Bus: ${springCloudConfigurations.keys.joinToString(", ")}." }
-      springCloudConfigurations.forEach { (name, config) ->
+      logger.debug { "[Camunda CORRELATE] Creating channel consumers for Axon Event Bus: ${axonEventConfigurations.keys.joinToString(", ")}." }
+      axonEventConfigurations.forEach { (name, config) ->
 
         val encoding: String = requireNotNull( getEncoding(config) ) { "Channel encoding is required, please set either globally or for channel." }
         val encoder = requireNotNull(payloadDecoders.find { it.supports(encoding) }) { "Could not find decoder for configured message encoding '$encoding'." }
 
-        val consumerName = config.beanName ?: "$name-consumer"
-        if (!applicationContext.containsBean(consumerName)) {
+        val handlerName = config.beanName ?: "$name-handler"
+        if (!applicationContext.containsBean(handlerName)) {
           // the channel is not configured yet.
-          val consumer = AxonEventMessageHandler(
+          val handler = AxonEventMessageHandler(
             messageAcceptor = channelMessageAcceptor,
             metrics = metrics,
             axonEventMessageHeaderConverter = applicationContext.getQualifiedBeanWithFallback(name),
             encoder = encoder,
             channelName = name
           )
-          applicationContext.registerBean(consumerName, AxonEventMessageHandler::class.java, Supplier { consumer })
-          logger.info { "[Camunda CORRELATE] Registered AxonEventMessageHandler for channel '$name' named '$consumerName'." }
+          applicationContext.registerBean(handlerName, AxonEventMessageHandler::class.java, Supplier { handler })
+          logger.info { "[Camunda CORRELATE] Registered AxonEventMessageHandler for channel '$name' named '$handlerName'." }
         }
       }
     }
