@@ -1,0 +1,13 @@
+@startuml
+skinparam sequenceMessageAlign right
+header Observed Message Flow
+
+Alice->Bob:Send message A
+activate Bob
+
+Alice<-Bob:Send message B
+activate Alice
+return B sent
+return A sent
+
+@enduml
