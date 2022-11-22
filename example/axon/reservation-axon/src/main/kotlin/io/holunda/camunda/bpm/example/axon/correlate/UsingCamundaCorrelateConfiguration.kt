@@ -19,7 +19,6 @@ class UsingCamundaCorrelateConfiguration(
   @PostConstruct
   fun info() {
     logger.info { "[Camunda CORRELATE] Channels configured: ${correlateConfigurationProperties.channels.keys.joinToString(", ")}" }
-    val channelConfig = requireNotNull(correlateConfigurationProperties.channels["axon"])
     logger.info { "[Camunda CORRELATE] Axon message TTL: ${correlateConfigurationProperties.message.timeToLiveAsString ?: "none"}" }
   }
 

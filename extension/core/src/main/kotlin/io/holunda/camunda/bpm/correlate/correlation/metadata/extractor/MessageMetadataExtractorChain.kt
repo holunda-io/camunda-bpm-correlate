@@ -5,7 +5,6 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnip
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaDataSnippetExtractor
 import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
 import io.holunda.camunda.bpm.correlate.util.ComponentLike
-import mu.KLogging
 
 /**
  * Chain of extractor with the every further extractor overwriting values of previous.

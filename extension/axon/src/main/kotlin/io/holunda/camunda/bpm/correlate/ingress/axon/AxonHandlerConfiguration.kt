@@ -11,7 +11,7 @@ class AxonHandlerConfiguration {
 
   companion object : KLogging()
 
-  fun configureProcessingGroupErrorHandling(
+  fun configureProcessingGroupEventHandling(
     @Autowired
     processingConfigurer: EventProcessingConfigurer,
     @Autowired(required = false)

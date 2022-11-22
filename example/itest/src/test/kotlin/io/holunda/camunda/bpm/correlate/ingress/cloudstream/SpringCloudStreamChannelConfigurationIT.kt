@@ -37,7 +37,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
     "spring.cloud.stream.function.definition=kafka-1-consumer; specified-consumer-name",
     // bindings
     "spring.cloud.stream.function.bindings.kafka-1-consumer-in-0=correlate-ingress-binding-1",
-    "spring.cloud.stream.function.bindings.specified-consumer-name=correlate-ingress-binding-1",
+    "spring.cloud.stream.function.bindings.specified-consumer-name-in-0=correlate-ingress-binding-1",
   ]
 )
 @ExtendWith(SpringExtension::class)
