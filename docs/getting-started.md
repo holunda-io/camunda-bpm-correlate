@@ -1,11 +1,11 @@
 ## Install Dependency
 
-First install the extension using the corresponding ingres adapter (in this example we use Kafka):
+First install the extension using the corresponding ingress adapter (in this example we use Kafka):
 
 ```xml
 
 <properties>
-  <camunda-bpm-correlate.version>0.0.1</camunda-bpm-correlate.version>
+  <camunda-bpm-correlate.version>0.0.2</camunda-bpm-correlate.version>
 </properties>
 
 <dependencies>
@@ -42,15 +42,15 @@ spring:
       function:
         definition: streamByteMessageConsumer
         bindings:
-          streamByteMessageConsumer-in-0: correlate-ingres-binding      
+          streamByteMessageConsumer-in-0: correlate-ingress-binding      
       bindings:
-        correlate-ingres-binding:
+        correlate-ingress-binding:
           content-type: application/json
-          destination: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingres}
-          binder: correlate-ingres-binder
+          destination: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingress}
+          binder: correlate-ingress-binder
           group: ${KAFKA_GROUP_ID}
       binders:
-        correlate-ingres-binder:
+        correlate-ingress-binder:
           type: kafka
           defaultCandidate: false
           inheritEnvironment: false

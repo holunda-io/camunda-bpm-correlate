@@ -5,9 +5,9 @@ import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
 import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.correlation.metadata.TypeInfo
-import io.holunda.camunda.bpm.correlate.ingres.message.ByteMessage
-import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
-import io.holunda.camunda.bpm.correlate.ingres.message.DelegatingChannelMessage
+import io.holunda.camunda.bpm.correlate.ingress.message.ByteMessage
+import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
+import io.holunda.camunda.bpm.correlate.ingress.message.DelegatingChannelMessage
 import io.holunda.camunda.bpm.correlate.persist.*
 import io.holunda.camunda.bpm.correlate.persist.MessageErrorHandlingResult.*
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
@@ -36,7 +36,7 @@ class DefaultMessagePersistenceService(
   override fun fetchMessageBatches(): List<CorrelationBatch> {
 
     // retrieve messages.
-    val allMessages: List<MessageEntity> = messageRepository.findAll(messagePersistenceConfig.getPageSize())
+    val allMessages: List<MessageEntity> = messageRepository.findAll(0, messagePersistenceConfig.getPageSize())
 
     logger.debug { "Found ${allMessages.size} messages, building batches." }
 

@@ -4,7 +4,7 @@
 
   <groupId>io.holunda</groupId>
   <artifactId>camunda-bpm-correlate-root</artifactId>
-  <version>0.0.2</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <url>https://github.com/holunda-io/camunda-bpm-correlate/</url>
@@ -13,14 +13,15 @@
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>11</java.version>
-    <kotlin.version>1.6.21</kotlin.version>
-    <spring-boot.version>2.6.6</spring-boot.version>
+    <kotlin.version>1.7.21</kotlin.version>
+    <spring-boot.version>2.7.5</spring-boot.version>
   </properties>
 
   <modules>
     <module>bom/parent</module>
     <module>bom/bom</module>
     <module>extension/core</module>
+    <module>extension/cockpit-plugin</module>
     <module>extension/spring-boot-starter</module>
     <module>extension/spring-cloud-stream</module>
     <module>extension/axon</module>
@@ -37,6 +38,56 @@
       <modules>
         <module>example</module>
       </modules>
+    </profile>
+
+    <profile>
+      <id>itest</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+          </plugin>
+          <!-- Coverage metering -->
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>pre-integration-test</id>
+                <goals>
+                  <goal>prepare-agent-integration</goal>
+                </goals>
+                <configuration>
+                  <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+                  <propertyName>failsafeArgLine</propertyName>
+                </configuration>
+              </execution>
+              <execution>
+                <id>post-integration-test</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+                <configuration>
+                  <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+                  <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
     <!--
@@ -79,6 +130,14 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>${kotlin.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+
+      <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${spring-boot.version}</version>
@@ -86,13 +145,6 @@
         <type>pom</type>
       </dependency>
 
-      <dependency>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-bom</artifactId>
-        <version>${kotlin.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -133,16 +185,6 @@
               </configuration>
             </execution>
             <execution>
-              <id>pre-integration-test</id>
-              <goals>
-                <goal>prepare-agent-integration</goal>
-              </goals>
-              <configuration>
-                <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
-                <propertyName>failsafeArgLine</propertyName>
-              </configuration>
-            </execution>
-            <execution>
               <id>post-unit-test</id>
               <phase>test</phase>
               <goals>
@@ -151,17 +193,6 @@
               <configuration>
                 <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
                 <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-              </configuration>
-            </execution>
-            <execution>
-              <id>post-integration-test</id>
-              <phase>post-integration-test</phase>
-              <goals>
-                <goal>report</goal>
-              </goals>
-              <configuration>
-                <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
-                <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
               </configuration>
             </execution>
           </executions>
@@ -283,9 +314,6 @@
             <shutdown>kill</shutdown>
             <runOrder>random</runOrder>
             <argLine>--illegal-access=permit ${surefireArgLine} -Djava.awt.headless=true -XX:+StartAttachListener</argLine>
-            <excludes>
-              <exclude>**/*ITest.*</exclude>
-            </excludes>
             <systemPropertyVariables>
               <jgiven.report.dir>${project.build.directory}/jgiven-reports</jgiven.report.dir>
             </systemPropertyVariables>
@@ -299,16 +327,15 @@
           <version>2.22.2</version>
           <executions>
             <execution>
+              <phase>integration-test</phase>
               <goals>
                 <goal>integration-test</goal>
+                <goal>verify</goal>
               </goals>
             </execution>
           </executions>
           <configuration>
             <argLine>--illegal-access=permit ${failsafeArgLine}</argLine>
-            <includes>
-              <include>**/*ITest.*</include>
-            </includes>
             <systemPropertyVariables>
               <jgiven.report.dir>${project.build.directory}/jgiven-reports</jgiven.report.dir>
             </systemPropertyVariables>
@@ -329,7 +356,7 @@
         <plugin>
           <groupId>org.jetbrains.dokka</groupId>
           <artifactId>dokka-maven-plugin</artifactId>
-          <version>1.6.10</version>
+          <version>1.7.20</version>
           <executions>
             <execution>
               <phase>package</phase>

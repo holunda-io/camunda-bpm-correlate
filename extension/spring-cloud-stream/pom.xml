@@ -5,16 +5,16 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
     <relativePath>../../bom/parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
   <packaging>jar</packaging>
-  <name>Extension / Ingres Adapter Spring Cloud Stream</name>
+  <name>Extension / Ingress Adapter Spring Cloud Stream</name>
 
   <properties>
-    <spring-cloud.version>2021.0.1</spring-cloud.version>
+    <spring-cloud.version>2021.0.5</spring-cloud.version>
   </properties>
 
   <dependencyManagement>
@@ -26,12 +26,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- FIXME: Remove as soon as spring fixes this CVE -->
-      <!-- Fixing Spring Cloud CVE https://advisory.checkmarx.net/advisory/vulnerability/CVE-2022-22963/ -->
+      <!-- FIXME: Remove as soon as spring fixes those issues -->
+      <!-- https://github.com/spring-cloud/spring-cloud-function/issues/925 -->
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-function-context</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.5</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -61,8 +61,6 @@
       <artifactId>camunda-commons-typed-values</artifactId>
       <scope>provided</scope>
     </dependency>
+    
   </dependencies>
-
-
-
 </project>

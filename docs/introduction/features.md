@@ -2,7 +2,7 @@ Currently, the library supports the following features:
 
 ## General
 
-* Ingres Adapters:
+* Ingress Adapters:
     * Spring Cloud Kafka
     * Axon Framework
 * MetaData extractors:

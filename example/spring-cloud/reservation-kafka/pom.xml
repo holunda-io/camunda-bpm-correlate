@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-example-parent</artifactId>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -19,7 +19,7 @@
       <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
     </dependency>
-    <!-- Ingres Adapter -->
+    <!-- Ingress Adapter -->
     <dependency>
       <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
@@ -36,6 +36,12 @@
       <artifactId>camunda-bpm-correlate-example-common</artifactId>
     </dependency>
 
+    <!-- Plugin -->
+    <dependency>
+      <groupId>io.holunda</groupId>
+      <artifactId>camunda-bpm-correlate-cockpit-plugin</artifactId>
+      <scope>runtime</scope>
+    </dependency>
 
     <!-- Camunda -->
     <dependency>
@@ -51,6 +57,11 @@
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>

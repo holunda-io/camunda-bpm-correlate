@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-example-parent</artifactId>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -19,7 +19,7 @@
       <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
     </dependency>
-    <!-- Ingres Adapter -->
+    <!-- Ingress Adapter -->
     <dependency>
       <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-axon-framework</artifactId>
@@ -36,6 +36,7 @@
       <groupId>io.holunda</groupId>
       <artifactId>camunda-bpm-correlate-example-common</artifactId>
     </dependency>
+
 
     <!-- Camunda -->
     <dependency>
@@ -70,6 +71,10 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
     </dependency>
   </dependencies>
 

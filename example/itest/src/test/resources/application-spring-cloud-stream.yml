@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        correlate-ingress-binding-1:
+          content-type: application/json
+          destination: correlate-ingress
+          binder: correlate-ingress-binder
+          group: group
+      binders:
+        correlate-ingress-binder:
+          type: kafka
+          defaultCandidate: true
+          inheritEnvironment: true
+      kafka:
+        binder:
+          auto-create-topics: false
+          auto-add-partitions: false
+          brokers: PLAINTEXT://localhost:59092
+          configuration:
+            security.protocol: PLAINTEXT
+# disabled because of warning in log, not needed?
+#          consumer-properties:
+#            key-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+#            value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer

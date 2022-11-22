@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.correlate.persist
 
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatch
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
-import io.holunda.camunda.bpm.correlate.ingres.message.ChannelMessage
+import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
 
 interface MessagePersistenceService {
   /**

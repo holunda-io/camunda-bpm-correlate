@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    io.holunda.camunda.bpm.correlate.ingres.axon.AxonChannelConfiguration, \
-    io.holunda.camunda.bpm.correlate.ingres.axon.AxonHandlerConfiguration
+    io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration, \
+    io.holunda.camunda.bpm.correlate.ingress.axon.AxonHandlerConfiguration
 

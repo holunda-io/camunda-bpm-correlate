@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
     <!-- It is ok to use the extension parent, there is only Kotlin and some managed deps defined there -->
     <relativePath>../bom/parent/pom.xml</relativePath>
   </parent>
@@ -18,8 +18,8 @@
   <packaging>pom</packaging>
 
   <properties>
-    <spin.version>1.13.0</spin.version>
-    <spring-cloud.version>2021.0.1</spring-cloud.version>
+    <spin.version>1.15.0</spin.version>
+    <spring-cloud.version>2021.0.5</spring-cloud.version>
     <axon.framework.version>4.5.12</axon.framework.version>
   </properties>
 
@@ -31,6 +31,7 @@
     <module>axon/flight-axon</module>
     <module>axon/hotel-axon</module>
     <module>axon/reservation-axon</module>
+    <module>itest</module>
 
   </modules>
 
@@ -57,13 +58,14 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- FIXME: Remove as soon as spring fixes this CVE -->
-      <!-- Fixing Spring Cloud CVE https://advisory.checkmarx.net/advisory/vulnerability/CVE-2022-22963/ -->
+      <!-- FIXME: Remove as soon as spring fixes those issues -->
+      <!-- https://github.com/spring-cloud/spring-cloud-function/issues/925 -->
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-function-context</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.5</version>
       </dependency>
+
 
       <!-- Axon Framework -->
       <dependency>

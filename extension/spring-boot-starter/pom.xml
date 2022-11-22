@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
     <relativePath>../../bom/parent/pom.xml</relativePath>
   </parent>
 
@@ -18,10 +18,6 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>camunda-bpm-correlate</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -39,6 +35,8 @@
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
     </dependency>
+
+    <!-- Scheduling -->
     <dependency>
       <groupId>net.javacrumbs.shedlock</groupId>
       <artifactId>shedlock-spring</artifactId>
@@ -53,7 +51,6 @@
       <artifactId>camunda-bpm-spring-boot-starter</artifactId>
       <scope>provided</scope>
     </dependency>
-
 
     <dependency>
       <groupId>org.springframework.boot</groupId>

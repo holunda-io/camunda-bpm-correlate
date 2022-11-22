@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
@@ -35,7 +35,11 @@
         <artifactId>camunda-bpm-correlate-axon-framework</artifactId>
         <version>${project.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>io.holunda</groupId>
+        <artifactId>camunda-bpm-correlate-cockpit-plugin</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

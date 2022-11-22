@@ -14,8 +14,9 @@
   <logger name="org.apache.kafka.clients.Metadata" level="WARN" />
   <logger name="org.apache.kafka.clients.admin" level="WARN"/>
   <logger name="org.apache.kafka.common.utils.AppInfoParser" level="WARN" />
-  <logger name="io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationSchedulerConfiguration" level="DEBUG" />
+  <logger name="io.holunda.camunda.bpm.correlate.correlation" level="DEBUG" />
   <logger name="io.holunda.camunda.bpm.example.kafka.process.delegate.SaveReservationDetails" level="DEBUG" />
+  <logger name="io.holunda.camunda.bpm.correlate.ingress.cloudstream" level="DEBUG" />
 
   <root level="INFO">
     <appender-ref ref="STDOUT" />

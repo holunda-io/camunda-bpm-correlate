@@ -45,7 +45,7 @@ class BatchCorrelationProcessor(
               )
             )
           )
-          correlationMetrics.incrementError(1)
+          correlationMetrics.incrementError()
           logger.trace(e) { "Error processing for batch ${batch.correlationHint}" }
         }
       }

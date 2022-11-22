@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-root</artifactId>
-    <version>0.0.2</version>
+    <version>1.0.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -14,9 +14,8 @@
   <name>POM / Parent</name>
 
   <properties>
-    <junit.version>5.8.2</junit.version>
-    <camunda-7.version>7.17.0</camunda-7.version>
-    <camunda-bpm-data.version>1.2.6</camunda-bpm-data.version>
+    <camunda-7.version>7.18.0</camunda-7.version>
+    <camunda-bpm-data.version>1.2.7</camunda-bpm-data.version>
     <shedlock.version>4.38.0</shedlock.version>
   </properties>
 
@@ -33,13 +32,6 @@
         <groupId>io.holunda.data</groupId>
         <artifactId>camunda-bpm-data</artifactId>
         <version>${camunda-bpm-data.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
-        <version>${junit.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>net.javacrumbs.shedlock</groupId>
@@ -66,10 +58,10 @@
     <dependency>
       <groupId>io.github.microutils</groupId>
       <artifactId>kotlin-logging-jvm</artifactId>
-      <version>2.1.21</version>
+      <version>3.0.4</version>
     </dependency>
 
-    <!-- Test dependend cies -->
+    <!-- Test dependencies -->
     <dependency>
       <groupId>org.mockito.kotlin</groupId>
       <artifactId>mockito-kotlin</artifactId>
@@ -89,7 +81,6 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.18.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>

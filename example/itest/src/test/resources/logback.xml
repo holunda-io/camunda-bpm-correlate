@@ -1,0 +1,27 @@
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="org.camunda" level="WARN"/>
+  <logger name="org.camunda.bpm.engine" level="WARN"/>
+  <logger name="org.camunda.bpm.engine.persistence" level="WARN"/>
+  <logger name="org.camunda.bpm.engine.jobexecutor" level="WARN"/>
+  <logger name="org.apache.kafka.clients.producer" level="WARN"/>
+  <logger name="org.apache.kafka.clients.consumer" level="WARN"/>
+  <logger name="org.apache.kafka.clients.Metadata" level="WARN" />
+  <logger name="org.apache.kafka.clients.admin" level="WARN"/>
+  <logger name="org.apache.kafka.common.utils.AppInfoParser" level="WARN" />
+  <logger name="org.apache.zookeeper.server.ZooKeeperServer" level="WARN" />
+  <logger name="state.change.logger" level="WARN" />
+  <logger name="kafka.cluster.Partition" level="WARN" />
+
+  <logger name="io.holunda.camunda.bpm.correlate.correlation" level="DEBUG" />
+  <logger name="io.holunda.camunda.bpm.example.kafka.process.delegate.SaveReservationDetails" level="DEBUG" />
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>

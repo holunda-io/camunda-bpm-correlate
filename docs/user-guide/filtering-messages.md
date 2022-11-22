@@ -1,6 +1,6 @@
 In messaging scenarios it is not uncommon that the message bus is transporting more types of message than the current system should consume.
 In this case, it is important to filter out and ignore the irrelevant messages and take only the relevant messages into consideration. In the same time,
-all messages still needs to be consumed in order not to block the follow-up messages. In order to filter the messages between the [Ingres Adapter](ingres.md)
+all messages still needs to be consumed in order not to block the follow-up messages. In order to filter the messages between the [Ingress Adapter](ingress.md)
 and the [Message Acceptor](message-acceptor.md) we supply a special `MessageFilter` to filter out the supported messaged.
 
 ```kotlin
@@ -22,7 +22,7 @@ Feel free to implement your own filters and supply them as a Spring Bean or choo
 
 ### AllMessageFilter
 
-The `AllMessageFilter` accepts all messages received from the Ingres adapter. 
+The `AllMessageFilter` accepts all messages received from the Ingress adapter. 
 
 ### AndCompositeMessageFilter
 
