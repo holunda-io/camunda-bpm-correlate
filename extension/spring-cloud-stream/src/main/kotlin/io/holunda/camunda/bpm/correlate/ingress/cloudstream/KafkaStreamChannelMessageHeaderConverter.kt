@@ -7,7 +7,11 @@ import org.springframework.messaging.Message
 import org.springframework.messaging.MessageHeaders
 import java.time.Instant
 
-class DefaultKafkaMessageHeaderConverter : ChannelMessageHeaderConverter {
+/**
+ * Default header converter for standard kafka headers.
+ * Captures message timestamp and message id.
+ */
+class KafkaStreamChannelMessageHeaderConverter : StreamChannelMessageHeaderConverter {
 
   /**
    * Use byte array or string headers of Spring Messaging.
@@ -21,6 +25,9 @@ class DefaultKafkaMessageHeaderConverter : ChannelMessageHeaderConverter {
       }.toMap()
   }
 
+  /**
+   * Normalizing headers to string representation.
+   */
   fun MessageHeaders.normalized(): Map<String, Any> {
     return this.map { entry ->
       if (entry.value is ByteArray) {

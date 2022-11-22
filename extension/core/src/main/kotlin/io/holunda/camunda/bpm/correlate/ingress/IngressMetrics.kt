@@ -23,28 +23,44 @@ class IngressMetrics(
     const val COUNTER_PERSISTED = "$PREFIX_ACCEPTOR.persisted"
     const val COUNTER_DROPPED = "$PREFIX_ACCEPTOR.dropped"
 
-    const val TAG_CHANNEL = "channel"
+    const val TAG_CHANNEL_TYPE = "channel-type"
+    const val TAG_CHANNEL_NAME = "channel-name"
   }
 
   /**
    * Received by the ingress adapter.
    */
-  fun incrementReceived(channel: String) {
-    registry.counter(COUNTER_RECEIVED, listOf(Tag.of(TAG_CHANNEL, channel))).increment()
+  fun incrementReceived(channelName: String, channelType: String) {
+    registry.counter(
+      COUNTER_RECEIVED, listOf(
+        Tag.of(TAG_CHANNEL_NAME, channelName),
+        Tag.of(TAG_CHANNEL_TYPE, channelType)
+      )
+    ).increment()
   }
 
   /**
    * Accepted by acceptor.
    */
-  fun incrementAccepted(channel: String) {
-    registry.counter(COUNTER_ACCEPTED, listOf(Tag.of(TAG_CHANNEL, channel))).increment()
+  fun incrementAccepted(channelName: String, channelType: String) {
+    registry.counter(
+      COUNTER_ACCEPTED, listOf(
+        Tag.of(TAG_CHANNEL_NAME, channelName),
+        Tag.of(TAG_CHANNEL_TYPE, channelType)
+      )
+    ).increment()
   }
 
   /**
    * Ignored by acceptor.
    */
-  fun incrementIgnored(channel: String) {
-    registry.counter(COUNTER_IGNORED, listOf(Tag.of(TAG_CHANNEL, channel))).increment()
+  fun incrementIgnored(channelName: String, channelType: String) {
+    registry.counter(
+      COUNTER_IGNORED, listOf(
+        Tag.of(TAG_CHANNEL_NAME, channelName),
+        Tag.of(TAG_CHANNEL_TYPE, channelType)
+      )
+    ).increment()
   }
 
   /**

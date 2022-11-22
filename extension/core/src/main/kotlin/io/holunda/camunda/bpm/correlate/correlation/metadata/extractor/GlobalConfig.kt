@@ -3,11 +3,7 @@ package io.holunda.camunda.bpm.correlate.correlation.metadata.extractor
 /**
  * Configuration of the channel.
  */
-interface ChannelConfig {
-  /**
-   * Flag to enable the channel.
-   */
-  fun isEnabled(): Boolean
+interface GlobalConfig {
   /**
    * TTL of messages received via channel.
    */

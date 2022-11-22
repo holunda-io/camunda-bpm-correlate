@@ -7,14 +7,14 @@ import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
 /**
  * Extracts metadata from channel config.
  */
-class ChannelConfigMessageMetaDataSnippetExtractor(
-  private val channelConfig: ChannelConfig
+class GlobalConfigMessageMetaDataSnippetExtractor(
+  private val globalConfig: GlobalConfig
 ) : MessageMetaDataSnippetExtractor {
 
   override fun <P> extractMetaData(message: ChannelMessage<P>): MessageMetaDataSnippet? {
     val snippet = MessageMetaDataSnippet(
-      timeToLive = channelConfig.getMessageTimeToLiveAsString(),
-      payloadEncoding = channelConfig.getMessagePayloadEncoding()
+      timeToLive = globalConfig.getMessageTimeToLiveAsString(),
+      payloadEncoding = globalConfig.getMessagePayloadEncoding()
     )
     return if (snippet.isEmpty()) {
       null

@@ -5,11 +5,11 @@ import org.axonframework.eventhandling.EventMessage
 /**
  * Extractor for headers from Axon message.
  */
-interface AxonEventHeaderConverter {
+interface AxonEventMessageHeaderConverter {
 
   /**
    * Extracts headers.
-   * @param eventMessage message received via Axon.
+   * @param eventMessage message received via Axon event bus.
    * @return map of headers.
    */
   fun extractHeaders(eventMessage: EventMessage<*>): Map<String, Any>

@@ -6,49 +6,31 @@
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-example-parent</artifactId>
     <version>0.0.3-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>Example / Spring Cloud / Reservation with Kafka</name>
-  <artifactId>camunda-bpm-correlate-example-reservation-kafka</artifactId>
+  <artifactId>camunda-bpm-correlate-integration-test</artifactId>
   <packaging>jar</packaging>
+  <name>Example / Integration tests of the library</name>
 
   <dependencies>
-    <!-- Core -->
+    <!-- Extension -->
     <dependency>
-      <groupId>io.holunda</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>camunda-bpm-correlate-spring-boot-starter</artifactId>
+      <version>${project.version}</version>
     </dependency>
-    <!-- Ingress Adapter -->
     <dependency>
-      <groupId>io.holunda</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>camunda-bpm-correlate-spring-cloud-stream</artifactId>
+      <version>${project.version}</version>
     </dependency>
-    <!-- Kafka Binder -->
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>camunda-bpm-correlate-axon-framework</artifactId>
+      <version>${project.version}</version>
     </dependency>
-
-    <!-- Example Fixtures -->
-    <dependency>
-      <groupId>io.holunda</groupId>
-      <artifactId>camunda-bpm-correlate-example-common</artifactId>
-    </dependency>
-
-    <!-- Plugin -->
-    <dependency>
-      <groupId>io.holunda</groupId>
-      <artifactId>camunda-bpm-correlate-cockpit-plugin</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-
     <!-- Camunda -->
-    <dependency>
-      <groupId>io.holunda</groupId>
-      <artifactId>camunda-platform-7-autologin</artifactId>
-      <version>0.0.1</version>
-    </dependency>
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter</artifactId>
@@ -81,6 +63,41 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+    </dependency>
+
+    <!-- Kafka Binder -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+    </dependency>
+
+    <!-- Axon Starter -->
+    <dependency>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-spring-boot-starter</artifactId>
+    </dependency>
+
+    <!-- Testing setup -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Disable Admin Client -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-stream-test-support</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
