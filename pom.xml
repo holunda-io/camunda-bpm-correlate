@@ -4,7 +4,7 @@
 
   <groupId>io.holunda</groupId>
   <artifactId>camunda-bpm-correlate-root</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <url>https://github.com/holunda-io/camunda-bpm-correlate/</url>
