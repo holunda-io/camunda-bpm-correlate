@@ -803,11 +803,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#release-management" class="md-nav__link">
-    Release Management
+  <a href="#publish-a-new-release" class="md-nav__link">
+    Publish a new release
   </a>
   
-    <nav class="md-nav" aria-label="Release Management">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#milestone-release-management" class="md-nav__link">
+    Milestone / Release Management
+  </a>
+  
+    <nav class="md-nav" aria-label="Milestone / Release Management">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -868,7 +875,7 @@
 <h2 id="version-control">Version control<a class="headerlink" href="#version-control" title="Permanent link">#</a></h2>
 <p>To get sources of the project, please execute:</p>
 <div class="highlight"><pre><span></span><code>git clone https://github.com/holunda-io/camunda-bpm-correlate.git
-<span class="nb">cd</span> camunda-rest-client-spring-boot
+<span class="nb">cd</span> camunda-bpm-correlate
 </code></pre></div>
 <p>We are using gitflow in our git SCM for naming branches. That means that you should start from <code>develop</code> branch,
 create a <code>feature/&lt;name&gt;</code> out of it and once it is completed create a pull request containing
@@ -899,9 +906,21 @@ the http://localhost:8000/ from your browser.</p>
 <h3 id="continuous-integration">Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permanent link">#</a></h3>
 <p>GitHub Actions are building all branches on commit hook (for codecov).
 In addition, a GitHub Actions are used to build PRs and all branches.</p>
-<h3 id="release-management">Release Management<a class="headerlink" href="#release-management" title="Permanent link">#</a></h3>
-<p>The release is produced by using the GitHub feature "Close Milestone". A special GitHub action
-is preparing the release notes as a draft. Then click on "Publish Release" to make it public.</p>
+<h3 id="publish-a-new-release">Publish a new release<a class="headerlink" href="#publish-a-new-release" title="Permanent link">#</a></h3>
+<p>We use gitflow plugin to handle versioning and branch manipulations between <code>develop</code> and <code>master</code>. Technically,
+every push to the <code>master</code> branch triggers the execution of the GH actions job producing a release and publishing
+it into Maven Central. To do it correctly (with correct versions) please run:</p>
+<div class="highlight"><pre><span></span><code>./mvnw gitflow:release-start
+</code></pre></div>
+<p>Acknowledge the proposed version (or change if needed) and then run:</p>
+<div class="highlight"><pre><span></span><code>./mvnw gitflow:release-finish
+</code></pre></div>
+<h3 id="milestone-release-management">Milestone / Release Management<a class="headerlink" href="#milestone-release-management" title="Permanent link">#</a></h3>
+<p>After the publication of the new release, it is time to tell the users that you produced a new version.
+The <code>GitHub release</code> is produced by using the GitHub feature <code>Close Milestone</code>. A special GitHub action
+is preparing the release notes as a draft. Then click on <code>Publish Release</code> to make it public.
+This will trigger some GitHub internal notifications and people subscribed to notification about the library
+will get notified.</p>
 <h4 id="what-modules-get-deployed-to-repository">What modules get deployed to repository<a class="headerlink" href="#what-modules-get-deployed-to-repository" title="Permanent link">#</a></h4>
 <p>Every Maven module is enabled by default. If you want to change this, please provide the property</p>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;maven.deploy.skip&gt;</span>true<span class="nt">&lt;/maven.deploy.skip&gt;</span>
@@ -913,7 +932,7 @@ is preparing the release notes as a draft. Then click on "Publish Release" to ma
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 22, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 24, 2022</span>
       
     
   </small>

@@ -796,9 +796,9 @@
   <h1>Getting started</h1>
 
 <h2 id="install-dependency">Install Dependency<a class="headerlink" href="#install-dependency" title="Permanent link">#</a></h2>
-<p>First install the extension using the corresponding ingress adapter (in this example we use Kafka):</p>
+<p>First install the extension using the corresponding ingress adapter (in this example we use Spring Cloud Stream for connecting with Kafka):</p>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;properties&gt;</span>
-  <span class="nt">&lt;camunda-bpm-correlate.version&gt;</span>0.0.2<span class="nt">&lt;/camunda-bpm-correlate.version&gt;</span>
+  <span class="nt">&lt;camunda-bpm-correlate.version&gt;</span>1.0.0<span class="nt">&lt;/camunda-bpm-correlate.version&gt;</span>
 <span class="nt">&lt;/properties&gt;</span>
 
 <span class="nt">&lt;dependencies&gt;</span>
@@ -822,15 +822,43 @@
 <span class="nt">&lt;/dependencies&gt;</span>
 </code></pre></div>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h2>
-<p>Configure your basic Spring Cloud Streams Kafka configuration to looks like this (or similar). Important is 
-the name of the function definition.</p>
+<p>Please add the configuration of the extension:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">correlate</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">channels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">my-kafka-channel</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stream</span><span class="w"></span>
+<span class="w">      </span><span class="nt">beanName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">special-name</span><span class="w"></span>
+<span class="w">  </span><span class="nt">batch</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span><span class="w"> </span><span class="c1"># default fail_first -&gt; &#39;all&#39; will correlate one message after another, resulting in ignoring the order of receiving</span><span class="w"></span>
+<span class="w">    </span><span class="nt">query</span><span class="p">:</span><span class="w">    </span><span class="c1"># query scheduler</span><span class="w"></span>
+<span class="w">      </span><span class="nt">pollInitialDelay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT10S</span><span class="w"></span>
+<span class="w">      </span><span class="nt">pollInterval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT6S</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cleanup</span><span class="p">:</span><span class="w">  </span><span class="c1"># cleanup of expired messages</span><span class="w"></span>
+<span class="w">      </span><span class="nt">pollInitialDelay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT1M</span><span class="w"></span>
+<span class="w">      </span><span class="nt">pollInterval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT1M</span><span class="w"></span>
+<span class="w">  </span><span class="nt">message</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">timeToLiveAsString</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT10S</span><span class="w"> </span><span class="c1"># errors during TTL seconds after receiving are ignored</span><span class="w"></span>
+<span class="w">    </span><span class="nt">payloadEncoding</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jackson</span><span class="w">  </span><span class="c1"># our bytes are actually JSON written by Jackson.</span><span class="w"></span>
+<span class="w">  </span><span class="nt">persistence</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">messageMaxRetries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"> </span><span class="c1"># default 100 -&gt; will try to deliver 5 times at most</span><span class="w"></span>
+<span class="w">    </span><span class="nt">messageFetchPageSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># default 100</span><span class="w"></span>
+<span class="w">  </span><span class="nt">retry</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">retryMaxBackoffMinutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"> </span><span class="c1"># default 180 -&gt; maximum 5 minutes between retries</span><span class="w"></span>
+<span class="w">    </span><span class="nt">retryBackoffBase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span><span class="w"> </span><span class="c1"># value in minutes default 2.0 -&gt; base in the power of retry to calculate the next retry</span><span class="w"></span>
+</code></pre></div>
+<p>Now configure your basic Spring Cloud Streams Kafka configuration to looks like this (or similar).
+Pay attention to the name of the function definition and the bindings' in channels. It results from the 
+value of <code>correlate.channels.&lt;channel-nam&gt;.beanName</code> and accordingly is part of the expression to 
+bind the parameter of the binding (<code>special-name-in-0</code>).</p>
 <div class="highlight"><pre><span></span><code><span class="nt">spring</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">stream</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="nt">function</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">definition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">streamByteMessageConsumer</span><span class="w"></span>
+<span class="w">        </span><span class="nt">definition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">special-name</span><span class="w"></span>
 <span class="w">        </span><span class="nt">bindings</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">streamByteMessageConsumer-in-0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">correlate-ingress-binding</span><span class="w">      </span>
+<span class="w">          </span><span class="nt">special-name-in-0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">correlate-ingress-binding</span><span class="w">      </span>
 <span class="w">      </span><span class="nt">bindings</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">correlate-ingress-binding</span><span class="p">:</span><span class="w"></span>
 <span class="w">          </span><span class="nt">content-type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application/json</span><span class="w"></span>
@@ -858,37 +886,13 @@ the name of the function definition.</p>
 <span class="w">                      </span><span class="nt">configuration</span><span class="p">:</span><span class="w"></span>
 <span class="w">                        </span><span class="nt">security.protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}</span><span class="w"></span>
 </code></pre></div>
-<p>In addition, add the configuration of the extension:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">correlate</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">  </span><span class="nt">channels</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">stream</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">channelEnabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">timeToLiveAsString</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT10S</span><span class="w"> </span><span class="c1"># errors during TTL seconds after receiving are ignored</span><span class="w"></span>
-<span class="w">        </span><span class="nt">payloadEncoding</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jackson</span><span class="w">  </span><span class="c1"># our bytes are actually JSON written by Jackson.</span><span class="w"></span>
-<span class="w">  </span><span class="nt">batch</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span><span class="w"> </span><span class="c1"># default fail_first -&gt; &#39;all&#39; will correlate one message after another, resulting in ignoring the order of receiving</span><span class="w"></span>
-<span class="w">    </span><span class="nt">query</span><span class="p">:</span><span class="w">    </span><span class="c1"># query scheduler</span><span class="w"></span>
-<span class="w">      </span><span class="nt">pollInitialDelay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT10S</span><span class="w"></span>
-<span class="w">      </span><span class="nt">pollInterval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT6S</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cleanup</span><span class="p">:</span><span class="w">  </span><span class="c1"># cleanup of expired messages</span><span class="w"></span>
-<span class="w">      </span><span class="nt">pollInitialDelay</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT1M</span><span class="w"></span>
-<span class="w">      </span><span class="nt">pollInterval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PT1M</span><span class="w"></span>
-<span class="w">  </span><span class="nt">persistence</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">messageMaxRetries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"> </span><span class="c1"># default 100 -&gt; will try to deliver 5 times at most</span><span class="w"></span>
-<span class="w">    </span><span class="nt">messageFetchPageSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># default 100</span><span class="w"></span>
-<span class="w">  </span><span class="nt">retry</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">retryMaxBackoffMinutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"> </span><span class="c1"># default 180 -&gt; maximum 5 minutes between retries</span><span class="w"></span>
-<span class="w">    </span><span class="nt">retryBackoffBase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span><span class="w"> </span><span class="c1"># value in minutes default 2.0 -&gt; base in the power of retry to calculate the next retry</span><span class="w"></span>
-</code></pre></div>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 22, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 24, 2022</span>
       
     
   </small>
