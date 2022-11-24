@@ -81,11 +81,9 @@ class DirectIngressMessageConsumer(
     }
   }
 
-  /**
+  /*
    * Deserializes the JSON message to the typed message.
    * Use PAYLOAD_TYPE_CLASS_NAME to detect the type.
-   * @param message bytearray JSON message.
-   * @return typed message.
    */
   private fun deserializeMessage(message: Message<ByteArray>): Any {
     val typeFullQualifiedName =

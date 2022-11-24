@@ -28,6 +28,9 @@ class DefaultMessagePersistenceService(
 
   companion object : KLogging()
 
+  /**
+   * Null-object for no payload.
+   */
   object PayloadNotAvailable
 
   /**

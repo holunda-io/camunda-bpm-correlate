@@ -14,7 +14,7 @@ import java.util.*
  * Aggregate representing the hotel.
  */
 @Aggregate
-class HotelBookingAggregate() {
+class HotelBookingAggregate {
 
   @AggregateIdentifier
   lateinit var id: String

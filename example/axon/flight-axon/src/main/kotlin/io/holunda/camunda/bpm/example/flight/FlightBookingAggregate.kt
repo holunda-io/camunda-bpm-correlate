@@ -14,7 +14,7 @@ import java.util.*
  * Flight aggregate.
  */
 @Aggregate
-class FlightBookingAggregate() {
+class FlightBookingAggregate {
 
   @AggregateIdentifier
   lateinit var id: String

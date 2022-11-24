@@ -8,6 +8,9 @@ import io.micrometer.core.instrument.Tag
 import mu.KLogging
 import java.util.concurrent.atomic.AtomicLong
 
+/**
+ * Captures correlation metrics.
+ */
 @ComponentLike
 class CorrelationMetrics(
   private val registry: MeterRegistry
@@ -37,6 +40,9 @@ class CorrelationMetrics(
     Gauge.builder(GAUGE_MESSAGES, paused::get).tag("status", "paused").register(registry)
   }
 
+  /**
+   * Reports message count.
+   */
   fun reportMessageCounts(countByStatus: CountByStatus) {
     if (countByStatus.total == 0L) {
       logger.debug { "No messages found, the inbox message table is clean." }
@@ -52,14 +58,23 @@ class CorrelationMetrics(
     paused.set(countByStatus.paused)
   }
 
+  /**
+   * Increment correlation success counter.
+   */
   fun incrementSuccess(size: Int) {
     registry.counter(COUNTER_CORRELATED).increment(size.toDouble())
   }
 
+  /**
+   * Increment correlation error counter by number of messages.
+   */
   fun incrementError(size: Int) {
     registry.counter(COUNTER_ERROR).increment(size.toDouble())
   }
 
+  /**
+   * Increment correlation success counter by one.
+   */
   fun incrementError() {
     incrementError(1)
   }

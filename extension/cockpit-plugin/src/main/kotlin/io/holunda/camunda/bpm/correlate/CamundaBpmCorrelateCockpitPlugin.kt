@@ -8,6 +8,9 @@ import org.camunda.bpm.cockpit.plugin.spi.impl.AbstractCockpitPlugin
 import org.springframework.context.ApplicationContext
 import kotlin.reflect.KClass
 
+/**
+ * Main plugin class.
+ */
 class CamundaBpmCorrelateCockpitPlugin : AbstractCockpitPlugin() {
 
   companion object : KLogging() {
@@ -38,10 +41,16 @@ fun getApplicationContext(): ApplicationContext {
   return requireNotNull(CamundaBpmCorrelateConfiguration.applicationContext) { "Spring application context could not be found." }
 }
 
+/**
+ * Retrieves a bean, works like injection.
+ */
 inline fun <reified T : Any> AbstractCockpitPluginResource.getBean(clazz: KClass<T>): T {
   return getApplicationContext().getBean(clazz.java)
 }
 
+/**
+ * Retrieves a bean, works like injection.
+ */
 inline fun <reified T : Any> AbstractCockpitPluginRootResource.getBean(clazz: KClass<T>): T {
   return getApplicationContext().getBean(clazz.java)
 }

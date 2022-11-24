@@ -19,6 +19,9 @@ class UsingCamundaCorrelateConfiguration(
 ) {
   companion object : KLogging()
 
+  /**
+   * Post some info.
+   */
   @PostConstruct
   fun info() {
     logger.info { "[Camunda CORRELATE] Channels configured: ${correlateConfigurationProperties.channels.keys.joinToString(", ")}" }
@@ -46,7 +49,7 @@ class UsingCamundaCorrelateConfiguration(
   }
 
   /**
-   * Controller for admin functionlity.
+   * Controller for admin functionality.
    */
   @Bean
   fun adminRestController(messageManagementService: MessageManagementService) = AdminRestController(messageManagementService = messageManagementService)

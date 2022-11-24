@@ -11,6 +11,9 @@ import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
 import kotlin.math.pow
 
+/**
+ * Single message retrying strategy focusing on retries based on timing configured in the config.
+ */
 class RetryingSingleMessageErrorHandlingStrategy(
   private val clock: Clock,
   private val retryErrorHandlingConfig: RetryingErrorHandlingConfig
@@ -44,7 +47,10 @@ class RetryingSingleMessageErrorHandlingStrategy(
   }
 
 
-  fun isAlive(entity: MessageEntity): Boolean {
+  /**
+   * Checks if the message is still alive and can be reprocessed.
+   */
+  private fun isAlive(entity: MessageEntity): Boolean {
     return if (entity.timeToLiveDuration != null) {
       val titleToLiveDuration = try {
         Duration.parse(entity.timeToLiveDuration)

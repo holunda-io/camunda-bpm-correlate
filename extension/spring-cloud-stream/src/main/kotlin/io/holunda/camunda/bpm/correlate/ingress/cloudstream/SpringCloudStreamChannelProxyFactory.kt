@@ -12,6 +12,9 @@ import org.springframework.context.ApplicationContextAware
 import org.springframework.context.support.GenericApplicationContext
 import java.util.function.Supplier
 
+/**
+ * Factory for creating named channel consumers for cloud streams based on the configuration.
+ */
 class SpringCloudStreamChannelProxyFactory(
   private val channelMessageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngressMetrics,
