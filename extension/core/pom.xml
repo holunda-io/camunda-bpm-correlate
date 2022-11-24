@@ -27,6 +27,11 @@
       <artifactId>camunda-engine</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <scope>provided</scope>
+    </dependency>
 
     <!-- Testing -->
     <dependency>
@@ -50,10 +55,6 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis</artifactId>
     </dependency>
   </dependencies>
 

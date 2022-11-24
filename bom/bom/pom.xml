@@ -4,9 +4,9 @@
 
   <parent>
     <groupId>io.holunda</groupId>
-    <artifactId>camunda-bpm-correlate-parent</artifactId>
+    <artifactId>camunda-bpm-correlate-root</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-    <relativePath>../parent/pom.xml</relativePath>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <artifactId>camunda-bpm-correlate-bom</artifactId>
@@ -42,5 +42,22 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <configuration>
+              <flattenMode>bom</flattenMode>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
