@@ -17,3 +17,4 @@ Currently, the library supports the following features:
 * Correlation error strategies: ignore, drop, retry
 * Message Buffering (TTL)
 * Message Expiry
+* Camunda Cockpit Plugin to display the content of the inbox table

@@ -1,9 +1,8 @@
 ## Other ideas
 
-* Plugin for Camunda Cockpit
-* More metrics for Prometheus
 * More ingress adapters:
     * Apache Camel
+    * JMS
     * REST implementing Camunda API
 
 Is the library missing a feature important for you? 

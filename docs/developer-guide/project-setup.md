@@ -6,7 +6,7 @@ To get sources of the project, please execute:
 
 ```sh
 git clone https://github.com/holunda-io/camunda-bpm-correlate.git
-cd camunda-rest-client-spring-boot
+cd camunda-bpm-correlate
 ```
 
 We are using gitflow in our git SCM for naming branches. That means that you should start from `develop` branch,
@@ -57,10 +57,29 @@ By default, the sources and javadoc API documentation are not generated from the
 GitHub Actions are building all branches on commit hook (for codecov).
 In addition, a GitHub Actions are used to build PRs and all branches.
 
-### Release Management
+### Publish a new release
 
-The release is produced by using the GitHub feature "Close Milestone". A special GitHub action
-is preparing the release notes as a draft. Then click on "Publish Release" to make it public.
+We use gitflow plugin to handle versioning and branch manipulations between `develop` and `master`. Technically,
+every push to the `master` branch triggers the execution of the GH actions job producing a release and publishing
+it into Maven Central. To do it correctly (with correct versions) please run:
+
+```sh
+./mvnw gitflow:release-start
+```
+
+Acknowledge the proposed version (or change if needed) and then run:
+
+```sh
+./mvnw gitflow:release-finish
+```
+
+### Milestone / Release Management
+
+After the publication of the new release, it is time to tell the users that you produced a new version.
+The `GitHub release` is produced by using the GitHub feature `Close Milestone`. A special GitHub action
+is preparing the release notes as a draft. Then click on `Publish Release` to make it public.
+This will trigger some GitHub internal notifications and people subscribed to notification about the library
+will get notified.
 
 #### What modules get deployed to repository
 

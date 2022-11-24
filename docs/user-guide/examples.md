@@ -62,7 +62,8 @@ the response messages coming in. For demonstration purposes, the service delays 
 that the "expected" answer by the flight is received after the "unexpected" response from the hotel 
 is received. Therefor, you will see the exception (`MismatchedCorrelationException`) in the log first.
 
-After this, you can inspect the content of the inbox by calling an endpoint [http://localhost:8080/admin/list-messages/](http://localhost:8080/admin/list-messages/).
+After this, you can inspect the content of the inbox by calling an endpoint [http://localhost:8080/admin/list-messages/](http://localhost:8080/admin/list-messages/),
+as alternative you might open the Camunda Cockpit and check the messages inside the plugin section `Correlation`.
 
 ### Axon Events aka using Camunda Platform 7 as Microservice Orchestrator
 
