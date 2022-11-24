@@ -15,6 +15,9 @@ class MessageMetadataExtractorChain(
 ) : MessageMetaDataSnippetExtractor {
 
   companion object {
+    /**
+     * Creates a chain.
+     */
     operator fun invoke(vararg extractor: MessageMetaDataSnippetExtractor): MessageMetadataExtractorChain = MessageMetadataExtractorChain(extractor.asList())
   }
 

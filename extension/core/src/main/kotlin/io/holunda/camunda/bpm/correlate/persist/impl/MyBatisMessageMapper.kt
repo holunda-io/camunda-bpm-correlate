@@ -7,8 +7,14 @@ import org.apache.ibatis.session.RowBounds
 import org.apache.ibatis.type.JdbcType
 import java.time.Instant
 
+/**
+ * Defines a mybatis message mapper.
+ */
 interface MyBatisMessageMapper {
 
+  /**
+   * Finds all messages using paging.
+   */
   @Select("SELECT * FROM COR_MESSAGE")
   @Results(
     value = [
@@ -27,6 +33,9 @@ interface MyBatisMessageMapper {
   )
   fun findAllLightPaged(rowBounds: RowBounds): List<MessageEntity>
 
+  /**
+   * Find all message light objects (message without payload).
+   */
   @Select("SELECT * FROM COR_MESSAGE M WHERE M.ERROR IS NOT NULL")
   @Results(
     value = [
@@ -45,6 +54,9 @@ interface MyBatisMessageMapper {
   )
   fun findAllFaultsLightPaged(rowBounds: RowBounds): List<MessageEntity>
 
+  /**
+   * Loads all messages.
+   */
   @Select("SELECT * FROM COR_MESSAGE")
   @Results(
     value = [
@@ -64,6 +76,9 @@ interface MyBatisMessageMapper {
   )
   fun findAll(rowBounds: RowBounds): List<MessageEntity>
 
+  /**
+   * Finds a message by id.
+   */
   @Select("SELECT * from COR_MESSAGE M WHERE M.ID=#{id}")
   @Results(
     value = [
@@ -83,6 +98,9 @@ interface MyBatisMessageMapper {
   )
   fun findById(@Param("id") id: String): MessageEntity?
 
+  /**
+   * Count messages grouped by status.
+   */
   @Select("""
 SELECT COUNT(ID)                                                                                                    TOTAL,
        COUNT(CASE WHEN M.ERROR IS NOT NULL THEN 1 END)                                                              ERROR,
@@ -107,12 +125,21 @@ FROM COR_MESSAGE M
                     @Param("farFuture") farFuture: Instant
   ): CountByStatus
 
+  /**
+   * Deletes message by id.
+   */
   @Delete("DELETE FROM COR_MESSAGE WHERE ID=#{id}")
   fun deleteById(@Param("id") id: String)
 
+  /**
+   * Adds a new message.
+   */
   @Insert("INSERT INTO COR_MESSAGE(ID, PAYLOAD_ENCODING, PAYLOAD_TYPE_NAMESPACE, PAYLOAD_TYPE_NAME, PAYLOAD_TYPE_REVISION, PAYLOAD, INSERTED, TTL_DURATION, EXPIRATION, RETRIES, NEXT_RETRY, ERROR) VALUES (#{id, jdbcType=VARCHAR}, #{payloadEncoding, jdbcType=VARCHAR}, #{payloadTypeNamespace, jdbcType=VARCHAR}, #{payloadTypeName, jdbcType=VARCHAR}, #{payloadTypeRevision, jdbcType=VARCHAR}, #{payload, jdbcType=BINARY}, #{inserted, jdbcType=TIMESTAMP_WITH_TIMEZONE}, #{timeToLiveDuration, jdbcType=VARCHAR}, #{expiration, jdbcType=TIMESTAMP_WITH_TIMEZONE}, #{retries, jdbcType=INTEGER}, #{nextRetry, jdbcType=TIMESTAMP_WITH_TIMEZONE}, #{error, jdbcType=VARCHAR})")
   fun insert(message: MessageEntity)
 
+  /**
+   * Updates a message.
+   */
   @Update("UPDATE COR_MESSAGE SET PAYLOAD_ENCODING=#{payloadEncoding, jdbcType=VARCHAR}, PAYLOAD_TYPE_NAMESPACE=#{payloadTypeNamespace, jdbcType=VARCHAR}, PAYLOAD_TYPE_NAME=#{payloadTypeName, jdbcType=VARCHAR}, PAYLOAD_TYPE_REVISION=#{payloadTypeRevision, jdbcType=VARCHAR}, PAYLOAD=#{payload, jdbcType=BINARY}, INSERTED=#{inserted, jdbcType=TIMESTAMP_WITH_TIMEZONE}, TTL_DURATION=#{timeToLiveDuration, jdbcType=VARCHAR}, EXPIRATION=#{expiration, jdbcType=TIMESTAMP_WITH_TIMEZONE}, RETRIES=#{retries, jdbcType=INTEGER}, NEXT_RETRY=#{nextRetry, jdbcType=TIMESTAMP_WITH_TIMEZONE}, ERROR=#{error, jdbcType=VARCHAR} WHERE ID=#{id}")
   fun update(message: MessageEntity)
 

@@ -32,6 +32,9 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import java.time.Clock
 
+/**
+ * Main correlation configuration.
+ */
 @Configuration
 @ConditionalOnProperty(
   prefix = "correlate",
@@ -50,23 +53,38 @@ class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
     lateinit var applicationContext: ApplicationContext
   }
 
+  /**
+   * Clock.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun clock(): Clock = Clock.systemUTC()
 
+  /**
+   * Ingres metrics.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun ingressMetrics(registry: MeterRegistry) = IngressMetrics(registry = registry)
 
+  /**
+   * Metrics for correlations.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun correlationMetrics(registry: MeterRegistry): CorrelationMetrics = CorrelationMetrics(registry = registry)
 
+  /**
+   * List of extractors.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun messageMetadataExtractorChain(extractors: List<MessageMetaDataSnippetExtractor>): MessageMetadataExtractorChain =
     MessageMetadataExtractorChain(extractors = extractors)
 
+  /**
+   * Header snippet extractor.
+   */
   @Bean
   @Qualifier("header")
   @Order(20)
@@ -75,6 +93,9 @@ class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
     enforceTypeInfo = true
   )
 
+  /**
+   * Global snippet extractor.
+   */
   @Bean
   @Qualifier("global")
   @Order(10)
@@ -83,27 +104,44 @@ class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
       globalConfig = globalConfig
     )
 
-
+  /**
+   * Camunda Event Factory registry as bean.
+   */
   @Bean
   fun camundaCorrelationEventFactoryRegistry(factories: List<CamundaCorrelationEventFactory>): CamundaCorrelationEventFactoryRegistry =
     CamundaCorrelationEventFactoryRegistry(factories)
 
+  /**
+   * Channel configuration (named) as bean.
+   */
   @Bean
   fun channelConfigs(correlateConfigurationProperties: CorrelateConfigurationProperties): Map<String, ChannelConfigurationProperties> =
     correlateConfigurationProperties.channels
 
+  /**
+   * Message persistence properties as bean.
+   */
   @Bean
   fun messagePersistenceProperties(correlateConfigurationProperties: CorrelateConfigurationProperties): MessagePersistenceProperties =
     correlateConfigurationProperties.persistence
 
+  /**
+   * Retry error handler properties as bean.
+   */
   @Bean
   fun retryingErrorHandlingProperties(correlateConfigurationProperties: CorrelateConfigurationProperties): RetryingErrorHandlingProperties =
     correlateConfigurationProperties.retry
 
+  /**
+   * Batch configuration properties as bean.
+   */
   @Bean
   fun batchConfigurationProperties(correlateConfigurationProperties: CorrelateConfigurationProperties): BatchConfigurationProperties =
     correlateConfigurationProperties.batch
 
+  /**
+   * Creates correlation service.
+   */
   @Bean
   fun camundaBpmCorrelateService(
     configuration: CorrelateConfigurationProperties,

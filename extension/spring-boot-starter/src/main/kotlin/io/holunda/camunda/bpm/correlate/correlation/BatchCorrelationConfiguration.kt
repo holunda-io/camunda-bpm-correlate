@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 import org.springframework.transaction.annotation.Propagation.REQUIRES_NEW
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * Batch correlation configuration.
+ */
 @Configuration
 @ConditionalOnBean(name = ["batchConfigurationProperties"])
 @AutoConfigureAfter(MessagePersistenceConfiguration::class)
@@ -26,12 +29,18 @@ class BatchCorrelationConfiguration {
     const val TRANSACTIONAL_RUNTIME_SERVICE = "transactionalRuntimeService"
   }
 
+  /**
+   * Transactional runtime service runner.
+   */
   @ConditionalOnMissingBean
   @Bean
   @Transactional(propagation = REQUIRES_NEW)
   @Qualifier(TRANSACTIONAL_RUNTIME_SERVICE)
   fun transactionalRuntimeServiceWrapper(runtimeService: RuntimeService) = TransactionalRuntimeServiceWrapper(runtimeService)
 
+  /**
+   * Batch correlation service using TX runtime service.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun batchCorrelationService(
@@ -46,6 +55,9 @@ class BatchCorrelationConfiguration {
       batchCorrelationMode = batchConfigurationProperties.mode
     )
 
+  /**
+   * Batch correlation processor.
+   */
   @Bean
   fun batchCorrelationProcessor(
     persistenceService: MessagePersistenceService,

@@ -15,6 +15,9 @@ import org.springframework.context.ApplicationContextAware
 import org.springframework.context.support.GenericApplicationContext
 import java.util.function.Supplier
 
+/**
+ * Spring factory creating Axon Framework channels based on configuration.
+ */
 class AxonChannelProxyFactory(
   private val channelMessageAcceptor: ChannelMessageAcceptor,
   private val metrics: IngressMetrics,
