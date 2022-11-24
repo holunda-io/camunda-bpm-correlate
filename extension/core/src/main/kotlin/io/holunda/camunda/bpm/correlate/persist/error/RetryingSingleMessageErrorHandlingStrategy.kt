@@ -38,6 +38,9 @@ class RetryingSingleMessageErrorHandlingStrategy(
     }
   }
 
+  /*
+   * Calculate when to execute next retry.
+   */
   private fun calculateNextRetry(now: Instant, retries: Int): Instant {
     return now.plus(
       retryErrorHandlingConfig.getBackoffExponentBase()
@@ -47,7 +50,7 @@ class RetryingSingleMessageErrorHandlingStrategy(
   }
 
 
-  /**
+  /*
    * Checks if the message is still alive and can be reprocessed.
    */
   private fun isAlive(entity: MessageEntity): Boolean {

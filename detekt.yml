@@ -1,0 +1,3 @@
+comments:
+  UndocumentedPublicFunction:
+    excludes: [ '**/src/test/kotlin/**.kt' ]
