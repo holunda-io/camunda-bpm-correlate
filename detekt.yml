@@ -1,3 +1,23 @@
 comments:
+  active: true
+  excludes: [ "**/test/**","**/*Test.kt","*/src/test/kotlin/**/*.kt","**/*Stages.kt","**/*ITest.kt" ]
+  CommentOverPrivateFunction:
+    active: false
+  CommentOverPrivateProperty:
+    active: false
+  EndOfSentenceFormat:
+    active: false
+    endOfSentenceFormat: ([.?!][ \t\n\r\f<])|([.?!:]$)
+  UndocumentedPublicClass:
+    active: true
+    searchInNestedClass: true
+    searchInInnerClass: true
+    searchInInnerObject: true
+    searchInInnerInterface: true
   UndocumentedPublicFunction:
-    excludes: [ '**/src/test/kotlin/**.kt' ]
+    active: true
+
+performance:
+  active: true
+  SpreadOperator:
+    active: false
