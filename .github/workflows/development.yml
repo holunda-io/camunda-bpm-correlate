@@ -48,5 +48,5 @@ jobs:
       - name: Upload test coverage to Codecov
         if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
         run: bash <(curl -Ls https://coverage.codacy.com/get.sh)
-        with:
-          token: ${{secrets.CODACY_PROJECT_TOKEN}}
+        env:
+          CODACY_PROJECT_TOKEN: "${{secrets.CODACY_PROJECT_TOKEN}}"
