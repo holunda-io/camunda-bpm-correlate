@@ -15,20 +15,32 @@ import org.springframework.context.annotation.Bean
 
 fun main(args: Array<String>) = runApplication<FlightApplication>(*args).let{ Unit }
 
+/**
+ * The application.
+ */
 @SpringBootApplication
 class FlightApplication {
 
   @Value("\${hotel#.processing-delay:1}")
   private var delay: Long = 1
 
+  /**
+   * Hotel service.
+   */
   @Bean
   fun hotelService() = HotelService(delay = delay)
 
+  /**
+   * Object mapper.
+   */
   @Bean
   fun objectMapper(): ObjectMapper = jacksonObjectMapper()
     .registerModule(JavaTimeModule())
     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 
+  /**
+   * Xtream for serialization.
+   */
   @Bean
   fun xStream() = XStream().apply {
     addPermission(WildcardTypePermission(arrayOf("io.holunda.camunda.bpm.example.**")))

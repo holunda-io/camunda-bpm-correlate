@@ -9,6 +9,10 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.JavaDelegate
 import org.springframework.stereotype.Component
 
+/**
+ * Saves reservation.
+ * Takes a long time.
+ */
 @Component
 class SaveReservationDetails : JavaDelegate {
 

@@ -10,6 +10,9 @@ import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.spring.stereotype.Aggregate
 import java.util.*
 
+/**
+ * Flight aggregate.
+ */
 @Aggregate
 class FlightBookingAggregate() {
 
@@ -17,6 +20,9 @@ class FlightBookingAggregate() {
   lateinit var id: String
 
   companion object {
+    /**
+     * Command handler.
+     */
     @JvmStatic
     @CommandHandler
     fun bookFlight(command: BookFlightCommand, flightService: FlightService): FlightBookingAggregate = FlightBookingAggregate().apply {
@@ -24,6 +30,9 @@ class FlightBookingAggregate() {
     }
   }
 
+  /**
+   * Event sourcing handler.
+   */
   @EventSourcingHandler
   fun on(event: FlightReservationConfirmedEvent) {
     this.id = UUID.randomUUID().toString()

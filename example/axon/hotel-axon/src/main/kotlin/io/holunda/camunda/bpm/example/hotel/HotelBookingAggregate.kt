@@ -10,6 +10,9 @@ import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.spring.stereotype.Aggregate
 import java.util.*
 
+/**
+ * Aggregate representing the hotel.
+ */
 @Aggregate
 class HotelBookingAggregate() {
 
@@ -17,13 +20,19 @@ class HotelBookingAggregate() {
   lateinit var id: String
 
   companion object {
+    /**
+     * Hotel command handler.
+     */
     @JvmStatic
     @CommandHandler
-    fun bookFlight(command: BookHotelCommand, hotelService: HotelService): HotelBookingAggregate = HotelBookingAggregate().apply {
+    fun bookHotel(command: BookHotelCommand, hotelService: HotelService): HotelBookingAggregate = HotelBookingAggregate().apply {
       AggregateLifecycle.apply(hotelService.bookHotel(command))
     }
   }
 
+  /**
+   * Event sourcing handler.
+   */
   @EventSourcingHandler
   fun on(event: HotelReservationConfirmedEvent) {
     this.id = UUID.randomUUID().toString()

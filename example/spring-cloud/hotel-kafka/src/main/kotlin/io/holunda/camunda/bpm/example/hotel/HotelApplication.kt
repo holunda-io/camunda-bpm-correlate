@@ -12,15 +12,24 @@ import org.springframework.context.annotation.Bean
 
 fun main(args: Array<String>) = runApplication<HotelApplication>(*args).let { Unit }
 
+/**
+ * Hotel application.
+ */
 @SpringBootApplication
 class HotelApplication {
 
   @Value("\${hotel.processing-delay:1}")
   private var delay: Long = 1
 
+  /**
+   * Hotel service.
+   */
   @Bean
   fun hotelService() = HotelService(delay)
 
+  /**
+   * Object mapper.
+   */
   @Bean
   fun objectMapper(): ObjectMapper = jacksonObjectMapper()
     .registerModule(JavaTimeModule())

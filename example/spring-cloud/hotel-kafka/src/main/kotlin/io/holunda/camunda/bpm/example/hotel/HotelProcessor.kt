@@ -11,10 +11,13 @@ import org.springframework.messaging.MessageHeaders
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
 
+/**
+ * Hotel processor, typical Spring Cloud Function implementation.
+ */
 @Component
 class HotelProcessor(
-  val objectMapper: ObjectMapper,
-  val hotelService: HotelService
+  private val objectMapper: ObjectMapper,
+  private val hotelService: HotelService
 ) : java.util.function.Function<Message<ByteArray>, Message<ByteArray>> {
 
   companion object : KLogging()

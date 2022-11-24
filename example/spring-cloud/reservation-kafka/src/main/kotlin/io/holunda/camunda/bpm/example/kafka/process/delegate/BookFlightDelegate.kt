@@ -8,6 +8,9 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.JavaDelegate
 import org.springframework.stereotype.Component
 
+/**
+ * Delegate sending command to flight service.
+ */
 @Component
 class BookFlightDelegate(
   val commandService: CommandService

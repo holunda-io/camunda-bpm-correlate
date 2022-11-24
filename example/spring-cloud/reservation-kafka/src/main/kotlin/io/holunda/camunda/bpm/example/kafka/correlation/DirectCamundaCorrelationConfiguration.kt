@@ -25,6 +25,9 @@ class DirectCamundaCorrelationConfiguration {
     logger.info { "Using message consumer delivering messages directly" }
   }
 
+  /**
+   * Creates direct consumer.
+   */
   @Bean("directIngressMessageConsumer")
   fun directIngressMessageConsumer(
     objectMapper: ObjectMapper,

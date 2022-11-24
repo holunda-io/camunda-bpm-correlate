@@ -16,7 +16,9 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
-
+/**
+ * Scheduler configuration.
+ */
 @Configuration
 @EnableScheduling
 @AutoConfigureAfter(MessagePersistenceConfiguration::class)
@@ -32,6 +34,9 @@ class BatchCorrelationSchedulerConfiguration(
 
   // FIXME: implement better scheduler
 
+  /**
+   * Scheduler.
+   */
   @Scheduled(
     initialDelayString = "#{batchConfigurationProperties.queryPollInitialDelay}",
     fixedRateString = "#{batchConfigurationProperties.queryPollInterval}"
@@ -56,6 +61,9 @@ class BatchCorrelationSchedulerConfiguration(
     }
   }
 
+  /**
+   * Cleanup scheduler.
+   */
   @Scheduled(
     initialDelayString = "#{batchConfigurationProperties.cleanupPollInitialDelay}",
     fixedRateString = "#{batchConfigurationProperties.cleanupPollInterval}"
@@ -64,6 +72,9 @@ class BatchCorrelationSchedulerConfiguration(
     messageManagementService.cleanupExpired()
   }
 
+  /**
+   * Scheduler thread pool.
+   */
   @Bean(destroyMethod = "shutdown")
   @Qualifier("correlateTaskExecutor")
   fun correlateTaskExecutor(): Executor {

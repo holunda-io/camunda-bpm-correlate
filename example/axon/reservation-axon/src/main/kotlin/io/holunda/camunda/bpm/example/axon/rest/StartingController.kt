@@ -19,6 +19,9 @@ class StartingController(
   val eventGateway: EventGateway
 ) {
 
+  /**
+   * Starts the process via REST.
+   */
   @PostMapping("/reservation")
   fun reservationReceived(@NonNull @RequestBody request: ReservationReceivedEvent): ResponseEntity<Void> {
     eventGateway.publish(request)

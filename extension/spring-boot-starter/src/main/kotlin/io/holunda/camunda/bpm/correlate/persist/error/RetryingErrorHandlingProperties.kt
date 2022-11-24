@@ -2,6 +2,9 @@ package io.holunda.camunda.bpm.correlate.persist.error
 
 import org.springframework.boot.context.properties.ConstructorBinding
 
+/**
+ * Properties for retries.
+ */
 @ConstructorBinding
 data class RetryingErrorHandlingProperties(
   /**

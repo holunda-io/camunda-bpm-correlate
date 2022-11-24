@@ -7,7 +7,7 @@ import org.camunda.spin.impl.json.jackson.format.JacksonJsonDataFormat
 import org.camunda.spin.spi.DataFormatConfigurator
 
 /**
- * Configures SPIN.
+ * Configures SPIN to work with Kotlin and Time.
  */
 class JacksonDataFormatConfigurator : DataFormatConfigurator<JacksonJsonDataFormat> {
 
