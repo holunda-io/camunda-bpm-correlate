@@ -4,6 +4,9 @@ import java.time.Clock
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
+/**
+ * Entity representation to be stored in RDBMS.
+ */
 class MessageEntity(
   var id: String,
   var payloadEncoding: String,
@@ -36,7 +39,9 @@ class MessageEntity(
     return expiration != null && now >= expiration
   }
 
-
+  /**
+   * Retrieves status based on number of max retries.
+   */
   fun status(maxRetries: Int): MessageStatus {
     return if (error == null && retries == 0) {
       // since the error is null and the retries are zero, we are good.

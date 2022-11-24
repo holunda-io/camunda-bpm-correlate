@@ -30,7 +30,7 @@ class DirectIngressMessageConsumer(
 
   companion object : KLogging()
 
-  /**
+  /*
    * Latest version of the RESERVATION process.
    */
   private val processDefinitionId by lazy {

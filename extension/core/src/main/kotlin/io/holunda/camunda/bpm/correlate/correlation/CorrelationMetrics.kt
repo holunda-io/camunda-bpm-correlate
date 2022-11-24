@@ -22,6 +22,8 @@ class CorrelationMetrics(
     const val COUNTER_CORRELATED = "$PREFIX.correlation.success"
     const val COUNTER_ERROR = "$PREFIX.correlation.error"
     const val GAUGE_MESSAGES = "$PREFIX.inbox.messages"
+
+    const val TAG_STATUS = "status"
   }
 
   private val total = AtomicLong(0L)
@@ -32,12 +34,12 @@ class CorrelationMetrics(
   private val paused = AtomicLong(0L)
 
   init {
-    Gauge.builder(GAUGE_MESSAGES, total::get).tag("status", "total").description("").register(registry)
-    Gauge.builder(GAUGE_MESSAGES, retrying::get).tag("status", "retrying").register(registry)
-    Gauge.builder(GAUGE_MESSAGES, error::get).tag("status", "error").register(registry)
-    Gauge.builder(GAUGE_MESSAGES, maxRetriesReached::get).tag("status", "maxRetriesReached").register(registry)
-    Gauge.builder(GAUGE_MESSAGES, inProgress::get).tag("status", "inProgress").register(registry)
-    Gauge.builder(GAUGE_MESSAGES, paused::get).tag("status", "paused").register(registry)
+    Gauge.builder(GAUGE_MESSAGES, total::get).tag(TAG_STATUS, "total").register(registry)
+    Gauge.builder(GAUGE_MESSAGES, retrying::get).tag(TAG_STATUS, "retrying").register(registry)
+    Gauge.builder(GAUGE_MESSAGES, error::get).tag(TAG_STATUS, "error").register(registry)
+    Gauge.builder(GAUGE_MESSAGES, maxRetriesReached::get).tag(TAG_STATUS, "maxRetriesReached").register(registry)
+    Gauge.builder(GAUGE_MESSAGES, inProgress::get).tag(TAG_STATUS, "inProgress").register(registry)
+    Gauge.builder(GAUGE_MESSAGES, paused::get).tag(TAG_STATUS, "paused").register(registry)
   }
 
   /**
