@@ -28,6 +28,9 @@ class DefaultMessagePersistenceService(
 
   companion object : KLogging()
 
+  /**
+   * Null-object for no payload.
+   */
   object PayloadNotAvailable
 
   /**
@@ -179,6 +182,9 @@ class DefaultMessagePersistenceService(
   }
 }
 
+/**
+ * Checks the value is a byte array or throws exception.
+ */
 inline fun requireIsByteArray(value: Any, lazyMessage: () -> Any): ByteArray =
   if (value is ByteArray) {
     value

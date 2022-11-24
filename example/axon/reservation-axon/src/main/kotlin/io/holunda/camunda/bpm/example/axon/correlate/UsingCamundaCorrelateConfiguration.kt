@@ -10,18 +10,27 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import javax.annotation.PostConstruct
 
+/**
+ * Configuration for correlation.
+ */
 @Configuration
 class UsingCamundaCorrelateConfiguration(
   val correlateConfigurationProperties: CorrelateConfigurationProperties
 ) {
   companion object : KLogging()
 
+  /**
+   * Post some info.
+   */
   @PostConstruct
   fun info() {
     logger.info { "[Camunda CORRELATE] Channels configured: ${correlateConfigurationProperties.channels.keys.joinToString(", ")}" }
     logger.info { "[Camunda CORRELATE] Axon message TTL: ${correlateConfigurationProperties.message.timeToLiveAsString ?: "none"}" }
   }
 
+  /**
+   * Event factory for reservation process.
+   */
   @Bean
   fun reservationProcessingEventFactory(singleMessageCorrelationStrategy: SingleMessageCorrelationStrategy): ReservationProcessingEventFactory {
     return ReservationProcessingEventFactory(
@@ -29,6 +38,9 @@ class UsingCamundaCorrelateConfiguration(
     )
   }
 
+  /**
+   * Correlation service.
+   */
   @Bean
   fun reservationProcessingCorrelation(repositoryService: RepositoryService): SingleMessageCorrelationStrategy {
     return ReservationProcessingCorrelation(
@@ -36,6 +48,9 @@ class UsingCamundaCorrelateConfiguration(
     )
   }
 
+  /**
+   * Controller for admin functionality.
+   */
   @Bean
   fun adminRestController(messageManagementService: MessageManagementService) = AdminRestController(messageManagementService = messageManagementService)
 }

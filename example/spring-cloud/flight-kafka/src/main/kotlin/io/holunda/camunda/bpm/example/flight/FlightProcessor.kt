@@ -11,10 +11,13 @@ import org.springframework.messaging.MessageHeaders
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
 
+/**
+ * Flight processor, typical Spring Cloud Function implementation.
+ */
 @Component
 class FlightProcessor(
-  val objectMapper: ObjectMapper,
-  val flightService: FlightService
+  private val objectMapper: ObjectMapper,
+  private val flightService: FlightService
 ) : java.util.function.Function<Message<ByteArray>, Message<ByteArray>> {
 
   companion object : KLogging()

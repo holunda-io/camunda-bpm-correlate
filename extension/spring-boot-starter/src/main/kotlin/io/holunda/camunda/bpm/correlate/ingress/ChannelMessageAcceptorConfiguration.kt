@@ -11,11 +11,17 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+/**
+ * Channel configuration.
+ */
 @Configuration
 @ConditionalOnBean(name = ["messageMetadataExtractorChain"])
 @AutoConfigureAfter(MessagePersistenceConfiguration::class)
 class ChannelMessageAcceptorConfiguration {
 
+  /**
+   * Configures the acceptor.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun persistingChannelMessageAcceptor(
@@ -30,6 +36,9 @@ class ChannelMessageAcceptorConfiguration {
     ingressMetrics = ingressMetrics
   )
 
+  /**
+   * Configures optional message filter.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun messageFilter(): MessageFilter = AllMessageFilter()

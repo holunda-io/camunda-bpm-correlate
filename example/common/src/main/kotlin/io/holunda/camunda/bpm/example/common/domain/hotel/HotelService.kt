@@ -3,6 +3,9 @@ package io.holunda.camunda.bpm.example.common.domain.hotel
 import io.holunda.camunda.bpm.example.common.domain.setHours
 import mu.KLogging
 
+/**
+ * Hotel service.
+ */
 class HotelService(
   private val delay: Long
 ) {
@@ -12,6 +15,9 @@ class HotelService(
     logger.info { "Hotel Service will delay processing by $delay seconds." }
   }
 
+  /**
+   * Booking of the hotel.
+   */
   fun bookHotel(command: BookHotelCommand): HotelReservationConfirmedEvent {
 
     for (i in 0..delay) {

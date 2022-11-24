@@ -12,7 +12,9 @@ import org.springframework.jdbc.core.JdbcTemplate
 import javax.annotation.PostConstruct
 import javax.sql.DataSource
 
-
+/**
+ * Cluster setup configuration.
+ */
 @ConditionalOnProperty(value = ["correlate.batch.cluster.enabled"], havingValue = "true", matchIfMissing = false)
 @AutoConfigureAfter(MessagePersistenceConfiguration::class)
 @EnableSchedulerLock(defaultLockAtMostFor = "PT10M") // TODO, make to some sort of a parameter
@@ -20,11 +22,17 @@ class ClusterSetupConfiguration {
 
   companion object : KLogging()
 
+  /**
+   * Reports cluster config activation.
+   */
   @PostConstruct
   fun printUsage() {
     logger.info { "[Camunda CORRELATE] Cluster configuration is activated." }
   }
 
+  /**
+   * Configures lock provider for the scheduler.
+   */
   @Bean
   fun messageCorrelationLockProvider(dataSource: DataSource): LockProvider {
     return JdbcTemplateLockProvider(

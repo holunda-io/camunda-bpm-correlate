@@ -16,6 +16,9 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
 
   private val services = getBean(CamundaBpmCorrelateServices::class)
 
+  /**
+   * Retrieves messages from the inbox.
+   */
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   fun getMessages(@QueryParam("faultsOnly") faults: Boolean, @QueryParam("page") page: Int, @QueryParam("size") size: Int): List<MessageDto> {
@@ -25,6 +28,9 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
       .map { it.toDto(services.configuration.persistence.messageMaxRetries) }
   }
 
+  /**
+   * Changes message retries.
+   */
   @POST
   @Path("/{messageId}/retries")
   @Consumes(MediaType.APPLICATION_JSON)
@@ -32,6 +38,9 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
     services.messageManagementService.changeMessageRetries(messageId, retriesDto.retries, nextRetry = retriesDto.nextRetry.toInstant())
   }
 
+  /**
+   * Pauses message delivery.
+   */
   @PUT
   @Path("/{messageId}/pause")
   @Consumes(MediaType.APPLICATION_JSON)
@@ -39,6 +48,9 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
     services.messageManagementService.pauseMessageProcessing(messageId)
   }
 
+  /**
+   * Resume message delivery.
+   */
   @DELETE
   @Path("/{messageId}/pause")
   @Consumes(MediaType.APPLICATION_JSON)
@@ -46,6 +58,9 @@ class CorrelateMessageResource(engineName: String) : AbstractCockpitPluginResour
     services.messageManagementService.resumeMessageProcessing(messageId)
   }
 
+  /**
+   * Deletes a message.
+   */
   @DELETE
   @Path("/{messageId}")
   @Consumes(MediaType.APPLICATION_JSON)

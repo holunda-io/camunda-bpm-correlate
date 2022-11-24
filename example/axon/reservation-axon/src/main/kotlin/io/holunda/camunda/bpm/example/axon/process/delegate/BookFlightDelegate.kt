@@ -9,6 +9,9 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.JavaDelegate
 import org.springframework.stereotype.Component
 
+/**
+ * Delegate sending the command to Axon Flight Service.
+ */
 @Component
 class BookFlightDelegate(
   val commandGateway: CommandGateway

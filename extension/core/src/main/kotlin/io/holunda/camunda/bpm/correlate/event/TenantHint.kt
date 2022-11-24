@@ -1,5 +1,8 @@
 package io.holunda.camunda.bpm.correlate.event
 
+/**
+ * Tenant hint.
+ */
 data class TenantHint internal constructor(
   /**
    * Tenant id.

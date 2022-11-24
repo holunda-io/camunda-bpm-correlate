@@ -9,6 +9,10 @@ import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.JavaDelegate
 import org.springframework.stereotype.Component
 
+
+/**
+ * Delegate sending the command to Axon Hotel Service.
+ */
 @Component
 class BookHotelDelegate(
   val commandGateway: CommandGateway

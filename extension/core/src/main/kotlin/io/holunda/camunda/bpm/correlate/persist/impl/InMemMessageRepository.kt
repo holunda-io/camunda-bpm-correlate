@@ -8,9 +8,9 @@ import mu.KLogging
 import java.time.Instant
 
 /**
- * In-memory implementation.
+ * In-memory implementation of a repository.
  */
-class InMemMessageRepository() : MessageRepository {
+class InMemMessageRepository : MessageRepository {
 
   companion object : KLogging()
 

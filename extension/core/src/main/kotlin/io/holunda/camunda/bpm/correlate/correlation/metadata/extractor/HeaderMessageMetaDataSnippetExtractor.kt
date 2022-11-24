@@ -27,6 +27,9 @@ open class HeaderMessageMetaDataSnippetExtractor(
   private val enforceTypeInfo: Boolean
 ) : MessageMetaDataSnippetExtractor {
 
+  /**
+   * Names of the message headers.
+   */
   object HeaderNames {
     /**
      * Header for the full-qualified class name of the payload type.

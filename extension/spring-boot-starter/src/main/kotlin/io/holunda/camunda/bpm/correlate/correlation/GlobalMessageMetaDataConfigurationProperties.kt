@@ -4,6 +4,9 @@ import io.holunda.camunda.bpm.correlate.correlation.metadata.extractor.GlobalCon
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 
+/**
+ * Global metadata configuration properties.
+ */
 @ConstructorBinding
 @ConfigurationProperties(prefix = "correlate.message")
 data class GlobalMessageMetaDataConfigurationProperties(

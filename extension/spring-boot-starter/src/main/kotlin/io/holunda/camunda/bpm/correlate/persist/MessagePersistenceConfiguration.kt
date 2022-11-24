@@ -33,6 +33,9 @@ class MessagePersistenceConfiguration {
     const val CORRELATE_OBJECT_MAPPER = "correlateObjectMapper"
   }
 
+  /**
+   * Object mapper.
+   */
   @Bean
   @ConditionalOnMissingBean(name = [CORRELATE_OBJECT_MAPPER])
   @Qualifier(CORRELATE_OBJECT_MAPPER)
@@ -41,6 +44,9 @@ class MessagePersistenceConfiguration {
     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 
 
+  /**
+   * Payload decoder / encoder.
+   */
   @Bean
   @ConditionalOnMissingBean
   fun jacksonPayloadDecoder(
@@ -50,6 +56,9 @@ class MessagePersistenceConfiguration {
     objectMapper = objectMapper
   )
 
+  /**
+   * Configures mybatis mapper for messages.
+   */
   @Autowired
   fun registerMyBatisMappers(processEngineConfiguration: ProcessEngineConfigurationImpl) {
     processEngineConfiguration.sqlSessionFactory.configuration.mapperRegistry.let { registry ->
@@ -59,12 +68,18 @@ class MessagePersistenceConfiguration {
     }
   }
 
+  /**
+   * Message repository using MyBatis.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun messageRepository(processEngineConfiguration: ProcessEngineConfigurationImpl): MessageRepository =
     MyBatisMessageRepository(sqlSessionFactory = processEngineConfiguration.sqlSessionFactory)
 
 
+  /**
+   * Error handling strategy for single message error.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun singleMessageErrorHandlingStrategy(
@@ -75,6 +90,9 @@ class MessagePersistenceConfiguration {
     clock = clock
   )
 
+  /**
+   * Message persistence storage.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun messagePersistenceService(
@@ -94,6 +112,9 @@ class MessagePersistenceConfiguration {
       clock = clock,
     )
 
+  /**
+   * Message cleanup service.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun messageCleanupService(

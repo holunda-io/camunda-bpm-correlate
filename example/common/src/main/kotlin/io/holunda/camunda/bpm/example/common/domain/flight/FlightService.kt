@@ -3,6 +3,9 @@ package io.holunda.camunda.bpm.example.common.domain.flight
 import io.holunda.camunda.bpm.example.common.domain.setHours
 import mu.KLogging
 
+/**
+ * Flight service.
+ */
 class FlightService(
   val delay: Long
 ) {
@@ -18,6 +21,9 @@ class FlightService(
     Location("Berlin", "BER") to Location("Hamburg", "HAM") to "LH-002",
   )
 
+  /**
+   * Book a flight.
+   */
   fun bookFlight(bookFlightCommand: BookFlightCommand): FlightReservationConfirmedEvent {
 
     val outgoing =
@@ -53,6 +59,9 @@ class FlightService(
     )
   }
 
+  /**
+   * Location.
+   */
   data class Location(
     val cityName: String,
     val airportCode: String

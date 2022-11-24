@@ -15,12 +15,21 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 
+/**
+ * Starts the app.
+ */
 fun main(args: Array<String>) = runApplication<TravelAgencyAxonCorrelationApplication>(*args).let { Unit }
 
+/**
+ * Reservation application.
+ */
 @SpringBootApplication
 @EnableProcessApplication
 class TravelAgencyAxonCorrelationApplication{
 
+  /**
+   * Switch off telemetry.
+   */
   @Bean
   fun disablingTelemetry(): SpringProcessEnginePlugin = object : SpringProcessEnginePlugin() {
     override fun preInit(processEngineConfiguration: ProcessEngineConfigurationImpl) {
@@ -29,10 +38,17 @@ class TravelAgencyAxonCorrelationApplication{
     }
   }
 
+  /**
+   * Xstream.
+   */
   @Bean
   fun xStream() = XStream().apply {
     addPermission(WildcardTypePermission(arrayOf("io.holunda.camunda.bpm.example.**")))
   }
+
+  /**
+   * Object mapper.
+   */
   @Bean
   fun objectMapper(): ObjectMapper = jacksonObjectMapper()
     .registerModule(JavaTimeModule())

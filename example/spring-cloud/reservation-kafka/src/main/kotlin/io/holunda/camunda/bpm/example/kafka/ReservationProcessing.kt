@@ -11,21 +11,33 @@ import io.holunda.camunda.bpm.example.common.domain.hotel.HotelInfo
 import io.holunda.camunda.bpm.example.common.domain.hotel.HotelReservationConfirmedEvent
 import java.time.OffsetDateTime
 
+/**
+ * Process constants.
+ */
 object ReservationProcessing {
 
   const val KEY = "io.holunda.example.travel-agency.reservation-processing"
 
+  /**
+   * Commands.
+   */
   object Commands {
     const val BOOK_FLIGHT = "bookFlight"
     const val BOOK_HOTEL = "bookHotel"
   }
 
+  /**
+   * BOMN elements.
+   */
   object Elements {
     const val RESERVATION_RECEIVED = "reservation_received"
     const val FLIGHT_RECEIVED = "flight_reservation_received"
     const val HOTEL_RECEIVED = "hotel_reservation_received"
   }
 
+  /**
+   * Process variables.
+   */
   object Variables {
     val DELAY = longVariable("delay")
     val RESERVATION_ID = stringVariable("reservationId")

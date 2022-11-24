@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
+/**
+ * Configuration which uses näive correlation in consumer thread of the Kafka receiver.
+ */
 @Configuration
 @Profile(PROFILE)
 class DirectCamundaCorrelationConfiguration {
@@ -22,6 +25,9 @@ class DirectCamundaCorrelationConfiguration {
     logger.info { "Using message consumer delivering messages directly" }
   }
 
+  /**
+   * Creates direct consumer.
+   */
   @Bean("directIngressMessageConsumer")
   fun directIngressMessageConsumer(
     objectMapper: ObjectMapper,

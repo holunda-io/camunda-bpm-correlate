@@ -12,22 +12,37 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 
+/**
+ * Starts the app.
+ */
 fun main(args: Array<String>) = runApplication<FlightApplication>(*args).let{ Unit }
 
+/**
+ * Flight application.
+ */
 @SpringBootApplication
 class FlightApplication {
 
   @Value("\${flight.processing-delay:1}")
   private var delay: Long = 1
 
+  /**
+   * Flight service.
+   */
   @Bean
   fun flightService() = FlightService(delay = delay)
 
+  /**
+   * Object mapper.
+   */
   @Bean
   fun objectMapper(): ObjectMapper = jacksonObjectMapper()
     .registerModule(JavaTimeModule())
     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 
+  /**
+   * XStream.
+   */
   @Bean
   fun xStream() = XStream().apply {
     addPermission(WildcardTypePermission(arrayOf("io.holunda.camunda.bpm.example.**")))

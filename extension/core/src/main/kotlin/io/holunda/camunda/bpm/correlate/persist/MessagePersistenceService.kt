@@ -4,6 +4,9 @@ import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatch
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
 
+/**
+ * Abstraction of message persistence.
+ */
 interface MessagePersistenceService {
   /**
    * Fetches messages.

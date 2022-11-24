@@ -12,6 +12,9 @@ import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.CUST
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.RESERVATION_ID
 import org.camunda.bpm.engine.RepositoryService
 
+/**
+ * Correlation config.
+ */
 class ReservationProcessingCorrelation(
   val repositoryService: RepositoryService
 ) : SingleMessageCorrelationStrategy {

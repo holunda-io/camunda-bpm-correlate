@@ -12,6 +12,9 @@ import io.holunda.camunda.bpm.example.common.domain.flight.FlightReservationConf
 import io.holunda.camunda.bpm.example.common.domain.hotel.HotelReservationConfirmedEvent
 import org.camunda.bpm.engine.RepositoryService
 
+/**
+ * Correlation configuration.
+ */
 class ReservationProcessingCorrelation(
   val repositoryService: RepositoryService
 ) : SingleMessageCorrelationStrategy {

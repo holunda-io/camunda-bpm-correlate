@@ -9,12 +9,21 @@ import org.springframework.context.annotation.Bean
 import java.util.*
 import javax.annotation.PostConstruct
 
+/**
+ * Starts the app.
+ */
 fun main(args: Array<String>) = runApplication<TravelAgencyKafkaCorrelationApplication>(*args).let { Unit }
 
+/**
+ * Reservation application.
+ */
 @SpringBootApplication
 @EnableProcessApplication
 class TravelAgencyKafkaCorrelationApplication{
 
+  /**
+   * Switch off telemetry.
+   */
   @Bean
   fun disablingTelemetry(): SpringProcessEnginePlugin = object : SpringProcessEnginePlugin() {
     override fun preInit(processEngineConfiguration: ProcessEngineConfigurationImpl) {
@@ -23,6 +32,9 @@ class TravelAgencyKafkaCorrelationApplication{
     }
   }
 
+  /**
+   * Sets time to UTC.
+   */
   @PostConstruct
   fun init() {
     // Setting Spring Boot SetTimeZone

@@ -15,6 +15,9 @@ class ConfigurationResource(engineName: String) : AbstractCockpitPluginResource(
 
   private val services = getBean(CamundaBpmCorrelateServices::class)
 
+  /**
+   * Retrieves configuration.
+   */
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   fun getConfiguration(): ConfigurationDto {

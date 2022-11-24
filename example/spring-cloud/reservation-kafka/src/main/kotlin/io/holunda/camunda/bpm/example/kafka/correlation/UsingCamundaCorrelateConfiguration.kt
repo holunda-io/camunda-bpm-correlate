@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import javax.annotation.PostConstruct
 
+/**
+ * Configuration to use the library for correlation.
+ */
 @Configuration
 @Profile(PROFILE)
 class UsingCamundaCorrelateConfiguration(
@@ -24,6 +27,9 @@ class UsingCamundaCorrelateConfiguration(
     const val PROFILE = "camunda-correlate"
   }
 
+  /**
+   * Event factory.
+   */
   @Bean
   fun reservationProcessingEventFactory(singleMessageCorrelationStrategy: SingleMessageCorrelationStrategy): ReservationProcessingEventFactory {
     return ReservationProcessingEventFactory(
@@ -31,6 +37,9 @@ class UsingCamundaCorrelateConfiguration(
     )
   }
 
+  /**
+   * Correlation config.
+   */
   @Bean
   fun reservationProcessingCorrelation(repositoryService: RepositoryService): SingleMessageCorrelationStrategy {
     return ReservationProcessingCorrelation(
@@ -38,6 +47,9 @@ class UsingCamundaCorrelateConfiguration(
     )
   }
 
+  /**
+   * Admin controller.
+   */
   @Bean
   fun adminRestController(messageManagementService: MessageManagementService) = AdminRestController(messageManagementService = messageManagementService)
 }

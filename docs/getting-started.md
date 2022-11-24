@@ -1,11 +1,11 @@
 ## Install Dependency
 
-First install the extension using the corresponding ingress adapter (in this example we use Kafka):
+First install the extension using the corresponding ingress adapter (in this example we use Spring Cloud Stream for connecting with Kafka):
 
 ```xml
 
 <properties>
-  <camunda-bpm-correlate.version>0.0.2</camunda-bpm-correlate.version>
+  <camunda-bpm-correlate.version>1.0.0</camunda-bpm-correlate.version>
 </properties>
 
 <dependencies>
@@ -31,8 +31,41 @@ First install the extension using the corresponding ingress adapter (in this exa
 
 ## Configuration
 
-Configure your basic Spring Cloud Streams Kafka configuration to looks like this (or similar). Important is 
-the name of the function definition.
+Please add the configuration of the extension:
+
+```yaml
+
+correlate:
+  enabled: true
+  channels:
+    my-kafka-channel:
+      enabled: true
+      type: stream
+      beanName: special-name
+  batch:
+    mode: all # default fail_first -> 'all' will correlate one message after another, resulting in ignoring the order of receiving
+    query:    # query scheduler
+      pollInitialDelay: PT10S
+      pollInterval: PT6S
+    cleanup:  # cleanup of expired messages
+      pollInitialDelay: PT1M
+      pollInterval: PT1M
+  message:
+    timeToLiveAsString: PT10S # errors during TTL seconds after receiving are ignored
+    payloadEncoding: jackson  # our bytes are actually JSON written by Jackson.
+  persistence:
+    messageMaxRetries: 5 # default 100 -> will try to deliver 5 times at most
+    messageFetchPageSize: 100 # default 100
+  retry:
+    retryMaxBackoffMinutes: 5 # default 180 -> maximum 5 minutes between retries
+    retryBackoffBase: 2.0 # value in minutes default 2.0 -> base in the power of retry to calculate the next retry
+
+```
+
+Now configure your basic Spring Cloud Streams Kafka configuration to looks like this (or similar).
+Pay attention to the name of the function definition and the bindings' in channels. It results from the 
+value of `correlate.channels.<channel-nam>.beanName` and accordingly is part of the expression to 
+bind the parameter of the binding (`special-name-in-0`).
 
 ```yaml
 
@@ -40,9 +73,9 @@ spring:
   cloud:
     stream:
       function:
-        definition: streamByteMessageConsumer
+        definition: special-name
         bindings:
-          streamByteMessageConsumer-in-0: correlate-ingress-binding      
+          special-name-in-0: correlate-ingress-binding      
       bindings:
         correlate-ingress-binding:
           content-type: application/json
@@ -69,34 +102,5 @@ spring:
                       brokers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
                       configuration:
                         security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
-
-```
-
-In addition, add the configuration of the extension:
-
-```yaml
-
-correlate:
-  enabled: true
-  channels:
-    stream:
-      channelEnabled: true
-      message:
-        timeToLiveAsString: PT10S # errors during TTL seconds after receiving are ignored
-        payloadEncoding: jackson  # our bytes are actually JSON written by Jackson.
-  batch:
-    mode: all # default fail_first -> 'all' will correlate one message after another, resulting in ignoring the order of receiving
-    query:    # query scheduler
-      pollInitialDelay: PT10S
-      pollInterval: PT6S
-    cleanup:  # cleanup of expired messages
-      pollInitialDelay: PT1M
-      pollInterval: PT1M
-  persistence:
-    messageMaxRetries: 5 # default 100 -> will try to deliver 5 times at most
-    messageFetchPageSize: 100 # default 100
-  retry:
-    retryMaxBackoffMinutes: 5 # default 180 -> maximum 5 minutes between retries
-    retryBackoffBase: 2.0 # value in minutes default 2.0 -> base in the power of retry to calculate the next retry
 
 ```

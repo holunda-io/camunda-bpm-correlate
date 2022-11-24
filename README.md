@@ -7,6 +7,9 @@
 [![sponsored](https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg)](https://holisticon.de/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.holunda/camunda-bpm-correlate/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.holunda/camunda-bpm-correlate)
 ![Compatible with: Camunda Platform 7](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c)
+[![codecov](https://codecov.io/gh/holunda-io/camunda-bpm-correlate/branch/develop/graph/badge.svg?token=EWjlAeLt8v)](https://codecov.io/gh/holunda-io/camunda-bpm-correlate)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b751121e82a6432d90a8844725dc9af7)](https://www.codacy.com/gh/holunda-io/camunda-bpm-correlate/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=holunda-io/camunda-bpm-correlate&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b751121e82a6432d90a8844725dc9af7)](https://www.codacy.com/gh/holunda-io/camunda-bpm-correlate/dashboard?utm_source=github.com&utm_medium=referral&utm_content=holunda-io/camunda-bpm-correlate&utm_campaign=Badge_Coverage)
 
 ## Why should you use it?
 

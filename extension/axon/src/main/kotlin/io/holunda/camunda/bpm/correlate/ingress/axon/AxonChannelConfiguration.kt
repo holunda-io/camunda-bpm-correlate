@@ -13,6 +13,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+/**
+ * Axon Framework Channel configuration-
+ */
 @Configuration
 @AutoConfigureAfter(AxonAutoConfiguration::class, ChannelMessageAcceptorConfiguration::class)
 class AxonChannelConfiguration {
@@ -23,10 +26,16 @@ class AxonChannelConfiguration {
     const val PROPERTY_CHANNEL_PAYLOAD_ENCODING = "payload-encoding"
   }
 
+  /**
+   * Channel header extractor.
+   */
   @ConditionalOnMissingBean
   @Bean
   fun axonEventHeaderExtractor(): AxonEventMessageHeaderConverter = DefaultAxonEventMessageHeaderConverter()
 
+  /**
+   * Configuration of named channels.
+   */
   @Bean
   fun axonChannelProxyFactory(
     channelMessageAcceptor: ChannelMessageAcceptor,

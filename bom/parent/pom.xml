@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-root</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -14,13 +14,28 @@
   <name>POM / Parent</name>
 
   <properties>
+    <spring-boot.version>2.7.5</spring-boot.version>
     <camunda-7.version>7.18.0</camunda-7.version>
-    <camunda-bpm-data.version>1.2.7</camunda-bpm-data.version>
+    <camunda-bpm-data.version>1.2.8</camunda-bpm-data.version>
     <shedlock.version>4.38.0</shedlock.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>${kotlin.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
       <dependency>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>

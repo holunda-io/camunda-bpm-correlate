@@ -14,6 +14,9 @@ class BatchCorrelationProcessor(
 
   companion object : KLogging()
 
+  /**
+   * Runs correlation of messages stored in the inbox.
+   */
   fun correlate() {
     persistenceService
       .fetchMessageBatches()
