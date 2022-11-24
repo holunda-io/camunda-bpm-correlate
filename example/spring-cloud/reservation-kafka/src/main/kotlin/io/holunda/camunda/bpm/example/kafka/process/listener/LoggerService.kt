@@ -11,6 +11,9 @@ class LoggerService {
 
   companion object: KLogging()
 
+  /**
+   * Log a message.
+   */
   fun log(message: String) {
     logger.info { "[CORRELATE-LOG]: $message" }
   }

@@ -2,6 +2,9 @@ package io.holunda.camunda.bpm.correlate.persist.impl
 
 import org.springframework.boot.context.properties.ConstructorBinding
 
+/**
+ * Properties to configure persistence.
+ */
 @ConstructorBinding
 data class MessagePersistenceProperties(
   val messageMaxRetries: Int = 100,

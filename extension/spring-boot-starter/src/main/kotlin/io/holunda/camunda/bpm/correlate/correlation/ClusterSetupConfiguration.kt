@@ -22,6 +22,9 @@ class ClusterSetupConfiguration {
 
   companion object : KLogging()
 
+  /**
+   * Reports cluster config activation.
+   */
   @PostConstruct
   fun printUsage() {
     logger.info { "[Camunda CORRELATE] Cluster configuration is activated." }

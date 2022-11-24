@@ -12,6 +12,9 @@ class GlobalMessageConfiguration(private val messageMetaDataConfigurationPropert
 
   companion object: KLogging()
 
+  /**
+   * Prints settings.
+   */
   @PostConstruct
   fun info() {
     logger.info { "[Camunda CORRELATE] Message payload encoding: ${messageMetaDataConfigurationProperties.payloadEncoding}" }

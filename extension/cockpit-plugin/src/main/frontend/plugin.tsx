@@ -37,7 +37,8 @@ const navigation: Plugin = {
   }
 };
 
-// TODO: add metrics
+// TODO: add metric reporting eventually
+/*
 const metrics: Plugin = {
   id: 'correlate-cockpit-plugin-metrics',
   pluginPoint: 'cockpit.metrics',
@@ -46,5 +47,6 @@ const metrics: Plugin = {
     container.innerHTML = '<div>Metrics</div>';
   }
 };
+*/
 
 export default [correlateView, navigation];
