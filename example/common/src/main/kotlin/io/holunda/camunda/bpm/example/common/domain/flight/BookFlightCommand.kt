@@ -2,6 +2,9 @@ package io.holunda.camunda.bpm.example.common.domain.flight
 
 import java.time.OffsetDateTime
 
+/**
+ * Book flight intent.
+ */
 data class BookFlightCommand(
   val passengersName: String,
   val bookingReference: String,

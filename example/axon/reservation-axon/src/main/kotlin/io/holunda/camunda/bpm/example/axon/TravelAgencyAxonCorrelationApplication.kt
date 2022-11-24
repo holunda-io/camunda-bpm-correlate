@@ -15,6 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 
+/**
+ * Starts the app.
+ */
 fun main(args: Array<String>) = runApplication<TravelAgencyAxonCorrelationApplication>(*args).let { Unit }
 
 /**

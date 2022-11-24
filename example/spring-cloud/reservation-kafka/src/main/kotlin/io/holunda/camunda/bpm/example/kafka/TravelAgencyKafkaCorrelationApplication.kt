@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Bean
 import java.util.*
 import javax.annotation.PostConstruct
 
+/**
+ * Starts the app.
+ */
 fun main(args: Array<String>) = runApplication<TravelAgencyKafkaCorrelationApplication>(*args).let { Unit }
 
 /**
