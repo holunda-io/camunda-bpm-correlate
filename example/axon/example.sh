@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-DIR="$(dirname $0)"
+DIR=$(dirname "$0")
 
-CLIENT_BIN="curl"
-TIMESTAMP=$(date +%s%N)
+CLIENT_BIN=curl
 RESERVATION_ID=$(cat /proc/sys/kernel/random/uuid)
 
 case "$1" in
@@ -18,7 +17,7 @@ case "$1" in
   ;;
 esac
 
-$CLIENT_BIN \
+"$CLIENT_BIN" \
   -X POST localhost:8080/process/reservation \
   -H "Content-Type: application/json" \
   -d "$JSON"

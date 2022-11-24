@@ -6,7 +6,6 @@ source "$DIR/reservation-kafka/env.env"
 RESERVATION_ID=$(cat /proc/sys/kernel/random/uuid)
 
 CLIENT_BIN=kcat
-TIMESTAMP=$(date +%s%N)
 
 case "$1" in
   "reservation")
