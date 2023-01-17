@@ -10,11 +10,11 @@ interface MessageRepository {
 
   /**
    * Finds all messages.
-   * @param page number start element to fetch from.
+   * @param page number start element to fetch from. Starts from 0.
    * @param pageSize number elements to fetch.
    * @return list of all messages.
    */
-  fun findAll(page: Int, pageSize: Int): List<MessageEntity>
+  fun findAll(page: Int = 0, pageSize: Int): List<MessageEntity>
 
   /**
    * Finds all messages without payload.

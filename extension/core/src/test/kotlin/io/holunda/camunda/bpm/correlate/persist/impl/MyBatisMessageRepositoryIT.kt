@@ -25,6 +25,11 @@ class MyBatisMessageRepositoryIT {
   @Autowired
   private lateinit var repository: MyBatisMessageRepository
 
+  companion object {
+    val MESSAGES_IDS_BY_INSERTED_ASC = listOf("4711", "4716", "4712", "4713", "4714", "4715")
+    val MESSAGES_IDS_BY_INSERTED_ASC_FAULTS = listOf("4713", "4714", "4715")
+  }
+
   @Test
   @Sql(scripts = ["/some-messages.sql"])
   fun `selects one by id`() {
@@ -33,6 +38,8 @@ class MyBatisMessageRepositoryIT {
     assertThat(message).isNotNull.apply {
       extracting( MessageEntity::id.name ).isEqualTo("4711")
       extracting( MessageEntity::payloadTypeName.name ).isEqualTo("MyType")
+      extracting( MessageEntity::payloadTypeNamespace.name ).isEqualTo("io.holixon.namespace")
+      extracting( MessageEntity::payloadEncoding.name ).isEqualTo("JACKSON")
     }
 
     val nothing = repository.findByIdOrNull("does-not-exist")
@@ -53,6 +60,49 @@ class MyBatisMessageRepositoryIT {
     assertThat(count.maxRetriesReached).isEqualTo(1)
     assertThat(count.paused).isEqualTo(2)
   }
+
+  @Test
+  @Sql(scripts = ["/some-messages.sql"])
+  fun `select paged in correct order`() {
+    val messages = repository.findAll(0, 100);
+    assertThat(messages.map { it.id }).containsExactlyElementsOf(MESSAGES_IDS_BY_INSERTED_ASC)
+  }
+
+  @Test
+  @Sql(scripts = ["/some-messages.sql"])
+  fun `select light in correct order`() {
+    val messages = repository.findAllLight(0, 100, false);
+    assertThat(messages.map { it.id }).containsExactlyElementsOf(MESSAGES_IDS_BY_INSERTED_ASC)
+  }
+
+  @Test
+  @Sql(scripts = ["/some-messages.sql"])
+  fun `select light faults in correct order`() {
+    val messages = repository.findAllLight(0, 100, true);
+    assertThat(messages.map { it.id }).containsExactlyElementsOf(MESSAGES_IDS_BY_INSERTED_ASC_FAULTS)
+  }
+
+  @Test
+  @Sql(scripts = ["/some-messages.sql"])
+  fun `select second page in correct order`() {
+    val messages = repository.findAll(1, 3)
+    assertThat(messages.map { it.id }).containsExactlyElementsOf(MESSAGES_IDS_BY_INSERTED_ASC.subList(3, MESSAGES_IDS_BY_INSERTED_ASC.size))
+  }
+
+  @Test
+  @Sql(scripts = ["/some-messages.sql"])
+  fun `select light second page in correct order`() {
+    val messages = repository.findAllLight(1, 3, false)
+    assertThat(messages.map { it.id }).containsExactlyElementsOf(MESSAGES_IDS_BY_INSERTED_ASC.subList(3, MESSAGES_IDS_BY_INSERTED_ASC.size))
+  }
+
+  @Test
+  @Sql(scripts = ["/some-messages.sql"])
+  fun `select light faults second page in correct order`() {
+    val messages = repository.findAllLight(1, 2, true);
+    assertThat(messages.map { it.id }).containsExactlyElementsOf(MESSAGES_IDS_BY_INSERTED_ASC_FAULTS.subList(2, MESSAGES_IDS_BY_INSERTED_ASC_FAULTS.size))
+  }
+
 
 
   @org.springframework.context.annotation.Configuration
