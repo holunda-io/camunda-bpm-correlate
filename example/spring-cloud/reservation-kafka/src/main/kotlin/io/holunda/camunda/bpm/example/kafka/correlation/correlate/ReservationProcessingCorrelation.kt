@@ -2,6 +2,7 @@ package io.holunda.camunda.bpm.example.kafka.correlation.correlate
 
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationMessage
 import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
+import io.holunda.camunda.bpm.correlate.correlation.impl.IdentityMessageComparator
 import io.holunda.camunda.bpm.correlate.correlation.impl.MessageIdCorrelationMessageComparator
 import io.holunda.camunda.bpm.correlate.event.CorrelationHint
 import io.holunda.camunda.bpm.correlate.persist.impl.DefaultMessagePersistenceService
@@ -59,5 +60,5 @@ class ReservationProcessingCorrelation(
     }
   }
 
-  override fun correlationMessageSorter(): Comparator<CorrelationMessage> = MessageIdCorrelationMessageComparator()
+  override fun correlationMessageSorter(): Comparator<CorrelationMessage> = IdentityMessageComparator()
 }
