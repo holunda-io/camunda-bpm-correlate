@@ -96,7 +96,7 @@ class DefaultMessagePersistenceService(
     logger.debug { "Built ${batches.size} batches." }
 
     /*
-     * Fast access fun to retry info for message.
+     * Fast access function to retry info for message.
      */
     fun CorrelationMessage.retryInfo() = messagesWithRetries.getValue(this)
 
@@ -109,6 +109,12 @@ class DefaultMessagePersistenceService(
 
         // take those without errors or if they are due for retry
         hasNoErrors || dueForRetry
+      }
+    }.map { correlationBatch ->
+      if (messagePersistenceConfig.batchSizeLimit() != -1) {
+        correlationBatch.copy(correlationMessages = correlationBatch.correlationMessages.take(messagePersistenceConfig.batchSizeLimit()))
+      } else {
+        correlationBatch
       }
     }
   }

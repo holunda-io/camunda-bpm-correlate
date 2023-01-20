@@ -9,9 +9,9 @@ CLIENT_BIN=kcat
 
 case "$1" in
   "reservation")
-    JSON=$(jq ".reservationId =\""$RESERVATION_ID\"" "$DIR/../common/local/reservation-created.json")
+    JSON=$(jq ".reservationId=\"$RESERVATION_ID\"" $DIR/../common/local/reservation-created.json)
     EVENT_TYPE=io.holunda.camunda.bpm.example.common.domain.ReservationReceivedEvent
-    echo "Sending create reservation message: $JSON"
+    echo "Sending create reservation message: '$JSON'"
   ;;
 
   "flight")
@@ -28,7 +28,7 @@ case "$1" in
   "show")
     "$CLIENT_BIN" -b "$KAFKA_BOOTSTRAP_SERVER_HOST:$KAFKA_BOOTSTRAP_SERVER_PORT" \
     -t "$KAFKA_TOPIC_CORRELATE_INGRESS" \
-    -C
+    -C -f 'Key: %k, payload: %s\n'
     exit 0
   ;;
   "all")

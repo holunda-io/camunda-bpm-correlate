@@ -7,6 +7,8 @@ import io.holunda.camunda.bpm.correlate.event.CorrelationHint
 import io.holunda.camunda.bpm.correlate.ingress.MessageFilter
 import io.holunda.camunda.bpm.correlate.ingress.message.ChannelMessage
 import io.holunda.camunda.bpm.correlate.ingress.message.ObjectMessage
+import io.holunda.camunda.bpm.correlate.persist.MessageEntity
+import java.time.Instant
 import java.util.*
 
 fun messageId() = UUID.randomUUID().toString()
@@ -20,6 +22,7 @@ fun emptyMessageMetadata() = MessageMetaData(
   timeToLive = null,
   expiration = null
 )
+
 fun acceptingFilter() = AcceptingMessageFilter()
 
 fun rejectingFilter() = RejectingMessageFilter()
@@ -32,6 +35,21 @@ fun runningInstanceHint(processInstanceId: String) = CorrelationHint(
 fun correlationMessage() = CorrelationMessage(
   messageMetaData = emptyMessageMetadata(),
   payload = UUID.randomUUID().toString()
+)
+
+fun messageEntity(id: String = UUID.randomUUID().toString()) = MessageEntity(
+  id = id,
+  payload = ByteArray(0),
+  payloadEncoding = "jackson",
+  payloadTypeNamespace = requireNotNull(PayloadType::class.java.packageName),
+  payloadTypeName = requireNotNull(PayloadType::class.java.simpleName),
+  payloadTypeRevision = null,
+  inserted = Instant.now(),
+  timeToLiveDuration = null,
+  expiration = null,
+  retries = 0,
+  nextRetry = null,
+  error = null
 )
 
 /**
