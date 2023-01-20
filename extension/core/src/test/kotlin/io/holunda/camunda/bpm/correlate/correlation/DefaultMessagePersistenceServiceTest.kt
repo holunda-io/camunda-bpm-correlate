@@ -36,9 +36,9 @@ internal class DefaultMessagePersistenceServiceTest {
     singleMessageErrorHandlingStrategy = singleMessageErrorHandlingStrategy
   )
 
-  private val message1 = messageEntity().apply { inserted = Instant.now() }
-  private val message2 = messageEntity().apply { inserted = Instant.now().plusSeconds(1) }
-  private val message3 = messageEntity().apply { inserted = Instant.now().plusSeconds(2) }
+  private val message1 = messageEntity("1").apply { inserted = Instant.now() }
+  private val message2 = messageEntity("2").apply { inserted = Instant.now().plusSeconds(1) }
+  private val message3 = messageEntity("3").apply { inserted = Instant.now().plusSeconds(2) }
 
 
   @BeforeEach
