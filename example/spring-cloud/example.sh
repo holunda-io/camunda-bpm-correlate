@@ -43,6 +43,7 @@ case "$1" in
 esac
 
 echo "$JSON" | "$CLIENT_BIN" \
+  -D "\0" \
   -b "$KAFKA_BOOTSTRAP_SERVER_HOST:$KAFKA_BOOTSTRAP_SERVER_PORT" \
   -t "$KAFKA_TOPIC_CORRELATE_INGRESS" \
   -P \
