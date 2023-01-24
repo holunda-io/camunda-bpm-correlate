@@ -858,6 +858,7 @@ the configuration properties controlling the timing of the correlation.</p>
 <span class="w">  </span><span class="nt">persistence</span><span class="p">:</span><span class="w"> </span><span class="c1"># persistence setting</span>
 <span class="w">    </span><span class="nt">messageMaxRetries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span>
 <span class="w">    </span><span class="nt">messageFetchPageSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">    </span><span class="nt">messageBatchSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">  </span><span class="nt">retry</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">retryMaxBackoffMinutes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"> </span>
 <span class="w">    </span><span class="nt">retryBackoffBase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span><span class="w"> </span>
@@ -915,6 +916,12 @@ the configuration properties controlling the timing of the correlation.</p>
 <td>100</td>
 </tr>
 <tr>
+<td>persistence.messageBatchSize</td>
+<td>Integer</td>
+<td>Limit the number of messages processed from a batch</td>
+<td>-1</td>
+</tr>
+<tr>
 <td>retry.retryMaxBackoffMinutes</td>
 <td>Integer</td>
 <td>Maximum backoff-time  in minutes</td>
@@ -939,6 +946,12 @@ and the initial delay from the application start.</p>
 </ul>
 <p>Messages of one batch are correlated in order of their sorting. If a correlation error occurs, the batch correlation is
 either interrupted (<code>fail_first</code> mode) or the batch is correlated to the end (<code>all</code> mode).</p>
+<p>An important parameter for batch processing is the <code>message-batch-size</code>. This parameter specifies the number of messages
+taken from a batch for synchronous correlation. Effectively, this parameter has two interesting values. Set this parameter
+to <code>-1</code> (default) and all messages from one batch will be correlated directly one after another. Set this parameter to
+<code>1</code> and the batch will be constructed, but only the first message will be correlated in current run. If successful, the 
+next message will be fetched during the next message query (after the <code>batch.query.pollInterval</code>, which should be a small interval).
+By doing so, you can deal with asynchronous continuations in your process.</p>
 <h3 id="error-detection">Error detection<a class="headerlink" href="#error-detection" title="Permanent link">#</a></h3>
 <p>If the error is detected during the correlation, it is handled by the library. If the message time-to-live is set and the
 error happens during the TTL (the message is alive), the error is not noted (and not stored), but the message will be
