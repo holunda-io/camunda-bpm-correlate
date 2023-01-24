@@ -42,7 +42,7 @@ export const EditRetriesModal = ({ message, onClose, onSubmit, maxRetries }: Edi
       <ModalBody>
         <form>
           <span>Message could not be correlated from the first attempt.</span><br />
-          {retries == maxRetries ?
+          {retries >= maxRetries ?
               <div className="form-group">
                 <span>All ${maxRetries} are exhausted. To continue retries please decrease the number of retries below:</span>
                 <label htmlFor={retriesInputId}>Retries</label>

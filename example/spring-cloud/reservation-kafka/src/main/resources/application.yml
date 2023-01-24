@@ -18,7 +18,7 @@ spring:
     stream:
       bindings:
         correlate-ingress-binding:
-          content-type: application/json
+          # content-type: application/octet-stream // do we need this?
           destination: ${KAFKA_TOPIC_CORRELATE_INGRES:correlate-ingress}
           binder: correlate-ingress-binder
           group: ${KAFKA_GROUP_ID}
@@ -34,9 +34,9 @@ spring:
           brokers: ${KAFKA_BOOTSTRAP_SERVER_HOST:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:9092}
           configuration:
             security.protocol: ${KAFKA_SECURITY_PROTOCOL_OVERRIDE:PLAINTEXT}
-#          consumer-properties:
-#            key-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
-#            value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+          consumerProperties:
+            key.deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+            value.deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
 
 camunda:
   bpm:

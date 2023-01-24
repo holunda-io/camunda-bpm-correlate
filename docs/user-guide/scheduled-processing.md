@@ -24,23 +24,26 @@ correlate:
   persistence: # persistence setting
     messageMaxRetries: 100 
     messageFetchPageSize: 100
+    messageBatchSize: 1
   retry:
     retryMaxBackoffMinutes: 5 
     retryBackoffBase: 2.0 
+  
 
 ```
 
-| Property                         | Values              | Meaning                                         | Default |
-|----------------------------------|---------------------|-------------------------------------------------|---------|
-| batch.mode                       | `all`, `fail_first` | Batch processing mode                           | all     |
-| batch.query.pollInitialDelay     | Duration in ISO8601 | Start delay before correlation scheduler starts | PT10S   |
-| batch.query.pollInterval         | Duration in ISO8601 | Delay between correlation attempts              | PT6S    |
-| batch.cleanup.pollInitialDelay   | Duration in ISO8601 | Start delay before clean-up scheduler starts    |         |
-| batch.cleanup.pollInterval       | Duration in ISO8601 | Delay between clean-ups                         |         |
-| persistence.messageMaxRetries    | Integer             | Maximum retries before giving up correlation    | 100     |
-| persistence.messageFetchPageSize | Integer             | Paging size by message fetch                    | 100     |
-| retry.retryMaxBackoffMinutes     | Integer             | Maximum backoff-time  in minutes                | 180     |
-| retry.retryBackoffBase           | Float               | Base for exponential backoff-time               | 180     |
+| Property                         | Values              | Meaning                                             | Default |
+|----------------------------------|---------------------|-----------------------------------------------------|---------|
+| batch.mode                       | `all`, `fail_first` | Batch processing mode                               | all     |
+| batch.query.pollInitialDelay     | Duration in ISO8601 | Start delay before correlation scheduler starts     | PT10S   |
+| batch.query.pollInterval         | Duration in ISO8601 | Delay between correlation attempts                  | PT6S    |
+| batch.cleanup.pollInitialDelay   | Duration in ISO8601 | Start delay before clean-up scheduler starts        |         |
+| batch.cleanup.pollInterval       | Duration in ISO8601 | Delay between clean-ups                             |         |
+| persistence.messageMaxRetries    | Integer             | Maximum retries before giving up correlation        | 100     |
+| persistence.messageFetchPageSize | Integer             | Paging size by message fetch                        | 100     |
+| persistence.messageBatchSize     | Integer             | Limit the number of messages processed from a batch | -1      |
+| retry.retryMaxBackoffMinutes     | Integer             | Maximum backoff-time  in minutes                    | 180     |
+| retry.retryBackoffBase           | Float               | Base for exponential backoff-time                   | 180     |
 
 ### Reading message
 
@@ -56,6 +59,13 @@ Batches of messages are checked to fulfill the following criteria:
 
 Messages of one batch are correlated in order of their sorting. If a correlation error occurs, the batch correlation is
 either interrupted (`fail_first` mode) or the batch is correlated to the end (`all` mode).
+
+An important parameter for batch processing is the `message-batch-size`. This parameter specifies the number of messages
+taken from a batch for synchronous correlation. Effectively, this parameter has two interesting values. Set this parameter
+to `-1` (default) and all messages from one batch will be correlated directly one after another. Set this parameter to
+`1` and the batch will be constructed, but only the first message will be correlated in current run. If successful, the 
+next message will be fetched during the next message query (after the `batch.query.pollInterval`, which should be a small interval).
+By doing so, you can deal with asynchronous continuations in your process.
 
 ### Error detection
 

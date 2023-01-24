@@ -15,7 +15,7 @@ interface MyBatisMessageMapper {
   /**
    * Finds all messages using paging.
    */
-  @Select("SELECT * FROM COR_MESSAGE")
+  @Select("SELECT * FROM COR_MESSAGE M ORDER BY M.INSERTED ASC")
   @Results(
     value = [
       Result(property = "id", column = "ID", jdbcType = JdbcType.VARCHAR),
@@ -36,7 +36,7 @@ interface MyBatisMessageMapper {
   /**
    * Find all message light objects (message without payload).
    */
-  @Select("SELECT * FROM COR_MESSAGE M WHERE M.ERROR IS NOT NULL")
+  @Select("SELECT * FROM COR_MESSAGE M WHERE M.ERROR IS NOT NULL ORDER BY M.INSERTED ASC")
   @Results(
     value = [
       Result(property = "id", column = "ID", jdbcType = JdbcType.VARCHAR),
@@ -57,7 +57,7 @@ interface MyBatisMessageMapper {
   /**
    * Loads all messages.
    */
-  @Select("SELECT * FROM COR_MESSAGE")
+  @Select("SELECT * FROM COR_MESSAGE M ORDER BY M.INSERTED ASC")
   @Results(
     value = [
       Result(property = "id", column = "ID", jdbcType = JdbcType.VARCHAR),
@@ -79,7 +79,7 @@ interface MyBatisMessageMapper {
   /**
    * Finds a message by id.
    */
-  @Select("SELECT * from COR_MESSAGE M WHERE M.ID=#{id}")
+  @Select("SELECT * from COR_MESSAGE M WHERE M.ID=#{id} ORDER BY M.INSERTED ASC")
   @Results(
     value = [
       Result(property = "id", column = "ID"),
