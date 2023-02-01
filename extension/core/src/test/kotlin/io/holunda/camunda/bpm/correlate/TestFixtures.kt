@@ -30,6 +30,7 @@ fun rejectingFilter() = RejectingMessageFilter()
 fun runningInstanceHint(processInstanceId: String) = CorrelationHint(
   processDefinitionId = "DEF-ID",
   processInstanceId = processInstanceId,
+  groupingKey = processInstanceId
 )
 
 fun correlationMessage() = CorrelationMessage(

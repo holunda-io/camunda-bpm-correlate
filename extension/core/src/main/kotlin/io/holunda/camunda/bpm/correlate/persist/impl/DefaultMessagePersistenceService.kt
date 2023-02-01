@@ -85,10 +85,10 @@ class DefaultMessagePersistenceService(
     // build batches
     val batches: List<CorrelationBatch> = messagesWithRetries
       .keys
-      .groupBy(singleMessageCorrelationStrategy.correlationSelector())
+      .groupBy { singleMessageCorrelationStrategy.correlationSelector()(it).groupingKey }
       .map {
         CorrelationBatch(
-          correlationHint = it.key,
+          groupingKey = it.key,
           correlationMessages = it.value.sortedWith(singleMessageCorrelationStrategy.correlationMessageSorter())
         )
       }

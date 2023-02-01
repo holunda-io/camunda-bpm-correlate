@@ -23,9 +23,9 @@ class BatchCorrelationProcessor(
       .filterNot { it.correlationMessages.isEmpty() }
       .forEach { batch ->
         try {
-          logger.debug { "Correlating batch ${batch.correlationHint} containing ${batch.correlationMessages.size} messages." }
+          logger.debug { "Correlating batch ${batch.groupingKey} containing ${batch.correlationMessages.size} messages." }
           val result: CorrelationBatchResult = correlationService.correlateBatch(batch)
-          logger.debug { "Processing result for batch ${batch.correlationHint}: $result" }
+          logger.debug { "Processing result for batch ${batch.groupingKey}: $result" }
           when (result) {
             is CorrelationBatchResult.Success -> {
               persistenceService.success(successfulCorrelations = result.successfulCorrelations)
@@ -49,7 +49,7 @@ class BatchCorrelationProcessor(
             )
           )
           correlationMetrics.incrementError()
-          logger.trace(e) { "Error processing for batch ${batch.correlationHint}" }
+          logger.trace(e) { "Error processing for batch ${batch.groupingKey}" }
         }
       }
   }

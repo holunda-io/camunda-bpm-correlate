@@ -10,11 +10,11 @@ internal class BatchCorrelationProcessorTest {
 
   private val batches = arrayOf(
     CorrelationBatch(
-      correlationHint = runningInstanceHint("instance1"),
+      groupingKey = runningInstanceHint("instance1").groupingKey,
       correlationMessages = listOf(correlationMessage(), correlationMessage(), correlationMessage())
     ),
     CorrelationBatch(
-      correlationHint = runningInstanceHint("instance2"),
+      groupingKey = runningInstanceHint("instance2").groupingKey,
       correlationMessages = listOf(correlationMessage(), correlationMessage())
     )
   )
