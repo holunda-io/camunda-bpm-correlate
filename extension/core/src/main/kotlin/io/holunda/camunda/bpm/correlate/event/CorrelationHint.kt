@@ -37,6 +37,7 @@ data class CorrelationHint(
   val processStart: Boolean = false,
   /**
    * Any value used for grouping messages into batches. Messages with equal groupingKeys will end up in the same batch.
+   * Defaults to correlation variables.
    */
   val groupingKey: Any = correlationVariables
 ) {
