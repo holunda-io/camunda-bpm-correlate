@@ -34,7 +34,12 @@ data class CorrelationHint(
   /**
    * Flag if only process start events should be considered.
    */
-  val processStart: Boolean = false
+  val processStart: Boolean = false,
+  /**
+   * Any value used for grouping messages into batches. Messages with equal groupingKeys will end up in the same batch.
+   * Defaults to correlation variables.
+   */
+  val groupingKey: Any = correlationVariables
 ) {
 
   /**
