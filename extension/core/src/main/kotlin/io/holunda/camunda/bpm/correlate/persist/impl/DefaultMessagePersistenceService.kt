@@ -54,6 +54,7 @@ class DefaultMessagePersistenceService(
         )
         val messageMetaData = MessageMetaData(
           messageId = entity.id,
+          messageTimestamp = entity.inserted,
           payloadTypeInfo = typeInfo,
           timeToLive = entity.timeToLiveDuration,
           payloadEncoding = entity.payloadEncoding,
@@ -163,7 +164,7 @@ class DefaultMessagePersistenceService(
     messageRepository.insert(
       MessageEntity(
         id = metaData.messageId,
-        inserted = clock.instant(),
+        inserted = metaData.messageTimestamp,
         payloadEncoding = metaData.payloadEncoding,
         payloadTypeNamespace = metaData.payloadTypeInfo.namespace,
         payloadTypeName = metaData.payloadTypeInfo.name,

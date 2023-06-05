@@ -17,6 +17,7 @@ fun emptyMessage() = ObjectMessage(mapOf(), "")
 
 fun emptyMessageMetadata() = MessageMetaData(
   messageId = messageId(),
+  messageTimestamp = Instant.now(),
   payloadTypeInfo = TypeInfo.UNKNOWN,
   payloadEncoding = "",
   timeToLive = null,

@@ -11,6 +11,10 @@ data class MessageMetaData(
    */
   val messageId: String,
   /**
+   * Timestamp of the message.
+   */
+  val messageTimestamp: Instant,
+  /**
    * Payload type info.
    */
   val payloadTypeInfo: TypeInfo,
@@ -32,6 +36,7 @@ data class MessageMetaData(
    */
   constructor(snippet: MessageMetaDataSnippet) : this(
     messageId = requireNotNull(snippet.messageId) { "Message id must not be null" },
+    messageTimestamp = snippet.messageTimestamp ?: Instant.now(),
     payloadTypeInfo = requireNotNull(snippet.payloadTypeInfo) { "Payload type info must not be null" },
     payloadEncoding = requireNotNull(snippet.payloadEncoding) { "Payload encoding must be set" },
     timeToLive = snippet.timeToLive,
