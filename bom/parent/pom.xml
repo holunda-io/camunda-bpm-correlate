@@ -14,7 +14,7 @@
   <name>POM / Parent</name>
 
   <properties>
-    <spring-boot.version>2.7.5</spring-boot.version>
+    <spring-boot.version>2.7.12</spring-boot.version>
     <camunda-7.version>7.18.0</camunda-7.version>
     <camunda-bpm-data.version>1.2.8</camunda-bpm-data.version>
     <shedlock.version>4.38.0</shedlock.version>
@@ -80,7 +80,7 @@
     <dependency>
       <groupId>org.mockito.kotlin</groupId>
       <artifactId>mockito-kotlin</artifactId>
-      <version>4.0.0</version>
+      <version>5.0.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>

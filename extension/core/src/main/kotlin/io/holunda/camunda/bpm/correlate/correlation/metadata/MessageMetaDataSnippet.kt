@@ -37,44 +37,14 @@ data class MessageMetaDataSnippet(
     /**
      * Reducer for snippets.
      */
-    fun reduce(acc: MessageMetaDataSnippet, other: MessageMetaDataSnippet): MessageMetaDataSnippet =
-      acc.let {
-        if (other.messageId != null) {
-          it.copy(messageId = other.messageId)
-        } else {
-          it
-        }
-      }.let {
-        if (other.timeToLive != null) {
-          it.copy(timeToLive = other.timeToLive)
-        } else {
-          it
-        }
-      }.let {
-        if (other.expiration != null) {
-          it.copy(expiration = other.expiration)
-        } else {
-          it
-        }
-      }.let {
-        if (other.payloadEncoding != null) {
-          it.copy(payloadEncoding = other.payloadEncoding)
-        } else {
-          it
-        }
-      }.let {
-        if (other.payloadTypeInfo != TypeInfo.UNKNOWN && it.payloadTypeInfo.overwritePossible) {
-          it.copy(payloadTypeInfo = other.payloadTypeInfo)
-        } else {
-          it
-        }
-      }.let {
-        if (other.messageTimestamp != null) {
-          it.copy(messageTimestamp = other.messageTimestamp)
-        } else {
-          it
-        }
-      }
+    fun reduce(acc: MessageMetaDataSnippet, other: MessageMetaDataSnippet): MessageMetaDataSnippet = MessageMetaDataSnippet(
+        messageId = other.messageId ?: acc.messageId,
+        timeToLive = other.timeToLive ?: acc.timeToLive,
+        expiration = other.expiration ?: acc.expiration,
+        payloadEncoding = other.payloadEncoding ?: acc.payloadEncoding,
+        payloadTypeInfo = if(other.payloadTypeInfo != TypeInfo.UNKNOWN && acc.payloadTypeInfo.overwritePossible) other.payloadTypeInfo else acc.payloadTypeInfo,
+        messageTimestamp = other.messageTimestamp ?: acc.messageTimestamp
+      )
   }
 
   /**
