@@ -10,6 +10,7 @@ import io.holunda.camunda.bpm.correlate.ingress.impl.PersistingChannelMessageAcc
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.*
+import java.time.Instant
 
 /**
  * Test to simulate the usage of delegation message for Axon Framework use case.
@@ -27,7 +28,8 @@ internal class DelegatingChannelMessageTest {
       headers = mapOf(
         HeaderNames.ID to "VALUE",
         HeaderNames.PAYLOAD_TYPE_CLASS_NAME to PayloadType::class.java.canonicalName,
-        HeaderNames.PAYLOAD_ENCODING to "jackson"
+        HeaderNames.PAYLOAD_ENCODING to "jackson",
+        HeaderNames.TIMESTAMP to Instant.now().toString()
       ), payload = payload
     ),
     payloadSupplier = { payload -> convert(payload.deserializePayload()) }
