@@ -2,102 +2,102 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/index.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/getting-started.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/developer-guide/contribution.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/developer-guide/project-setup.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/introduction/index.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/introduction/features.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/introduction/further-outlook.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/introduction/motivation.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/introduction/solution.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/index.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/architecture.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/examples.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/filtering-messages.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/ingress-axon.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/ingress-spring-cloud.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/ingress.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/message-acceptor.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/message-persistence.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/metrics.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://www.holunda.io/camunda-bpm-correlate/snapshot/user-guide/scheduled-processing.html</loc>
-         <lastmod>2023-06-15</lastmod>
+         <lastmod>2023-06-16</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
