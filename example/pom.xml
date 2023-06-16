@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <!-- It is ok to use the extension parent, there is only Kotlin and some managed deps defined there -->
     <relativePath>../bom/parent/pom.xml</relativePath>
   </parent>

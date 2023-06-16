@@ -22,7 +22,7 @@ class StreamByteMessageConsumer(
 
   override fun accept(message: Message<ByteArray>) {
     metrics.incrementReceived(channelName, CHANNEL_TYPE)
-    val headers = streamChannelMessageHeaderConverter.extractMessageHeaders(message)
+    val headers: Map<String, Any> = streamChannelMessageHeaderConverter.extractMessageHeaders(message)
     logger.debug { "Received message $headers" }
     if (messageAcceptor.supports(headers)) {
       messageAcceptor.accept(ByteMessage(headers = headers, payload = message.payload))

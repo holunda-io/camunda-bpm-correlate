@@ -17,6 +17,7 @@ fun emptyMessage() = ObjectMessage(mapOf(), "")
 
 fun emptyMessageMetadata() = MessageMetaData(
   messageId = messageId(),
+  messageTimestamp = Instant.now(),
   payloadTypeInfo = TypeInfo.UNKNOWN,
   payloadEncoding = "",
   timeToLive = null,
@@ -30,6 +31,7 @@ fun rejectingFilter() = RejectingMessageFilter()
 fun runningInstanceHint(processInstanceId: String) = CorrelationHint(
   processDefinitionId = "DEF-ID",
   processInstanceId = processInstanceId,
+  groupingKey = processInstanceId
 )
 
 fun correlationMessage() = CorrelationMessage(

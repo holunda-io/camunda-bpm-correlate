@@ -18,7 +18,14 @@ class KafkaStreamChannelMessageHeaderConverter : StreamChannelMessageHeaderConve
    */
   override fun extractMessageHeaders(message: Message<ByteArray>): Map<String, Any> {
     return builder()
-      .set(HEADER_MESSAGE_TIMESTAMP, Instant.ofEpochMilli(message.headers.timestamp!!).toString())
+      .set(
+        HEADER_MESSAGE_TIMESTAMP,
+        if (message.headers.timestamp != null) {
+          Instant.ofEpochMilli(message.headers.timestamp!!)
+        } else {
+          Instant.now()
+        }.toString()
+      )
       .set(HEADER_MESSAGE_ID, message.headers.id!!.toString())
       .build().apply {
         this.putAll(message.headers.normalized())
