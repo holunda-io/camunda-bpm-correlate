@@ -1,7 +1,7 @@
 package io.holunda.camunda.bpm.example.axon
 
 import io.holunda.camunda.bpm.data.CamundaBpmData.builder
-import io.holunda.camunda.bpm.data.CamundaBpmData.longVariable
+import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.longVariable
 import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.customVariable
 import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.stringVariable
 import io.holunda.camunda.bpm.example.axon.ReservationProcessing.Variables

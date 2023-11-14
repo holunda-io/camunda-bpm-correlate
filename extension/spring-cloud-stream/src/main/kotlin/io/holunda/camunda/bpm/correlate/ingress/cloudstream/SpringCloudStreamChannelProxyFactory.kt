@@ -4,6 +4,7 @@ import io.holunda.camunda.bpm.correlate.ingress.ChannelConfigurationProperties
 import io.holunda.camunda.bpm.correlate.ingress.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingress.IngressMetrics
 import io.holunda.camunda.bpm.correlate.ingress.cloudstream.SpringCloudStreamChannelConfiguration.Companion.CHANNEL_TYPE
+import io.holunda.camunda.bpm.correlate.ingress.cloudstream.SpringCloudStreamChannelConfiguration.Companion.DEFAULT_CHANNEL_MESSAGE_HEADER_CONVERTER
 import io.holunda.camunda.bpm.correlate.util.getQualifiedBeanWithFallback
 import mu.KLogging
 import org.springframework.beans.factory.InitializingBean
@@ -42,7 +43,7 @@ class SpringCloudStreamChannelProxyFactory(
           val consumer = StreamByteMessageConsumer(
             messageAcceptor = channelMessageAcceptor,
             metrics = metrics,
-            streamChannelMessageHeaderConverter = applicationContext.getQualifiedBeanWithFallback(name),
+            streamChannelMessageHeaderConverter = applicationContext.getQualifiedBeanWithFallback(name, DEFAULT_CHANNEL_MESSAGE_HEADER_CONVERTER),
             channelName = name
           )
           applicationContext.registerBean(consumerName, StreamByteMessageConsumer::class.java, Supplier { consumer })

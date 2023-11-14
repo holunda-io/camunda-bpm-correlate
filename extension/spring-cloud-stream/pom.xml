@@ -14,7 +14,7 @@
   <name>Extension / Ingress Adapter Spring Cloud Stream</name>
 
   <properties>
-    <spring-cloud.version>2021.0.5</spring-cloud.version>
+    <spring-cloud.version>2022.0.4</spring-cloud.version>
   </properties>
 
   <dependencyManagement>
@@ -28,11 +28,13 @@
       </dependency>
       <!-- FIXME: Remove as soon as spring fixes those issues -->
       <!-- https://github.com/spring-cloud/spring-cloud-function/issues/925 -->
+      <!--
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-function-context</artifactId>
         <version>3.2.5</version>
       </dependency>
+      -->
     </dependencies>
   </dependencyManagement>
 
@@ -61,6 +63,6 @@
       <artifactId>camunda-commons-typed-values</artifactId>
       <scope>provided</scope>
     </dependency>
-    
+
   </dependencies>
 </project>

@@ -8,7 +8,7 @@ import mu.KLogging
 import org.camunda.bpm.engine.RepositoryService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 /**
  * Configuration for correlation.

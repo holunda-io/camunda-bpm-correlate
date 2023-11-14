@@ -71,6 +71,7 @@
       <artifactId>spring-cloud-stream-binder-kafka</artifactId>
     </dependency>
 
+
     <!-- Axon Starter -->
     <dependency>
       <groupId>org.axonframework</groupId>

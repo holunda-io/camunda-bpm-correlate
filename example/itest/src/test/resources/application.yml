@@ -4,13 +4,6 @@ spring:
   jpa:
     open-in-view: true
     show-sql: false
-  autoconfigure:
-    exclude:
-    - org.org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
-    - org.springframework.cloud.stream.binder.kafka.streams.KafkaStreamsBinderSupportAutoConfiguration
-    - org.springframework.cloud.stream.binder.kafka.streams.endpoint.KafkaStreamsTopologyEndpointAutoConfiguration
-    - org.springframework.cloud.stream.binder.kafka.streams.function.KafkaStreamsFunctionAutoConfiguration
-
 
 axon:
   axonserver:

@@ -11,6 +11,8 @@ import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingProperties
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingSingleMessageErrorHandlingStrategy
 import io.holunda.camunda.bpm.correlate.persist.impl.*
+import org.camunda.bpm.engine.ProcessEngine
+import org.camunda.bpm.engine.ProcessEngineServices
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -60,7 +62,8 @@ class MessagePersistenceConfiguration {
    * Configures mybatis mapper for messages.
    */
   @Autowired
-  fun registerMyBatisMappers(processEngineConfiguration: ProcessEngineConfigurationImpl) {
+  fun registerMyBatisMappers(processEngine: ProcessEngine) {
+    val processEngineConfiguration = processEngine.processEngineConfiguration as ProcessEngineConfigurationImpl
     processEngineConfiguration.sqlSessionFactory.configuration.mapperRegistry.let { registry ->
       if (!registry.hasMapper(MyBatisMessageMapper::class.java)) {
         registry.addMapper(MyBatisMessageMapper::class.java)
@@ -73,8 +76,11 @@ class MessagePersistenceConfiguration {
    */
   @ConditionalOnMissingBean
   @Bean
-  fun messageRepository(processEngineConfiguration: ProcessEngineConfigurationImpl): MessageRepository =
-    MyBatisMessageRepository(sqlSessionFactory = processEngineConfiguration.sqlSessionFactory)
+  fun messageRepository(processEngine: ProcessEngine): MessageRepository {
+    val processEngineConfiguration = processEngine.processEngineConfiguration as ProcessEngineConfigurationImpl
+    return MyBatisMessageRepository(sqlSessionFactory = processEngineConfiguration.sqlSessionFactory)
+  }
+
 
 
   /**

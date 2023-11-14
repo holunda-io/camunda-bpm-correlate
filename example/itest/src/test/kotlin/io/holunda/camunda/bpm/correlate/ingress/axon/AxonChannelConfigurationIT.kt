@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Lazy
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
@@ -24,7 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
     // axon-2
     "correlate.channels.axon-2.type=axon-event",
     "correlate.channels.axon-2.enabled=true",
-    "correlate.channels.axon-2.beanName=specified-handler-name",
+    "correlate.channels.axon-2.beanName=specifiedHandlerName",
     // unknown-type
     "correlate.channels.unknown-type.type=unknown-type",
     "correlate.channels.unknown-type.enabled=true",
@@ -38,10 +39,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 internal class AxonChannelConfigurationIT {
 
   @Autowired
+  @Lazy
   private lateinit var handlers: Map<String, AxonEventMessageHandler>
 
   @Autowired
-  @Qualifier("specified-handler-name")
+  @Qualifier("specifiedHandlerName")
   private lateinit var converter: AxonEventMessageHeaderConverter
 
 
@@ -49,17 +51,16 @@ internal class AxonChannelConfigurationIT {
   fun configures_two_consumers() {
 
     assertThat(handlers).hasSize(2)
-    assertThat(handlers.keys).containsExactlyInAnyOrder("axon-1-handler", "specified-handler-name")
+    assertThat(handlers.keys).containsExactlyInAnyOrder("axon-1-handler", "specifiedHandlerName")
     assertThat(handlers["axon-1-handler"]!!.channelName).isEqualTo("axon-1")
-    assertThat(handlers["specified-handler-name"]!!.channelName).isEqualTo("axon-2")
-    assertThat(handlers["specified-handler-name"]!!.axonEventMessageHeaderConverter).isEqualTo(converter)
+    assertThat(handlers["specifiedHandlerName"]!!.channelName).isEqualTo("axon-2")
+    assertThat(handlers["specifiedHandlerName"]!!.axonEventMessageHeaderConverter).isEqualTo(converter)
   }
 
   @SpringBootApplication(exclude = [BatchCorrelationSchedulerConfiguration::class])
   class TestApplication {
-    @Bean
-    @Qualifier("specified-handler-name")
-    fun qualifiedConverter(): AxonEventMessageHeaderConverter = mock()
+    @Bean("specifiedHandlerName")
+    fun specifiedHandlerName(): AxonEventMessageHeaderConverter = mock()
 
     @Bean
     fun singleMessageCorrelationStrategy(): SingleMessageCorrelationStrategy = mock()

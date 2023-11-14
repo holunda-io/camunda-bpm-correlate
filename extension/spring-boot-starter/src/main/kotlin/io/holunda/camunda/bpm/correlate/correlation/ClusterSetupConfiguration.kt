@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.core.JdbcTemplate
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 import javax.sql.DataSource
 
 /**

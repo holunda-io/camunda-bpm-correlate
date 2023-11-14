@@ -1,11 +1,8 @@
 package io.holunda.camunda.bpm.correlate.ingress
 
-import org.springframework.boot.context.properties.ConstructorBinding
-
 /**
  * Configuration properties for a named channel.
  */
-@ConstructorBinding
 data class ChannelConfigurationProperties(
   /**
    * Flag to switch the channel on/off.

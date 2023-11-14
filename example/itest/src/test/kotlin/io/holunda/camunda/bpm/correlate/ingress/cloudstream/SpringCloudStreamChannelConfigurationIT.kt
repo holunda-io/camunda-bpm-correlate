@@ -25,19 +25,19 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
     // kafka-2
     "correlate.channels.kafka-2.type=stream",
     "correlate.channels.kafka-2.enabled=true",
-    "correlate.channels.kafka-2.beanName=specified-consumer-name",
+    "correlate.channels.kafka-2.beanName=specifiedConsumerName",
     // unknown-type
     "correlate.channels.unknown-type.type=unknown-type",
     "correlate.channels.unknown-type.enabled=true",
     // disabled
     "correlate.channels.disabled.type=stream",
     "correlate.channels.disabled.enabled=false",
-
     // function declaration
     "spring.cloud.stream.function.definition=kafka-1-consumer; specified-consumer-name",
     // bindings
     "spring.cloud.stream.function.bindings.kafka-1-consumer-in-0=correlate-ingress-binding-1",
     "spring.cloud.stream.function.bindings.specified-consumer-name-in-0=correlate-ingress-binding-1",
+
   ]
 )
 @ExtendWith(SpringExtension::class)
@@ -49,7 +49,7 @@ internal class SpringCloudStreamChannelConfigurationIT {
   private lateinit var consumers: Map<String, StreamByteMessageConsumer>
 
   @Autowired
-  @Qualifier("specified-consumer-name")
+  @Qualifier("specifiedConsumerName")
   private lateinit var converter: StreamChannelMessageHeaderConverter
 
 
@@ -65,8 +65,7 @@ internal class SpringCloudStreamChannelConfigurationIT {
 
   @SpringBootApplication(exclude = [BatchCorrelationSchedulerConfiguration::class])
   class TestApplication {
-    @Bean
-    @Qualifier("specified-consumer-name")
+    @Bean("specifiedConsumerName")
     fun qualifiedConverter(): StreamChannelMessageHeaderConverter = mock()
 
     @Bean

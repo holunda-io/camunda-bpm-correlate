@@ -14,10 +14,10 @@
   <name>POM / Parent</name>
 
   <properties>
-    <spring-boot.version>2.7.17</spring-boot.version>
-    <camunda-7.version>7.19.0</camunda-7.version>
-    <camunda-bpm-data.version>1.2.8</camunda-bpm-data.version>
-    <shedlock.version>4.46.0</shedlock.version>
+    <spring-boot.version>3.1.5</spring-boot.version>
+    <camunda-7.version>7.20.0</camunda-7.version>
+    <camunda-bpm-data.version>1.4.0</camunda-bpm-data.version>
+    <shedlock.version>5.10.0</shedlock.version>
   </properties>
 
   <dependencyManagement>
@@ -73,14 +73,14 @@
     <dependency>
       <groupId>io.github.microutils</groupId>
       <artifactId>kotlin-logging-jvm</artifactId>
-      <version>3.0.4</version>
+      <version>3.0.5</version>
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.mockito.kotlin</groupId>
       <artifactId>mockito-kotlin</artifactId>
-      <version>5.0.0</version>
+      <version>5.1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>

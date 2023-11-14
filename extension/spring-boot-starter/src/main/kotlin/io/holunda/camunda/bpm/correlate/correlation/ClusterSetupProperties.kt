@@ -1,11 +1,8 @@
 package io.holunda.camunda.bpm.correlate.correlation
 
-import org.springframework.boot.context.properties.ConstructorBinding
-
 /**
  * Cluster setup properties.
  */
-@ConstructorBinding
 class ClusterSetupProperties(
   /**
    * Activates cluster support.

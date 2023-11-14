@@ -1,0 +1,8 @@
+spring:
+  autoconfigure:
+    exclude:
+    - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+    - org.springframework.cloud.stream.config.ChannelsEndpointAutoConfiguration
+    - org.springframework.cloud.stream.config.BindingsEndpointAutoConfiguration
+    - org.springframework.cloud.stream.config.BindingServiceConfiguration
+    - org.springframework.cloud.stream.binder.kafka.config.ExtendedBindingHandlerMappingsProviderConfiguration

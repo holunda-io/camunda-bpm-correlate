@@ -14,7 +14,7 @@
   <name>Extension / Ingress Adapter Axon Framework</name>
 
   <properties>
-    <axon-framework.version>4.5.12</axon-framework.version>
+    <axon-framework.version>4.9.0</axon-framework.version>
   </properties>
 
   <dependencyManagement>

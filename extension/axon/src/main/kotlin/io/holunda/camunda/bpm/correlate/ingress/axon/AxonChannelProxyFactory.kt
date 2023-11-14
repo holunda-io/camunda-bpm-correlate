@@ -5,6 +5,7 @@ import io.holunda.camunda.bpm.correlate.ingress.ChannelConfigurationProperties
 import io.holunda.camunda.bpm.correlate.ingress.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingress.IngressMetrics
 import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Companion.CHANNEL_TYPE
+import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Companion.DEFAULT_MESSAGE_HEADER_CONVERTER_NAME
 import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Companion.PROPERTY_CHANNEL_PAYLOAD_ENCODING
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import io.holunda.camunda.bpm.correlate.util.getQualifiedBeanWithFallback
@@ -40,6 +41,7 @@ class AxonChannelProxyFactory(
   override fun afterPropertiesSet() {
     if (this::applicationContext.isInitialized) {
       logger.debug { "[Camunda CORRELATE] Creating channel consumers for Axon Event Bus: ${axonEventConfigurations.keys.joinToString(", ")}." }
+      var refreshRequired = false
       axonEventConfigurations.forEach { (name, config) ->
 
         val encoding: String = requireNotNull( getEncoding(config) ) { "Channel encoding is required, please set either globally or for channel." }
@@ -47,11 +49,11 @@ class AxonChannelProxyFactory(
 
         val handlerName = config.beanName ?: "$name-handler"
         if (!applicationContext.containsBean(handlerName)) {
-          // the channel is not configured yet.
+          // the channel handler is not configured yet.
           val handler = AxonEventMessageHandler(
             messageAcceptor = channelMessageAcceptor,
             metrics = metrics,
-            axonEventMessageHeaderConverter = applicationContext.getQualifiedBeanWithFallback(name),
+            axonEventMessageHeaderConverter = applicationContext.getQualifiedBeanWithFallback(name, DEFAULT_MESSAGE_HEADER_CONVERTER_NAME),
             encoder = encoder,
             channelName = name
           )
