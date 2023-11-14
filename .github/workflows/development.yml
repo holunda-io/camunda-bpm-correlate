@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build and run tests on JDK 11
+    name: Build and run tests on JDK 17
     steps:
       # Checkout the code
       - name: Checkout code
@@ -17,11 +17,11 @@ jobs:
         run: echo ${{ github.ref }}
 
       # Setup JDK and Maven
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: zulu
-          java-version: 11
+          java-version: 17
           cache: maven
           server-id: ossrh
           server-username: OSS_CENTRAL_USERNAME # env variable for Maven Central
@@ -38,6 +38,7 @@ jobs:
       # itest
       - name: Run itest
         run: ./mvnw integration-test failsafe:verify -Pitest -U -B -T4 -ntp
+
 
       - name: Upload coverage to Codecov
         if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
