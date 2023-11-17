@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import java.util.*
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 /**
  * Starts the app.

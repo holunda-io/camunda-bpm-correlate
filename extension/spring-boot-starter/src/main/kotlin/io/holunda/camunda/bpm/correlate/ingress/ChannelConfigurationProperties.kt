@@ -1,11 +1,8 @@
 package io.holunda.camunda.bpm.correlate.ingress
 
-import org.springframework.boot.context.properties.ConstructorBinding
-
 /**
  * Configuration properties for a named channel.
  */
-@ConstructorBinding
 data class ChannelConfigurationProperties(
   /**
    * Flag to switch the channel on/off.
@@ -16,9 +13,12 @@ data class ChannelConfigurationProperties(
    */
   val type: String,
   /**
-   * Name of the bean to register the consumer.
+   * Prefix for the name of beans to create.
+   * If not provided the <channel-name>Consumer will be used as bean name of the consumer.
+   * If not provided the <channel-name>Converter will be used as bean name of the channel message header converter.
+   * If you register beans with those names in your code, the creation is skipped.
    */
-  val beanName: String? = null,
+  val beanNamePrefix: String? = null,
   /**
    * Additional properties.
    */

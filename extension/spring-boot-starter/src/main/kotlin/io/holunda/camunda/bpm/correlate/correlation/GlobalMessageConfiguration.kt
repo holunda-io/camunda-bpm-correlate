@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.correlate.correlation
 
 import mu.KLogging
 import org.springframework.boot.context.properties.EnableConfigurationProperties
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 /**
  * Global message configuration.

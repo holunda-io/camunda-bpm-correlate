@@ -1,12 +1,10 @@
 package io.holunda.camunda.bpm.correlate.correlation
 
-import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.boot.context.properties.NestedConfigurationProperty
 
 /**
  * Batch configuration properties.
  */
-@ConstructorBinding
 data class BatchConfigurationProperties(
   val mode: BatchCorrelationMode = BatchCorrelationMode.FAIL_FIRST,
   @NestedConfigurationProperty

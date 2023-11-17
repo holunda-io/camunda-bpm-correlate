@@ -7,6 +7,7 @@ import io.holunda.camunda.bpm.correlate.ingress.ChannelMessageAcceptorConfigurat
 import io.holunda.camunda.bpm.correlate.ingress.IngressMetrics
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import org.axonframework.springboot.autoconfig.AxonAutoConfiguration
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 /**
- * Axon Framework Channel configuration-
+ * Axon Framework Channel configuration.
  */
 @Configuration
 @AutoConfigureAfter(AxonAutoConfiguration::class, ChannelMessageAcceptorConfiguration::class)
@@ -22,16 +23,16 @@ class AxonChannelConfiguration {
 
   companion object {
     const val CHANNEL_TYPE = "axon-event"
-
     const val PROPERTY_CHANNEL_PAYLOAD_ENCODING = "payload-encoding"
+    const val DEFAULT_MESSAGE_HEADER_CONVERTER_NAME = "axonEventMessageHeaderConverter"
   }
 
   /**
    * Channel header extractor.
    */
   @ConditionalOnMissingBean
-  @Bean
-  fun axonEventHeaderExtractor(): AxonEventMessageHeaderConverter = DefaultAxonEventMessageHeaderConverter()
+  @Bean(DEFAULT_MESSAGE_HEADER_CONVERTER_NAME)
+  fun axonEventMessageHeaderConverter(): AxonEventMessageHeaderConverter = DefaultAxonEventMessageHeaderConverter()
 
   /**
    * Configuration of named channels.

@@ -19,6 +19,7 @@ spring:
           brokers: PLAINTEXT://localhost:59092
           configuration:
             security.protocol: PLAINTEXT
+
 # disabled because of warning in log, not needed?
 #          consumer-properties:
 #            key-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer

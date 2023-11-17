@@ -5,6 +5,7 @@ import io.holunda.camunda.bpm.correlate.ingress.ChannelConfigurationProperties
 import io.holunda.camunda.bpm.correlate.ingress.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingress.IngressMetrics
 import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Companion.CHANNEL_TYPE
+import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Companion.DEFAULT_MESSAGE_HEADER_CONVERTER_NAME
 import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Companion.PROPERTY_CHANNEL_PAYLOAD_ENCODING
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import io.holunda.camunda.bpm.correlate.util.getQualifiedBeanWithFallback
@@ -40,23 +41,31 @@ class AxonChannelProxyFactory(
   override fun afterPropertiesSet() {
     if (this::applicationContext.isInitialized) {
       logger.debug { "[Camunda CORRELATE] Creating channel consumers for Axon Event Bus: ${axonEventConfigurations.keys.joinToString(", ")}." }
+      var refreshRequired = false
       axonEventConfigurations.forEach { (name, config) ->
 
         val encoding: String = requireNotNull( getEncoding(config) ) { "Channel encoding is required, please set either globally or for channel." }
         val encoder = requireNotNull(payloadDecoders.find { it.supports(encoding) }) { "Could not find decoder for configured message encoding '$encoding'." }
 
-        val handlerName = config.beanName ?: "$name-handler"
+        // lookup named converter or take the default one
+        val converterName = (config.beanNamePrefix ?: name) + "Converter"
+        val converter: AxonEventMessageHeaderConverter = applicationContext.getQualifiedBeanWithFallback(converterName, DEFAULT_MESSAGE_HEADER_CONVERTER_NAME)
+
+        // lookup consumer or create one
+        val handlerName = (config.beanNamePrefix ?: name) + "Handler"
         if (!applicationContext.containsBean(handlerName)) {
-          // the channel is not configured yet.
+          // the channel handler is not configured yet.
           val handler = AxonEventMessageHandler(
             messageAcceptor = channelMessageAcceptor,
             metrics = metrics,
-            axonEventMessageHeaderConverter = applicationContext.getQualifiedBeanWithFallback(name),
+            axonEventMessageHeaderConverter = converter,
             encoder = encoder,
             channelName = name
           )
           applicationContext.registerBean(handlerName, AxonEventMessageHandler::class.java, Supplier { handler })
           logger.info { "[Camunda CORRELATE] Registered AxonEventMessageHandler for channel '$name' named '$handlerName'." }
+        } else {
+          logger.info { "[Camunda CORRELATE] Found a bean '$handlerName', skipping construction." }
         }
       }
     }

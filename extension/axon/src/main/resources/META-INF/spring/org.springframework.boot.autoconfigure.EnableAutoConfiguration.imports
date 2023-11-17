@@ -1,0 +1,2 @@
+io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration
+io.holunda.camunda.bpm.correlate.ingress.axon.AxonHandlerConfiguration
