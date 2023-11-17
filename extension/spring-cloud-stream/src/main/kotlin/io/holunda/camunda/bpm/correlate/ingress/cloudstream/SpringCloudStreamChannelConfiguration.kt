@@ -19,7 +19,7 @@ class SpringCloudStreamChannelConfiguration {
 
   companion object {
     const val CHANNEL_TYPE = "stream"
-    const val DEFAULT_CHANNEL_MESSAGE_HEADER_CONVERTER = "channelMessageHeaderConverter"
+    const val DEFAULT_CHANNEL_MESSAGE_HEADER_CONVERTER = "${CHANNEL_TYPE}ChannelMessageHeaderConverter"
   }
 
   /**

@@ -20,12 +20,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
   webEnvironment = SpringBootTest.WebEnvironment.MOCK,
   properties = [
     // axon-1
-    "correlate.channels.axon-1.type=axon-event",
-    "correlate.channels.axon-1.enabled=true",
+    "correlate.channels.axonOne.type=axon-event",
+    "correlate.channels.axonOne.enabled=true",
     // axon-2
     "correlate.channels.axon-2.type=axon-event",
     "correlate.channels.axon-2.enabled=true",
-    "correlate.channels.axon-2.beanName=specifiedHandlerName",
+    "correlate.channels.axon-2.beanNamePrefix=specified",
     // unknown-type
     "correlate.channels.unknown-type.type=unknown-type",
     "correlate.channels.unknown-type.enabled=true",
@@ -43,7 +43,7 @@ internal class AxonChannelConfigurationIT {
   private lateinit var handlers: Map<String, AxonEventMessageHandler>
 
   @Autowired
-  @Qualifier("specifiedHandlerName")
+  @Qualifier("specifiedConverter")
   private lateinit var converter: AxonEventMessageHeaderConverter
 
 
@@ -51,16 +51,16 @@ internal class AxonChannelConfigurationIT {
   fun configures_two_consumers() {
 
     assertThat(handlers).hasSize(2)
-    assertThat(handlers.keys).containsExactlyInAnyOrder("axon-1-handler", "specifiedHandlerName")
-    assertThat(handlers["axon-1-handler"]!!.channelName).isEqualTo("axon-1")
-    assertThat(handlers["specifiedHandlerName"]!!.channelName).isEqualTo("axon-2")
-    assertThat(handlers["specifiedHandlerName"]!!.axonEventMessageHeaderConverter).isEqualTo(converter)
+    assertThat(handlers.keys).containsExactlyInAnyOrder("axonOneHandler", "specifiedHandler")
+    assertThat(handlers["axonOneHandler"]!!.channelName).isEqualTo("axonOne")
+    assertThat(handlers["specifiedHandler"]!!.channelName).isEqualTo("axon-2")
+    assertThat(handlers["specifiedHandler"]!!.axonEventMessageHeaderConverter).isEqualTo(converter)
   }
 
   @SpringBootApplication(exclude = [BatchCorrelationSchedulerConfiguration::class])
   class TestApplication {
-    @Bean("specifiedHandlerName")
-    fun specifiedHandlerName(): AxonEventMessageHeaderConverter = mock()
+    @Bean("specifiedConverter")
+    fun doesNotMatter(): AxonEventMessageHeaderConverter = mock()
 
     @Bean
     fun singleMessageCorrelationStrategy(): SingleMessageCorrelationStrategy = mock()

@@ -37,17 +37,24 @@ class SpringCloudStreamChannelProxyFactory(
     if (this::applicationContext.isInitialized) {
       logger.debug { "[Camunda CORRELATE] Creating channel consumers for Spring Cloud Streams: ${springCloudConfigurations.keys.joinToString(", ")}." }
       springCloudConfigurations.forEach { (name, config) ->
-        val consumerName = config.beanName ?: "$name-consumer"
+        // lookup named converter or take the default one
+        val converterName = (config.beanNamePrefix ?: name) + "Converter"
+        val converter: StreamChannelMessageHeaderConverter = applicationContext.getQualifiedBeanWithFallback(converterName, DEFAULT_CHANNEL_MESSAGE_HEADER_CONVERTER)
+
+        // lookup consumer or create one
+        val consumerName = (config.beanNamePrefix ?: name) + "Consumer"
         if (!applicationContext.containsBean(consumerName)) {
           // the channel is not configured yet.
           val consumer = StreamByteMessageConsumer(
             messageAcceptor = channelMessageAcceptor,
             metrics = metrics,
-            streamChannelMessageHeaderConverter = applicationContext.getQualifiedBeanWithFallback(name, DEFAULT_CHANNEL_MESSAGE_HEADER_CONVERTER),
+            streamChannelMessageHeaderConverter = converter,
             channelName = name
           )
           applicationContext.registerBean(consumerName, StreamByteMessageConsumer::class.java, Supplier { consumer })
           logger.info { "[Camunda CORRELATE] Registered StreamByteMessageConsumer for channel '$name' named '$consumerName'." }
+        } else {
+          logger.info { "[Camunda CORRELATE] Found a bean '$consumerName', skipping construction." }
         }
       }
     }

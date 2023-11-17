@@ -20,23 +20,23 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
   webEnvironment = SpringBootTest.WebEnvironment.MOCK,
   properties = [
     // kafka-1
-    "correlate.channels.kafka-1.type=stream",
-    "correlate.channels.kafka-1.enabled=true",
+    "correlate.channels.kafkaOne.type=stream",
+    "correlate.channels.kafkaOne.enabled=true",
     // kafka-2
-    "correlate.channels.kafka-2.type=stream",
-    "correlate.channels.kafka-2.enabled=true",
-    "correlate.channels.kafka-2.beanName=specifiedConsumerName",
+    "correlate.channels.kafkaTwo.type=stream",
+    "correlate.channels.kafkaTwo.enabled=true",
+    "correlate.channels.kafkaTwo.beanNamePrefix=specifiedName",
     // unknown-type
-    "correlate.channels.unknown-type.type=unknown-type",
-    "correlate.channels.unknown-type.enabled=true",
+    "correlate.channels.unknownType.type=unknown-type",
+    "correlate.channels.unknownType.enabled=true",
     // disabled
     "correlate.channels.disabled.type=stream",
     "correlate.channels.disabled.enabled=false",
     // function declaration
-    "spring.cloud.stream.function.definition=kafka-1-consumer; specified-consumer-name",
+    "spring.cloud.stream.function.definition=kafkaOneConsumer; specifiedNameConsumer",
     // bindings
-    "spring.cloud.stream.function.bindings.kafka-1-consumer-in-0=correlate-ingress-binding-1",
-    "spring.cloud.stream.function.bindings.specified-consumer-name-in-0=correlate-ingress-binding-1",
+    "spring.cloud.stream.function.bindings.kafkaOneConsumer-in-0=correlate-ingress-binding-1",
+    "spring.cloud.stream.function.bindings.specifiedNameConsumer-in-0=correlate-ingress-binding-1",
 
   ]
 )
@@ -49,23 +49,23 @@ internal class SpringCloudStreamChannelConfigurationIT {
   private lateinit var consumers: Map<String, StreamByteMessageConsumer>
 
   @Autowired
-  @Qualifier("specifiedConsumerName")
-  private lateinit var converter: StreamChannelMessageHeaderConverter
-
+  @Qualifier("specifiedNameConverter")
+  private lateinit var converter: StreamChannelMessageHeaderConverter // this converter will be picked up because of the name of the field
 
   @Test
   fun configures_two_consumers() {
 
     assertThat(consumers).hasSize(2)
-    assertThat(consumers.keys).containsExactlyInAnyOrder("kafka-1-consumer", "specified-consumer-name")
-    assertThat(consumers["kafka-1-consumer"]!!.channelName).isEqualTo("kafka-1")
-    assertThat(consumers["specified-consumer-name"]!!.channelName).isEqualTo("kafka-2")
-    assertThat(consumers["specified-consumer-name"]!!.streamChannelMessageHeaderConverter).isEqualTo(converter)
+    assertThat(consumers.keys).containsExactlyInAnyOrder("kafkaOneConsumer", "specifiedNameConsumer")
+    assertThat(consumers["kafkaOneConsumer"]!!.channelName).isEqualTo("kafkaOne")
+    assertThat(consumers["specifiedNameConsumer"]!!.channelName).isEqualTo("kafkaTwo")
+    assertThat(consumers["specifiedNameConsumer"]!!.streamChannelMessageHeaderConverter).isEqualTo(converter)
   }
 
   @SpringBootApplication(exclude = [BatchCorrelationSchedulerConfiguration::class])
   class TestApplication {
-    @Bean("specifiedConsumerName")
+
+    @Bean("specifiedNameConverter")
     fun qualifiedConverter(): StreamChannelMessageHeaderConverter = mock()
 
     @Bean

@@ -6,3 +6,4 @@ spring:
     - org.springframework.cloud.stream.config.BindingsEndpointAutoConfiguration
     - org.springframework.cloud.stream.config.BindingServiceConfiguration
     - org.springframework.cloud.stream.binder.kafka.config.ExtendedBindingHandlerMappingsProviderConfiguration
+    - org.springframework.cloud.stream.function.FunctionConfiguration
