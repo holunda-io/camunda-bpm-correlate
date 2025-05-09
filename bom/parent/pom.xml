@@ -17,7 +17,7 @@
     <spring-boot.version>2.7.17</spring-boot.version>
     <camunda-7.version>7.19.0</camunda-7.version>
     <camunda-bpm-data.version>1.2.8</camunda-bpm-data.version>
-    <shedlock.version>4.46.0</shedlock.version>
+    <shedlock.version>6.6.0</shedlock.version>
   </properties>
 
   <dependencyManagement>
