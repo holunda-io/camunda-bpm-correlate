@@ -238,8 +238,8 @@
           <version>${kotlin.version}</version>
           <configuration>
             <jvmTarget>${java.version}</jvmTarget>
-            <languageVersion>1.9</languageVersion>
-            <apiVersion>1.9</apiVersion>
+            <languageVersion>2.1</languageVersion>
+            <apiVersion>2.1</apiVersion>
             <compilerPlugins>
               <plugin>spring</plugin>
               <!--plugin>jpa</plugin-->
