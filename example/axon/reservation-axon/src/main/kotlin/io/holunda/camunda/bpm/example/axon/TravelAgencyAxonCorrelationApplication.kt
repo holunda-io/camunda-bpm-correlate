@@ -28,17 +28,6 @@ fun main(args: Array<String>) = runApplication<TravelAgencyAxonCorrelationApplic
 class TravelAgencyAxonCorrelationApplication{
 
   /**
-   * Switch off telemetry.
-   */
-  @Bean
-  fun disablingTelemetry(): SpringProcessEnginePlugin = object : SpringProcessEnginePlugin() {
-    override fun preInit(processEngineConfiguration: ProcessEngineConfigurationImpl) {
-      processEngineConfiguration.isTelemetryReporterActivate = false
-      processEngineConfiguration.isInitializeTelemetry = false
-    }
-  }
-
-  /**
    * Xstream.
    */
   @Bean

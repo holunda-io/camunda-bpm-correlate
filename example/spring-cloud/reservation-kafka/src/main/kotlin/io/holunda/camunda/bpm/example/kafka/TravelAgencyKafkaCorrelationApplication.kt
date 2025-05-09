@@ -22,17 +22,6 @@ fun main(args: Array<String>) = runApplication<TravelAgencyKafkaCorrelationAppli
 class TravelAgencyKafkaCorrelationApplication{
 
   /**
-   * Switch off telemetry.
-   */
-  @Bean
-  fun disablingTelemetry(): SpringProcessEnginePlugin = object : SpringProcessEnginePlugin() {
-    override fun preInit(processEngineConfiguration: ProcessEngineConfigurationImpl) {
-      processEngineConfiguration.isTelemetryReporterActivate = false
-      processEngineConfiguration.isInitializeTelemetry = false
-    }
-  }
-
-  /**
    * Sets time to UTC.
    */
   @PostConstruct
