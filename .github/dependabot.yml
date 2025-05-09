@@ -7,3 +7,16 @@ updates:
     open-pull-requests-limit: 50
     labels:
       - "Type: dependencies"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 50  
+    labels:
+      - "Type: dependencies"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "Type: dependencies"
