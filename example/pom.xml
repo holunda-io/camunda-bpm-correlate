@@ -18,7 +18,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <spin.version>1.15.0</spin.version>
+    <spin.version>7.23.0</spin.version>
     <spring-cloud.version>2021.0.5</spring-cloud.version>
     <axon.framework.version>4.11.3</axon.framework.version>
   </properties>
