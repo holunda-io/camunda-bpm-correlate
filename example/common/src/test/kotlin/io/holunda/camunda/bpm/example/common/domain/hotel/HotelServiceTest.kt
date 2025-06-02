@@ -21,7 +21,7 @@ class HotelServiceTest {
 
     assertThat(result.guestName).isEqualTo(command.guestName)
     assertThat(result.bookingReference).isEqualTo(command.bookingReference)
-    assertThat(result.checkin).isEqualToIgnoringHours(command.checkin)
-    assertThat(result.checkout).isEqualToIgnoringHours(command.checkout)
+    assertThat(result.checkin.toLocalDate()).isEqualTo(command.checkin.toLocalDate())
+    assertThat(result.checkout.toLocalDate()).isEqualTo(command.checkout.toLocalDate())
   }
 }

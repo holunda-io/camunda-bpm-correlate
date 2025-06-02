@@ -5,10 +5,10 @@ import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
 import mu.KLogging
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.scheduling.annotation.SchedulingConfigurer
@@ -19,7 +19,7 @@ import java.util.concurrent.Executors
 /**
  * Scheduler configuration.
  */
-@Configuration
+@AutoConfiguration
 @EnableScheduling
 @AutoConfigureAfter(MessagePersistenceConfiguration::class)
 @ConditionalOnBean(name = ["batchConfigurationProperties"])

@@ -18,7 +18,10 @@ import org.springframework.context.annotation.Bean
 /**
  * Starts the app.
  */
-fun main(args: Array<String>) = runApplication<TravelAgencyAxonCorrelationApplication>(*args).let { Unit }
+fun main(args: Array<String>) {
+  System.setProperty("disable-axoniq-console-message", "true")
+  runApplication<TravelAgencyAxonCorrelationApplication>(*args)
+}
 
 /**
  * Reservation application.

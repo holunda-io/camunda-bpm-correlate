@@ -22,7 +22,7 @@ class MessageMetadataExtractorChain(
   }
 
   /**
-   * Extracts meta data from the message.
+   * Extracts metadata from the message.
    */
   fun <P> extractChainedMetaData(message: ChannelMessage<P>): MessageMetaData {
     val snippet = extractMetaData(message)

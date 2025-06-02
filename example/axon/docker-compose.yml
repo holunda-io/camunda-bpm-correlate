@@ -1,14 +1,14 @@
-version: "3.5"
 services:
 
   axonserver:
-    image: axoniq/axonserver
+    image: axoniq/axonserver:2025.0.2
     container_name: correlate-axonserver
     ports:
       - "8024:8024"
       - "8124:8124"
     environment:
       - AXONIQ_AXONSERVER_DEVMODE_ENABLED=true
+      - AXONIQ_AXONSERVER_STANDALONE=true
 
   hotel:
     image: io.holunda/hotel-axon:latest
@@ -21,8 +21,3 @@ services:
     container_name: flight_axon
     depends_on:
       - axonserver
-
-networks:
-  default:
-    name: correlate-process
-    external: true

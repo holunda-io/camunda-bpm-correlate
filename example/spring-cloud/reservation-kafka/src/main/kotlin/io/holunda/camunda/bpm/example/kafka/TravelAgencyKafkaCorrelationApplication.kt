@@ -1,13 +1,10 @@
 package io.holunda.camunda.bpm.example.kafka
 
-import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
-import org.camunda.bpm.engine.spring.SpringProcessEnginePlugin
+import jakarta.annotation.PostConstruct
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Bean
 import java.util.*
-import jakarta.annotation.PostConstruct
 
 /**
  * Starts the app.
@@ -19,7 +16,7 @@ fun main(args: Array<String>) = runApplication<TravelAgencyKafkaCorrelationAppli
  */
 @SpringBootApplication
 @EnableProcessApplication
-class TravelAgencyKafkaCorrelationApplication{
+class TravelAgencyKafkaCorrelationApplication {
 
   /**
    * Sets time to UTC.

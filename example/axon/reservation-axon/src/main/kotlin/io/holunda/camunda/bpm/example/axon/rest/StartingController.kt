@@ -1,6 +1,7 @@
 package io.holunda.camunda.bpm.example.axon.rest
 
 import io.holunda.camunda.bpm.example.common.domain.ReservationReceivedEvent
+import mu.KLogging
 import org.axonframework.eventhandling.gateway.EventGateway
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.noContent
@@ -19,11 +20,14 @@ class StartingController(
   val eventGateway: EventGateway
 ) {
 
+  companion object: KLogging()
+
   /**
    * Starts the process via REST.
    */
   @PostMapping("/reservation")
   fun reservationReceived(@NonNull @RequestBody request: ReservationReceivedEvent): ResponseEntity<Void> {
+    logger.info { "Reservation received, publishing corresponding event $request" }
     eventGateway.publish(request)
     return noContent().build()
   }

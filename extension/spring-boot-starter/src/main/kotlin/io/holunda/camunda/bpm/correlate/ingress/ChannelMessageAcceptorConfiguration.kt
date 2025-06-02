@@ -5,6 +5,7 @@ import io.holunda.camunda.bpm.correlate.ingress.filter.AllMessageFilter
 import io.holunda.camunda.bpm.correlate.ingress.impl.PersistingChannelMessageAcceptorImpl
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Configuration
 /**
  * Channel configuration.
  */
-@Configuration
+@AutoConfiguration
 @ConditionalOnBean(name = ["messageMetadataExtractorChain"])
 @AutoConfigureAfter(MessagePersistenceConfiguration::class)
 class ChannelMessageAcceptorConfiguration {

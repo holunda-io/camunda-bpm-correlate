@@ -1,16 +1,18 @@
 package io.holunda.camunda.bpm.correlate.correlation
 
-import mu.KLogging
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import jakarta.annotation.PostConstruct
+import mu.KLogging
+import org.springframework.boot.autoconfigure.AutoConfiguration
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 /**
  * Global message configuration.
  */
+@AutoConfiguration
 @EnableConfigurationProperties(GlobalMessageMetaDataConfigurationProperties::class)
 class GlobalMessageConfiguration(private val messageMetaDataConfigurationProperties: GlobalMessageMetaDataConfigurationProperties) {
 
-  companion object: KLogging()
+  companion object : KLogging()
 
   /**
    * Prints settings.

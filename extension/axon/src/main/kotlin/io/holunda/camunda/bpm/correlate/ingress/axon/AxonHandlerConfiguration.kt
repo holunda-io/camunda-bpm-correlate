@@ -3,11 +3,13 @@ package io.holunda.camunda.bpm.correlate.ingress.axon
 import mu.KLogging
 import org.axonframework.config.EventProcessingConfigurer
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 
 /**
- * Configuration of Axon Channel handlers to be registered to recieve events from Axon Event Bus.
+ * Configuration of Axon Channel handlers to be registered to receive events from Axon Event Bus.
  */
+@AutoConfiguration
 @AutoConfigureAfter(AxonChannelConfiguration::class)
 class AxonHandlerConfiguration {
 
@@ -16,6 +18,7 @@ class AxonHandlerConfiguration {
     /**
      * Configures the handlers.
      */
+    @Autowired
   fun configureProcessingGroupEventHandling(
     @Autowired
     processingConfigurer: EventProcessingConfigurer,

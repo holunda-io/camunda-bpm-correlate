@@ -21,6 +21,7 @@ import io.micrometer.core.instrument.MeterRegistry
 import mu.KLogging
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -28,14 +29,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import java.time.Clock
 
 /**
  * Main correlation configuration.
  */
-@Configuration
+@AutoConfiguration
 @ConditionalOnProperty(
   prefix = "correlate",
   name = ["enabled"],

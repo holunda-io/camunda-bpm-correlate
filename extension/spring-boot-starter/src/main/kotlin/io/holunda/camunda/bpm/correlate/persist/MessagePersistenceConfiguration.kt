@@ -12,21 +12,20 @@ import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingPrope
 import io.holunda.camunda.bpm.correlate.persist.error.RetryingSingleMessageErrorHandlingStrategy
 import io.holunda.camunda.bpm.correlate.persist.impl.*
 import org.camunda.bpm.engine.ProcessEngine
-import org.camunda.bpm.engine.ProcessEngineServices
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import java.time.Clock
 
 /**
  * Configuration of message serialization and persistence.
  */
-@Configuration
+@AutoConfiguration
 @ConditionalOnBean(name = ["messagePersistenceProperties"])
 @AutoConfigureAfter(CamundaBpmCorrelateConfiguration::class)
 class MessagePersistenceConfiguration {
@@ -80,7 +79,6 @@ class MessagePersistenceConfiguration {
     val processEngineConfiguration = processEngine.processEngineConfiguration as ProcessEngineConfigurationImpl
     return MyBatisMessageRepository(sqlSessionFactory = processEngineConfiguration.sqlSessionFactory)
   }
-
 
 
   /**
