@@ -1,6 +1,6 @@
 package io.holunda.camunda.bpm.correlate.event
 
-import mu.KLogger
+import io.github.oshai.kotlinlogging.KLogger
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verifyNoMoreInteractions

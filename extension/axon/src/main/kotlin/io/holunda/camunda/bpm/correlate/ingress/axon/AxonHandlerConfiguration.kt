@@ -1,19 +1,18 @@
 package io.holunda.camunda.bpm.correlate.ingress.axon
 
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.axonframework.config.EventProcessingConfigurer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 
+private val logger = KotlinLogging.logger {}
 /**
  * Configuration of Axon Channel handlers to be registered to receive events from Axon Event Bus.
  */
 @AutoConfiguration
 @AutoConfigureAfter(AxonChannelConfiguration::class)
 class AxonHandlerConfiguration {
-
-  companion object : KLogging()
 
     /**
      * Configures the handlers.

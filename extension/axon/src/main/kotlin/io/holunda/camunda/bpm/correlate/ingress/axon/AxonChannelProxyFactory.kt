@@ -9,13 +9,14 @@ import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Co
 import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Companion.PROPERTY_CHANNEL_PAYLOAD_ENCODING
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
 import io.holunda.camunda.bpm.correlate.util.getQualifiedBeanWithFallback
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.support.GenericApplicationContext
 import java.util.function.Supplier
 
+private val logger = KotlinLogging.logger {}
 /**
  * Spring factory creating Axon Framework channels based on configuration.
  */
@@ -26,8 +27,6 @@ class AxonChannelProxyFactory(
   private val globalConfig: GlobalConfig,
   channelConfigurations: Map<String, ChannelConfigurationProperties>
 ) : ApplicationContextAware, InitializingBean {
-
-  companion object : KLogging()
 
   private lateinit var applicationContext: GenericApplicationContext
   private val axonEventConfigurations: Map<String, ChannelConfigurationProperties> by lazy {

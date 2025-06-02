@@ -4,19 +4,18 @@ import io.holunda.camunda.bpm.data.CamundaBpmData.reader
 import io.holunda.camunda.bpm.example.axon.ReservationProcessing.Variables.CUSTOMER_NAME
 import io.holunda.camunda.bpm.example.axon.ReservationProcessing.Variables.DELAY
 import io.holunda.camunda.bpm.example.axon.ReservationProcessing.Variables.RESERVATION_ID
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.JavaDelegate
 import org.springframework.stereotype.Component
 
+private val logger = KotlinLogging.logger {}
 /**
  * Component saving the reservation details.
  * Takes a long time to finish.
  */
 @Component
 class SaveReservationDetails : JavaDelegate {
-
-  companion object : KLogging()
 
   override fun execute(execution: DelegateExecution) {
     val reader = reader(execution)

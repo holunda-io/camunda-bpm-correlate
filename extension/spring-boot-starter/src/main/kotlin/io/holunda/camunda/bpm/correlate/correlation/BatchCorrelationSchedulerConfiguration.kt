@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.correlate.correlation
 
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
 import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.AutoConfiguration
@@ -16,6 +16,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
+private val logger = KotlinLogging.logger {}
 /**
  * Scheduler configuration.
  */
@@ -29,8 +30,6 @@ class BatchCorrelationSchedulerConfiguration(
   private val batchConfigurationProperties: BatchConfigurationProperties,
   private val correlationMetrics: CorrelationMetrics
 ) : SchedulingConfigurer {
-
-  companion object : KLogging()
 
   // FIXME: implement better scheduler
 

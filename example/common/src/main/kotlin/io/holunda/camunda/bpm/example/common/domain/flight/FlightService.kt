@@ -1,16 +1,15 @@
 package io.holunda.camunda.bpm.example.common.domain.flight
 
 import io.holunda.camunda.bpm.example.common.domain.setHours
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
+private val logger = KotlinLogging.logger {}
 /**
  * Flight service.
  */
 class FlightService(
   val delay: Long
 ) {
-
-  companion object : KLogging()
 
   init {
     logger.info { "Flight service delays responses for $delay seconds." }

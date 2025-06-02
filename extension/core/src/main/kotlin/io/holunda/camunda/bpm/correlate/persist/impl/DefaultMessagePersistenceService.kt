@@ -11,8 +11,10 @@ import io.holunda.camunda.bpm.correlate.ingress.message.DelegatingChannelMessage
 import io.holunda.camunda.bpm.correlate.persist.*
 import io.holunda.camunda.bpm.correlate.persist.MessageErrorHandlingResult.*
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.time.Clock
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Persistence for messages.
@@ -25,8 +27,6 @@ class DefaultMessagePersistenceService(
   private val singleMessageCorrelationStrategy: SingleMessageCorrelationStrategy,
   private val singleMessageErrorHandlingStrategy: SingleMessageErrorHandlingStrategy
 ) : MessagePersistenceService {
-
-  companion object : KLogging()
 
   /**
    * Null-object for no payload.

@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.correlate.correlation
 
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
 import jakarta.annotation.PostConstruct
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.javacrumbs.shedlock.core.LockProvider
 import net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock
@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.core.JdbcTemplate
 import javax.sql.DataSource
 
+private val logger = KotlinLogging.logger {}
 /**
  * Cluster setup configuration.
  */
@@ -21,8 +22,6 @@ import javax.sql.DataSource
 @AutoConfigureAfter(MessagePersistenceConfiguration::class)
 @EnableSchedulerLock(defaultLockAtMostFor = "PT10M") // TODO, make to some sort of a parameter
 class ClusterSetupConfiguration {
-
-  companion object : KLogging()
 
   /**
    * Reports cluster config activation.

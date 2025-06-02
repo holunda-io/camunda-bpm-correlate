@@ -4,10 +4,10 @@ import io.holunda.camunda.bpm.correlate.persist.CountByStatus
 import io.holunda.camunda.bpm.correlate.util.ComponentLike
 import io.micrometer.core.instrument.Gauge
 import io.micrometer.core.instrument.MeterRegistry
-import io.micrometer.core.instrument.Tag
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.concurrent.atomic.AtomicLong
 
+private val logger = KotlinLogging.logger {}
 /**
  * Captures correlation metrics.
  */
@@ -16,7 +16,7 @@ class CorrelationMetrics(
   private val registry: MeterRegistry
 ) {
 
-  companion object : KLogging() {
+  companion object {
     const val PREFIX = "camunda.bpm.correlate"
 
     const val COUNTER_CORRELATED = "$PREFIX.correlation.success"

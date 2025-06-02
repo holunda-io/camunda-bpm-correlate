@@ -18,7 +18,7 @@ import io.holunda.camunda.bpm.correlate.persist.error.RetryingErrorHandlingPrope
 import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
 import io.holunda.camunda.bpm.correlate.persist.impl.MessagePersistenceProperties
 import io.micrometer.core.instrument.MeterRegistry
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.AutoConfiguration
@@ -46,7 +46,7 @@ import java.time.Clock
 @EnableConfigurationProperties(CorrelateConfigurationProperties::class)
 class CamundaBpmCorrelateConfiguration : ApplicationContextAware {
 
-  companion object : KLogging() {
+  companion object {
     /**
      * This is a dirty hack to access application context from cockpit plugins instantiated by the SPI.
      */

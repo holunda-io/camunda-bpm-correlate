@@ -1,7 +1,7 @@
 package io.holunda.camunda.bpm.example.axon.rest
 
 import io.holunda.camunda.bpm.example.common.domain.ReservationReceivedEvent
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.axonframework.eventhandling.gateway.EventGateway
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.noContent
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+private val logger = KotlinLogging.logger {}
+
 /**
  * Simple controller allowing to start reservations via REST.
  */
@@ -19,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController
 class StartingController(
   val eventGateway: EventGateway
 ) {
-
-  companion object: KLogging()
 
   /**
    * Starts the process via REST.

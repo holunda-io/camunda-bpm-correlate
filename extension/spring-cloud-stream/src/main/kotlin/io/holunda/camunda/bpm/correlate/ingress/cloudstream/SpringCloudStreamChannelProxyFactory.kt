@@ -6,12 +6,14 @@ import io.holunda.camunda.bpm.correlate.ingress.IngressMetrics
 import io.holunda.camunda.bpm.correlate.ingress.cloudstream.SpringCloudStreamChannelConfiguration.Companion.CHANNEL_TYPE
 import io.holunda.camunda.bpm.correlate.ingress.cloudstream.SpringCloudStreamChannelConfiguration.Companion.DEFAULT_CHANNEL_MESSAGE_HEADER_CONVERTER
 import io.holunda.camunda.bpm.correlate.util.getQualifiedBeanWithFallback
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.support.GenericApplicationContext
 import java.util.function.Supplier
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Factory for creating named channel consumers for cloud streams based on the configuration.
@@ -21,8 +23,6 @@ class SpringCloudStreamChannelProxyFactory(
   private val metrics: IngressMetrics,
   channelConfigurations: Map<String, ChannelConfigurationProperties>,
 ) : ApplicationContextAware, InitializingBean {
-
-  companion object : KLogging()
 
   private lateinit var applicationContext: GenericApplicationContext
   private val springCloudConfigurations: Map<String, ChannelConfigurationProperties> by lazy {

@@ -530,6 +530,11 @@
                   <requireMavenVersion>
                     <version>3.9.0</version>
                   </requireMavenVersion>
+                  <bannedDependencies>
+                    <excludes>
+                      <exclude>io.github.microutils:kotlin-logging-jvm</exclude>
+                    </excludes>
+                  </bannedDependencies>
                 </rules>
               </configuration>
             </execution>

@@ -4,15 +4,13 @@ import io.holunda.camunda.bpm.correlate.persist.CountByStatus
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
 import io.holunda.camunda.bpm.correlate.persist.MessageStatus
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.time.Instant
 
 /**
  * In-memory implementation of a repository.
  */
 class InMemMessageRepository : MessageRepository {
-
-  companion object : KLogging()
 
   private val store: MutableMap<String, MessageEntity> = mutableMapOf()
 
