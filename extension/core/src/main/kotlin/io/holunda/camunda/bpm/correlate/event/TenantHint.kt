@@ -3,6 +3,7 @@ package io.holunda.camunda.bpm.correlate.event
 /**
  * Tenant hint.
  */
+@ConsistentCopyVisibility
 data class TenantHint internal constructor(
   /**
    * Tenant id.
