@@ -3,13 +3,15 @@ package io.holunda.camunda.bpm.correlate.persist.error
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import io.holunda.camunda.bpm.correlate.persist.MessageErrorHandlingResult
 import io.holunda.camunda.bpm.correlate.persist.SingleMessageErrorHandlingStrategy
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.time.Clock
 import java.time.Duration
 import java.time.Instant
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
 import kotlin.math.pow
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Single message retrying strategy focusing on retries based on timing configured in the config.
@@ -18,8 +20,6 @@ class RetryingSingleMessageErrorHandlingStrategy(
   private val clock: Clock,
   private val retryErrorHandlingConfig: RetryingErrorHandlingConfig
 ) : SingleMessageErrorHandlingStrategy {
-
-  companion object : KLogging()
 
   override fun evaluateMessageError(entity: MessageEntity, errorDescription: String): MessageErrorHandlingResult {
     return if (isAlive(entity)) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_17tlool" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_17tlool" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
   <bpmn:collaboration id="Collaboration_0drvxjt">
     <bpmn:participant id="travel_agency_reservation_processing" name="Reservation Processing" processRef="io.holunda.example.travel-agency.reservation-processing" />
     <bpmn:participant id="airline" name="Airline Service" />
@@ -9,7 +9,7 @@
     <bpmn:messageFlow id="Flow_1ha7ruw" sourceRef="send_book_hotel" targetRef="hotel" />
     <bpmn:messageFlow id="Flow_0vlh38i" sourceRef="hotel" targetRef="catch_hotel_reservation_received" />
   </bpmn:collaboration>
-  <bpmn:process id="io.holunda.example.travel-agency.reservation-processing" name="Reservation Processing" isExecutable="true">
+  <bpmn:process id="io.holunda.example.travel-agency.reservation-processing" name="Reservation Processing" isExecutable="true" camunda:historyTimeToLive="P1D">
     <bpmn:startEvent id="reservation_received" name="Reservation received">
       <bpmn:outgoing>Flow_1gatt2m</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_11wg0bc" messageRef="Message_0xfihjh" />
@@ -88,34 +88,6 @@
       <bpmndi:BPMNShape id="Participant_0c539e8_di" bpmnElement="travel_agency_reservation_processing" isHorizontal="true">
         <dc:Bounds x="160" y="80" width="1050" height="270" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1iz8jv4_di" bpmnElement="Flow_1iz8jv4">
-        <di:waypoint x="1048" y="220" />
-        <di:waypoint x="1122" y="220" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0p963zc_di" bpmnElement="Flow_0p963zc">
-        <di:waypoint x="828" y="220" />
-        <di:waypoint x="902" y="220" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_16esor8_di" bpmnElement="Flow_16esor8">
-        <di:waypoint x="740" y="220" />
-        <di:waypoint x="792" y="220" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1075nde_di" bpmnElement="Flow_1075nde">
-        <di:waypoint x="430" y="220" />
-        <di:waypoint x="480" y="220" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1kosdez_di" bpmnElement="Flow_1kosdez">
-        <di:waypoint x="938" y="220" />
-        <di:waypoint x="1012" y="220" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1gtzzrn_di" bpmnElement="Flow_1gtzzrn">
-        <di:waypoint x="580" y="220" />
-        <di:waypoint x="640" y="220" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1gatt2m_di" bpmnElement="Flow_1gatt2m">
-        <di:waypoint x="268" y="220" />
-        <di:waypoint x="330" y="220" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1hy60in_di" bpmnElement="reservation_received">
         <dc:Bounds x="232" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -170,6 +142,34 @@
       <bpmndi:BPMNShape id="TextAnnotation_13vi8bh_di" bpmnElement="TextAnnotation_13vi8bh">
         <dc:Bounds x="1050" y="120" width="72" height="30" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1gatt2m_di" bpmnElement="Flow_1gatt2m">
+        <di:waypoint x="268" y="220" />
+        <di:waypoint x="330" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gtzzrn_di" bpmnElement="Flow_1gtzzrn">
+        <di:waypoint x="580" y="220" />
+        <di:waypoint x="640" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1kosdez_di" bpmnElement="Flow_1kosdez">
+        <di:waypoint x="938" y="220" />
+        <di:waypoint x="1012" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1075nde_di" bpmnElement="Flow_1075nde">
+        <di:waypoint x="430" y="220" />
+        <di:waypoint x="480" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16esor8_di" bpmnElement="Flow_16esor8">
+        <di:waypoint x="740" y="220" />
+        <di:waypoint x="792" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0p963zc_di" bpmnElement="Flow_0p963zc">
+        <di:waypoint x="828" y="220" />
+        <di:waypoint x="902" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1iz8jv4_di" bpmnElement="Flow_1iz8jv4">
+        <di:waypoint x="1048" y="220" />
+        <di:waypoint x="1122" y="220" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_0tji41c_di" bpmnElement="Association_0tji41c">
         <di:waypoint x="418" y="180" />
         <di:waypoint x="466" y="130" />

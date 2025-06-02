@@ -4,7 +4,6 @@ import io.holunda.camunda.bpm.correlate.persist.CountByStatus
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity.Companion.FAR_FUTURE
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
-import mu.KLogging
 import java.time.Clock
 import java.time.Instant
 
@@ -16,8 +15,6 @@ class MessageManagementService(
   private val persistenceConfig: MessagePersistenceConfig,
   private val clock: Clock
 ) {
-
-  companion object : KLogging()
 
   /**
    * Delete expired messages.

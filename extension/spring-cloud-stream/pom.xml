@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.holunda</groupId>
     <artifactId>camunda-bpm-correlate-parent</artifactId>
-    <version>1.3.0</version>
+    <version>2025.05.1</version>
     <relativePath>../../bom/parent/pom.xml</relativePath>
   </parent>
 
@@ -14,7 +14,7 @@
   <name>Extension / Ingress Adapter Spring Cloud Stream</name>
 
   <properties>
-    <spring-cloud.version>2021.0.5</spring-cloud.version>
+    <spring-cloud.version>2025.0.0</spring-cloud.version>
   </properties>
 
   <dependencyManagement>
@@ -26,17 +26,29 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
       <!-- FIXME: Remove as soon as spring fixes those issues -->
       <!-- https://github.com/spring-cloud/spring-cloud-function/issues/925 -->
+      <!--
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-function-context</artifactId>
         <version>3.2.5</version>
       </dependency>
+      -->
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>io.toolisticon.spring</groupId>
+      <artifactId>spring-boot-conditions</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream</artifactId>
@@ -61,6 +73,6 @@
       <artifactId>camunda-commons-typed-values</artifactId>
       <scope>provided</scope>
     </dependency>
-    
+
   </dependencies>
 </project>

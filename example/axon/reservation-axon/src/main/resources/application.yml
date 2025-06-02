@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Kafka Travel Agency Example
+    name: Axon Travel Agency Example
   jpa:
     open-in-view: true
     show-sql: false
@@ -55,4 +55,5 @@ axon:
 
 logging:
   level:
-    io.holunda.camunda.bpm.correlate.correlation: DEBUG
+    # io.holunda.camunda.bpm.correlate.correlation: DEBUG
+    io.holunda.camunda.bpm.correlate: DEBUG

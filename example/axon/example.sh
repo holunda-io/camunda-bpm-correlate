@@ -3,7 +3,8 @@
 DIR=$(dirname "$0")
 
 CLIENT_BIN=curl
-RESERVATION_ID=$(cat /proc/sys/kernel/random/uuid)
+RESERVATION_ID=$(uuidgen)
+# $(cat /proc/sys/kernel/random/uuid)
 
 case "$1" in
   "reservation")

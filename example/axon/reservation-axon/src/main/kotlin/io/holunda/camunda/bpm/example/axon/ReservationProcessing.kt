@@ -1,7 +1,7 @@
 package io.holunda.camunda.bpm.example.axon
 
 import io.holunda.camunda.bpm.data.CamundaBpmData.builder
-import io.holunda.camunda.bpm.data.CamundaBpmData.longVariable
+import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.longVariable
 import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.customVariable
 import io.holunda.camunda.bpm.data.CamundaBpmDataKotlin.stringVariable
 import io.holunda.camunda.bpm.example.axon.ReservationProcessing.Variables
@@ -40,17 +40,17 @@ object ReservationProcessing {
    * Process variables.
    */
   object Variables {
-    val DELAY = longVariable("delay")
-    val RESERVATION_ID = stringVariable("reservationId")
-    val CUSTOMER_NAME = stringVariable("customerName")
-    val DESTINATION_ARRIVAL_DATE = customVariable<OffsetDateTime>("arrivalDate")
-    val DESTINATION_DEPARTURE_DATE = customVariable<OffsetDateTime>("departureDate")
-    val SOURCE = stringVariable("source")
-    val DESTINATION = stringVariable("destination")
+    val DELAY = longVariable("delay").nonNull
+    val RESERVATION_ID = stringVariable("reservationId").nonNull
+    val CUSTOMER_NAME = stringVariable("customerName").nonNull
+    val DESTINATION_ARRIVAL_DATE = customVariable<OffsetDateTime>("arrivalDate").nonNull
+    val DESTINATION_DEPARTURE_DATE = customVariable<OffsetDateTime>("departureDate").nonNull
+    val SOURCE = stringVariable("source").nonNull
+    val DESTINATION = stringVariable("destination").nonNull
 
-    val HOTEL_INFO = customVariable<HotelInfo>("hotelInfo")
-    val FLIGHT_INFO_OUTGOING = customVariable<FlightInfo>("flightInfoOutgoing")
-    val FLIGHT_INFO_INCOMING = customVariable<FlightInfo>("flightInfoIncoming")
+    val HOTEL_INFO = customVariable<HotelInfo>("hotelInfo").nonNull
+    val FLIGHT_INFO_OUTGOING = customVariable<FlightInfo>("flightInfoOutgoing").nonNull
+    val FLIGHT_INFO_INCOMING = customVariable<FlightInfo>("flightInfoIncoming").nonNull
   }
 }
 

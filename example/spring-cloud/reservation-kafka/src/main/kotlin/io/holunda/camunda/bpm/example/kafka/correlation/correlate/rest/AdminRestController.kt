@@ -2,7 +2,7 @@ package io.holunda.camunda.bpm.example.kafka.correlation.correlate.rest
 
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 class AdminRestController(
   val messageManagementService: MessageManagementService
 ) {
-
-  companion object : KLogging()
 
   /**
    * Allows to check the inbox messages.

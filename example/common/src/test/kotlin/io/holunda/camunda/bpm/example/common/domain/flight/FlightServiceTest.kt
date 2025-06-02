@@ -22,7 +22,7 @@ class FlightServiceTest {
     val result = flightService.bookFlight(command)
     assertThat(result.passengersName == command.passengersName)
     assertThat(result.bookingReference == command.bookingReference)
-    assertThat(result.outgoingFlight.departure).isEqualToIgnoringHours(command.destinationArrivalDate)
-    assertThat(result.incomingFlight.departure).isEqualToIgnoringHours(command.destinationDepartureDate)
+    assertThat(result.outgoingFlight.departure.toLocalDate()).isEqualTo(command.destinationArrivalDate.toLocalDate())
+    assertThat(result.incomingFlight.departure.toLocalDate()).isEqualTo(command.destinationDepartureDate.toLocalDate())
   }
 }

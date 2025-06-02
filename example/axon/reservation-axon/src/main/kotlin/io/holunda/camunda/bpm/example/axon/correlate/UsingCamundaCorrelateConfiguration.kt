@@ -4,12 +4,13 @@ import io.holunda.camunda.bpm.correlate.CorrelateConfigurationProperties
 import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
 import io.holunda.camunda.bpm.correlate.persist.impl.MessageManagementService
 import io.holunda.camunda.bpm.example.axon.correlate.rest.AdminRestController
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.RepositoryService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
+private val logger = KotlinLogging.logger {}
 /**
  * Configuration for correlation.
  */
@@ -17,8 +18,6 @@ import javax.annotation.PostConstruct
 class UsingCamundaCorrelateConfiguration(
   val correlateConfigurationProperties: CorrelateConfigurationProperties
 ) {
-  companion object : KLogging()
-
   /**
    * Post some info.
    */

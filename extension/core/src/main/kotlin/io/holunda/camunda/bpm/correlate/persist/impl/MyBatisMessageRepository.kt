@@ -3,7 +3,6 @@ package io.holunda.camunda.bpm.correlate.persist.impl
 import io.holunda.camunda.bpm.correlate.persist.CountByStatus
 import io.holunda.camunda.bpm.correlate.persist.MessageEntity
 import io.holunda.camunda.bpm.correlate.persist.MessageRepository
-import mu.KLogging
 import org.apache.ibatis.session.RowBounds
 import org.apache.ibatis.session.SqlSessionFactory
 import java.time.Instant
@@ -15,8 +14,6 @@ import java.time.Instant
 class MyBatisMessageRepository(
   private val sqlSessionFactory: SqlSessionFactory
 ) : MessageRepository {
-
-  companion object : KLogging()
 
   override fun findAllLight(page: Int, pageSize: Int, faultsOnly: Boolean): List<MessageEntity> {
     return sqlSessionFactory.openSession().use {

@@ -7,13 +7,14 @@ import io.holunda.camunda.bpm.example.kafka.correlation.UsingCamundaCorrelateCon
 import io.holunda.camunda.bpm.example.kafka.correlation.correlate.ReservationProcessingCorrelation
 import io.holunda.camunda.bpm.example.kafka.correlation.correlate.ReservationProcessingEventFactory
 import io.holunda.camunda.bpm.example.kafka.correlation.correlate.rest.AdminRestController
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.RepositoryService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
+private val logger = KotlinLogging.logger {}
 /**
  * Configuration to use the library for correlation.
  */
@@ -23,7 +24,7 @@ class UsingCamundaCorrelateConfiguration(
   val correlateConfigurationProperties: CorrelateConfigurationProperties
 ) {
 
-  companion object : KLogging() {
+  companion object {
     const val PROFILE = "camunda-correlate"
   }
 

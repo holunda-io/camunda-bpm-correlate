@@ -7,11 +7,11 @@ import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceConfiguration
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
 import org.camunda.bpm.engine.RuntimeService
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import org.springframework.transaction.annotation.Propagation.REQUIRES_NEW
 import org.springframework.transaction.annotation.Transactional
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 /**
  * Batch correlation configuration.
  */
-@Configuration
+@AutoConfiguration
 @ConditionalOnBean(name = ["batchConfigurationProperties"])
 @AutoConfigureAfter(MessagePersistenceConfiguration::class)
 @EnableTransactionManagement

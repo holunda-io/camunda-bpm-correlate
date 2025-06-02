@@ -8,8 +8,10 @@ import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatchResult.Error
 import io.holunda.camunda.bpm.correlate.correlation.CorrelationBatchResult.Success
 import io.holunda.camunda.bpm.correlate.correlation.metadata.MessageMetaData
 import io.holunda.camunda.bpm.correlate.event.*
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.RuntimeService
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Service responsible for correlation with Camunda Platform engine.
@@ -19,8 +21,6 @@ class CamundaBpmBatchCorrelationService(
   private val runtimeService: RuntimeService,
   private val batchCorrelationMode: BatchCorrelationMode
 ) : BatchCorrelationService {
-
-  companion object : KLogging()
 
   /**
    * Correlates the batch.

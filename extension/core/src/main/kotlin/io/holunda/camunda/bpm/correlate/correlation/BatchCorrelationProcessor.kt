@@ -1,8 +1,9 @@
 package io.holunda.camunda.bpm.correlate.correlation
 
 import io.holunda.camunda.bpm.correlate.persist.MessagePersistenceService
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
+private val logger = KotlinLogging.logger {}
 /**
  * Main processor driving the correlation.
  */
@@ -11,8 +12,6 @@ class BatchCorrelationProcessor(
   private val correlationService: BatchCorrelationService,
   private val correlationMetrics: CorrelationMetrics
 ) {
-
-  companion object : KLogging()
 
   /**
    * Runs correlation of messages stored in the inbox.

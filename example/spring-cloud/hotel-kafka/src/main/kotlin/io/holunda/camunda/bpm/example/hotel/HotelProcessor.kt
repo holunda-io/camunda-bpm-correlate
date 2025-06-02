@@ -5,12 +5,13 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import io.holunda.camunda.bpm.example.common.domain.hotel.BookHotelCommand
 import io.holunda.camunda.bpm.example.common.domain.hotel.HotelReservationConfirmedEvent
 import io.holunda.camunda.bpm.example.common.domain.hotel.HotelService
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.messaging.Message
 import org.springframework.messaging.MessageHeaders
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
 
+private val logger = KotlinLogging.logger {}
 /**
  * Hotel processor, typical Spring Cloud Function implementation.
  */
@@ -19,8 +20,6 @@ class HotelProcessor(
   private val objectMapper: ObjectMapper,
   private val hotelService: HotelService
 ) : java.util.function.Function<Message<ByteArray>, Message<ByteArray>> {
-
-  companion object : KLogging()
 
   override fun apply(message: Message<ByteArray>): Message<ByteArray> {
     val command = objectMapper.readValue<BookHotelCommand>(message.payload)
