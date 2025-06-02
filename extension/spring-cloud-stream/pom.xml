@@ -14,7 +14,7 @@
   <name>Extension / Ingress Adapter Spring Cloud Stream</name>
 
   <properties>
-    <spring-cloud.version>2022.0.4</spring-cloud.version>
+    <spring-cloud.version>2025.0.0</spring-cloud.version>
   </properties>
 
   <dependencyManagement>
