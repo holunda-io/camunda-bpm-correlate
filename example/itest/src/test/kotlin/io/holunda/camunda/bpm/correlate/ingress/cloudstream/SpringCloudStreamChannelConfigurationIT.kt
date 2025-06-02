@@ -3,6 +3,7 @@ package io.holunda.camunda.bpm.correlate.ingress.cloudstream
 import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationSchedulerConfiguration
 import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.kotlin.mock
@@ -40,7 +41,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
   ]
 )
-@ExtendWith(SpringExtension::class)
 @ActiveProfiles("spring-cloud-stream")
 @EmbeddedKafka(partitions = 1, count = 1, ports = [59092], topics = ["correlate-ingress"])
 internal class SpringCloudStreamChannelConfigurationIT {
@@ -50,7 +50,7 @@ internal class SpringCloudStreamChannelConfigurationIT {
 
   @Autowired
   @Qualifier("specifiedNameConverter")
-  private lateinit var converter: StreamChannelMessageHeaderConverter // this converter will be picked up because of the name of the field
+  private lateinit var specifiedNameConverter: StreamChannelMessageHeaderConverter // this converter will be picked up because of the name of the field
 
   @Test
   fun configures_two_consumers() {
@@ -59,13 +59,14 @@ internal class SpringCloudStreamChannelConfigurationIT {
     assertThat(consumers.keys).containsExactlyInAnyOrder("kafkaOneConsumer", "specifiedNameConsumer")
     assertThat(consumers["kafkaOneConsumer"]!!.channelName).isEqualTo("kafkaOne")
     assertThat(consumers["specifiedNameConsumer"]!!.channelName).isEqualTo("kafkaTwo")
-    assertThat(consumers["specifiedNameConsumer"]!!.streamChannelMessageHeaderConverter).isEqualTo(converter)
+    assertThat(consumers["specifiedNameConsumer"]!!.streamChannelMessageHeaderConverter).isEqualTo(specifiedNameConverter)
   }
 
   @SpringBootApplication(exclude = [BatchCorrelationSchedulerConfiguration::class])
   class TestApplication {
 
     @Bean("specifiedNameConverter")
+    @Qualifier("specifiedNameConverter")
     fun qualifiedConverter(): StreamChannelMessageHeaderConverter = mock()
 
     @Bean

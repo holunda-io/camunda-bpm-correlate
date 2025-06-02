@@ -6,7 +6,6 @@ spring:
     show-sql: false
 
 axon:
-  disable-axoniq-console-message: true
   axonserver:
     enabled: false
 

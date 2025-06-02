@@ -26,6 +26,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
       <!-- FIXME: Remove as soon as spring fixes those issues -->
       <!-- https://github.com/spring-cloud/spring-cloud-function/issues/925 -->
       <!--
@@ -39,6 +40,11 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>io.toolisticon.spring</groupId>
+      <artifactId>spring-boot-conditions</artifactId>
+      <version>1.0.0</version>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>

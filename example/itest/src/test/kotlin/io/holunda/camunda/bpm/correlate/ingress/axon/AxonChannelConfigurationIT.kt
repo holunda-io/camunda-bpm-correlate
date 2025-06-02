@@ -3,6 +3,7 @@ package io.holunda.camunda.bpm.correlate.ingress.axon
 import io.holunda.camunda.bpm.correlate.correlation.BatchCorrelationSchedulerConfiguration
 import io.holunda.camunda.bpm.correlate.correlation.SingleMessageCorrelationStrategy
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.kotlin.mock
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Lazy
+import org.springframework.context.annotation.Primary
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
@@ -34,7 +36,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
     "correlate.channels.disabled.enabled=false",
   ]
 )
-@ExtendWith(SpringExtension::class)
 @ActiveProfiles("axon-event")
 internal class AxonChannelConfigurationIT {
 
@@ -59,7 +60,9 @@ internal class AxonChannelConfigurationIT {
 
   @SpringBootApplication(exclude = [BatchCorrelationSchedulerConfiguration::class])
   class TestApplication {
+
     @Bean("specifiedConverter")
+    @Qualifier("specifiedConverter")
     fun doesNotMatter(): AxonEventMessageHeaderConverter = mock()
 
     @Bean
