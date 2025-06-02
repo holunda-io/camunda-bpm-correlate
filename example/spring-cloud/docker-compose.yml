@@ -1,4 +1,3 @@
-version: "3.5"
 services:
 
   zookeeper:
@@ -51,8 +50,3 @@ services:
       KAFKA_TOPIC_CORRELATE_HOTEL: flight
       KAFKA_TOPIC_CORRELATE_HOTEL_RESULT: correlate-ingress
       KAFKA_GROUP_ID: flight
-
-networks:
-  default:
-    name: correlate-process
-    external: true

@@ -4,9 +4,11 @@ import io.holunda.camunda.bpm.correlate.ingress.ChannelMessageAcceptor
 import io.holunda.camunda.bpm.correlate.ingress.IngressMetrics
 import io.holunda.camunda.bpm.correlate.ingress.cloudstream.SpringCloudStreamChannelConfiguration.Companion.CHANNEL_TYPE
 import io.holunda.camunda.bpm.correlate.ingress.message.ByteMessage
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.messaging.Message
 import java.util.function.Consumer
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Spring cloud stream message consumer.
@@ -17,8 +19,6 @@ class StreamByteMessageConsumer(
   val streamChannelMessageHeaderConverter: StreamChannelMessageHeaderConverter,
   val channelName: String
 ) : Consumer<Message<ByteArray>> {
-
-  companion object : KLogging()
 
   override fun accept(message: Message<ByteArray>) {
     metrics.incrementReceived(channelName, CHANNEL_TYPE)

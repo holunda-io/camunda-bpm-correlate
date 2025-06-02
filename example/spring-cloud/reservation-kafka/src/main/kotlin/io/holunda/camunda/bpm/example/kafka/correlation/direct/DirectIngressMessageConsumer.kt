@@ -12,11 +12,13 @@ import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Elements.RESER
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.CUSTOMER_NAME
 import io.holunda.camunda.bpm.example.kafka.ReservationProcessing.Variables.RESERVATION_ID
 import io.holunda.camunda.bpm.example.kafka.toProcessVariables
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.springframework.messaging.Message
 import java.util.function.Consumer
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Direct correlation.
@@ -27,8 +29,6 @@ class DirectIngressMessageConsumer(
   private val runtimeService: RuntimeService,
   private val repositoryService: RepositoryService
 ) : Consumer<Message<ByteArray>> {
-
-  companion object : KLogging()
 
   /*
    * Latest version of the RESERVATION process.

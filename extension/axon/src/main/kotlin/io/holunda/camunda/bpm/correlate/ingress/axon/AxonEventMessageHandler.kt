@@ -6,10 +6,11 @@ import io.holunda.camunda.bpm.correlate.ingress.axon.AxonChannelConfiguration.Co
 import io.holunda.camunda.bpm.correlate.ingress.message.DelegatingChannelMessage
 import io.holunda.camunda.bpm.correlate.ingress.message.ObjectMessage
 import io.holunda.camunda.bpm.correlate.persist.encoding.PayloadDecoder
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.axonframework.eventhandling.EventMessage
 import org.axonframework.eventhandling.EventMessageHandler
 
+private val logger = KotlinLogging.logger {}
 /**
  * Generic event handler for Axon Framework connected to the event bus receiving all events.
  */
@@ -20,8 +21,6 @@ class AxonEventMessageHandler(
   val encoder: PayloadDecoder,
   val channelName: String,
 ) : EventMessageHandler {
-
-  companion object : KLogging()
 
   override fun handle(eventMessage: EventMessage<*>) {
     metrics.incrementReceived(channelName, CHANNEL_TYPE)

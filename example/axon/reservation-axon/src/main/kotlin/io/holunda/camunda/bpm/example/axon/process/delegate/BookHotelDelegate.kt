@@ -3,13 +3,13 @@ package io.holunda.camunda.bpm.example.axon.process.delegate
 import io.holunda.camunda.bpm.data.CamundaBpmData.reader
 import io.holunda.camunda.bpm.example.axon.ReservationProcessing
 import io.holunda.camunda.bpm.example.common.domain.hotel.BookHotelCommand
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.camunda.bpm.engine.delegate.DelegateExecution
 import org.camunda.bpm.engine.delegate.JavaDelegate
 import org.springframework.stereotype.Component
 
-
+private val logger = KotlinLogging.logger {}
 /**
  * Delegate sending the command to Axon Hotel Service.
  */
@@ -17,8 +17,6 @@ import org.springframework.stereotype.Component
 class BookHotelDelegate(
   val commandGateway: CommandGateway
 ) : JavaDelegate {
-
-  companion object : KLogging()
 
   override fun execute(execution: DelegateExecution) {
     val reader = reader(execution)

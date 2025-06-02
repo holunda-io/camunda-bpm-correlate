@@ -6,8 +6,8 @@ import io.holunda.camunda.bpm.correlate.dto.RetriesDto
 import io.holunda.camunda.bpm.correlate.dto.toDto
 import io.holunda.camunda.bpm.correlate.getBean
 import org.camunda.bpm.cockpit.plugin.resource.AbstractCockpitPluginResource
-import javax.ws.rs.*
-import javax.ws.rs.core.MediaType
+import jakarta.ws.rs.*
+import jakarta.ws.rs.core.MediaType
 
 /**
  * Resource for access to correlate messages.

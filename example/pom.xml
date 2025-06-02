@@ -19,7 +19,7 @@
 
   <properties>
     <spin.version>7.23.0</spin.version>
-    <spring-cloud.version>2021.0.5</spring-cloud.version>
+    <spring-cloud.version>2024.0.1</spring-cloud.version>
     <axon.framework.version>4.11.3</axon.framework.version>
   </properties>
 
@@ -60,12 +60,13 @@
       </dependency>
       <!-- FIXME: Remove as soon as spring fixes those issues -->
       <!-- https://github.com/spring-cloud/spring-cloud-function/issues/925 -->
+      <!--
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-function-context</artifactId>
         <version>3.2.5</version>
       </dependency>
-
+      -->
 
       <!-- Axon Framework -->
       <dependency>

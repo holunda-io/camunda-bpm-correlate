@@ -1,7 +1,9 @@
 package io.holunda.camunda.bpm.correlate.event
 
-import mu.KLogger
+import io.github.oshai.kotlinlogging.KLogger
+import io.github.oshai.kotlinlogging.KotlinLogging
 
+private val logger = KotlinLogging.logger {}
 
 /**
  * Hints for correlation.

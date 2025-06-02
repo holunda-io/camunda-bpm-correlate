@@ -3,7 +3,8 @@
 
 DIR=$(dirname "$0")
 source "$DIR/reservation-kafka/env.env"
-RESERVATION_ID=$(cat /proc/sys/kernel/random/uuid)
+RESERVATION_ID=$(uuidgen)
+# RESERVATION_ID=$(cat /proc/sys/kernel/random/uuid)
 
 CLIENT_BIN=kcat
 

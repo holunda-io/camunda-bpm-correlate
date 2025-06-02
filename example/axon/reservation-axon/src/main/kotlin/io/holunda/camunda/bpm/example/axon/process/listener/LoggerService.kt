@@ -1,15 +1,15 @@
 package io.holunda.camunda.bpm.example.axon.process.listener
 
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Simple logger service.
  */
 @Component("loggerService")
 class LoggerService {
-
-  companion object: KLogging()
 
   /**
    * Logs a message.
