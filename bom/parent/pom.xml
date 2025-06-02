@@ -14,7 +14,7 @@
   <name>POM / Parent</name>
 
   <properties>
-    <spring-boot.version>3.4.5</spring-boot.version>
+    <spring-boot.version>3.5.0</spring-boot.version>
     <camunda-7.version>7.23.0</camunda-7.version>
     <camunda-bpm-data.version>2025.05.1</camunda-bpm-data.version>
     <shedlock.version>6.8.0</shedlock.version>
