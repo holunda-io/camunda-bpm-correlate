@@ -11,6 +11,13 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b751121e82a6432d90a8844725dc9af7)](https://www.codacy.com/gh/holunda-io/camunda-bpm-correlate/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=holunda-io/camunda-bpm-correlate&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/b751121e82a6432d90a8844725dc9af7)](https://www.codacy.com/gh/holunda-io/camunda-bpm-correlate/dashboard?utm_source=github.com&utm_medium=referral&utm_content=holunda-io/camunda-bpm-correlate&utm_campaign=Badge_Coverage)
 
+
+# Relocation
+
+This project is **relocated** to https://github.com/holunda-io/c7 and **will be developed** further there.
+Last release produced from this location was **2025.05.1**
+This repository will be archived.
+
 ## Why should you use it?
 
 Imagine you integrate your Camunda process engine into a larger application landscape. 
